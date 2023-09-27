@@ -92,15 +92,15 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        _right = 10f;
-        _left = 10f;
-        _up = 10f;
-        _down = 10f;
+        _right = 50f;
+        _left = 50f;
+        _up = 40f;
+        _down = 40f;
         _angle = 45f;
 
-        _zoom = 5f;
-        _zoomMin = 3;
-        _zoomMax = 10;
+        _zoom = 10f;
+        _zoomMin = 5;
+        _zoomMax = 20;
 
         _pivot.SetParent(_root);
         _target.SetParent(_pivot);
@@ -111,7 +111,7 @@ public class CameraController : MonoBehaviour
         _pivot.localPosition = Vector3.zero;
         _pivot.localEulerAngles = new Vector3(_angle, 0f, 0f);
 
-        _target.localPosition = new Vector3(0f, 0f, -10f);
+        _target.localPosition = new Vector3(0f, 0f, -100f);
         _target.localEulerAngles = Vector3.zero;
 
         _camera = Camera.main;
@@ -177,16 +177,9 @@ public class CameraController : MonoBehaviour
         float w = h * _camera.aspect;
 
         if (h > (_up + _down) / 2f)
-        {
-            float v = (_up + _down) / 2f;
-            _zoom = v * Mathf.Sin(_angle * Mathf.Deg2Rad);
-        }
-
+            _zoom = (_up + _down) / 2f * Mathf.Sin(_angle * Mathf.Deg2Rad);
         if (w > (_right + _left) / 2f)
-        {
-            float v = (_right + _left) / 2f / _camera.aspect;
-            _zoom = v * Mathf.Sin(_angle * Mathf.Deg2Rad);
-        }
+            _zoom = (_right + _left) / 2f / _camera.aspect * Mathf.Sin(_angle * Mathf.Deg2Rad);
 
         h = PlaneOrtographicSize();
         w = h * _camera.aspect;
@@ -205,12 +198,7 @@ public class CameraController : MonoBehaviour
             _root.position += Vector3.forward * Mathf.Abs(_center.z - _down - dl.z);
     }
 
-    float PlaneOrtographicSize()
-    {
-        float h = _zoom * 2f;
-
-        return h / Mathf.Sin(_angle * Mathf.Deg2Rad) / 2f;
-    }
+    float PlaneOrtographicSize() => _zoom * 2f / Mathf.Sin(_angle * Mathf.Deg2Rad) / 2f;
 
     Vector3 CameraScreenPositionToWorldPosition(Vector2 position)
     {
@@ -227,8 +215,7 @@ public class CameraController : MonoBehaviour
         Vector3 point = CameraScreenPositionToWorldPosition(position);
 
         float h = point.y - _root.position.y;
-        float x = h / Mathf.Sin(_angle * Mathf.Deg2Rad);
 
-        return point + _camera.transform.forward * x;
+        return point + _camera.transform.forward * h / Mathf.Sin(_angle * Mathf.Deg2Rad);
     }
 }
