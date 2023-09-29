@@ -756,6 +756,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _goldText: {fileID: 1529376924}
   _shopBtn: {fileID: 736959525}
+  buildingPrefabs:
+  - {fileID: 221516339311747031, guid: 2b73eeb90a20ea24dba131d7deb03b00, type: 3}
 --- !u!1 &1089610750
 GameObject:
   m_ObjectHideFlags: 0
