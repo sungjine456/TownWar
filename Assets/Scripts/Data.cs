@@ -8,4 +8,9 @@ public static class Data
     {
         public int gold;
     }
+
+    public enum BuildingId
+    {
+        GoldMine
+    }
 }

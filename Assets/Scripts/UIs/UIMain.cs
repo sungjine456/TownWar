@@ -6,7 +6,6 @@ public class UIMain : UIMonoBehaviour<UIMain>
 {
     [SerializeField] TextMeshProUGUI _goldText;
     [SerializeField] Button _shopBtn;
-    [SerializeField] Building[] buildingPrefabs;
 
     public bool IsActive { get; private set; }
 
