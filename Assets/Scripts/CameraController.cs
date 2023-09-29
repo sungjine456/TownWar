@@ -4,6 +4,7 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 10f;
     [SerializeField] float _moveSmooth = 5f;
+    [SerializeField] float _zoomSpeed = 15f;
     [SerializeField] float _zoomSmooth = 5f;
 
     Camera _camera;
@@ -59,7 +60,8 @@ public class CameraController : MonoBehaviour
 
     void MoveStarted()
     {
-        _moving = true;
+        if (UIMain.Instance.IsActive)
+            _moving = true;
     }
 
     void MoveCanceled()
@@ -69,20 +71,23 @@ public class CameraController : MonoBehaviour
 
     void ZoomStarted()
     {
-        Vector2 touch0 = _inputs.Main.TouchPosition0.ReadValue<Vector2>();
-        Vector2 touch1 = _inputs.Main.TouchPosition1.ReadValue<Vector2>();
-        _zoomPositionOnScreen = Vector2.Lerp(touch0, touch1, 0.5f);
-        _zoomPositionInWorld = CameraScreenPositionToPlanePosition(_zoomPositionOnScreen);
-        _zoomBaseValue = _zoom;
+        if (UIMain.Instance.IsActive)
+        {
+            Vector2 touch0 = _inputs.Main.TouchPosition0.ReadValue<Vector2>();
+            Vector2 touch1 = _inputs.Main.TouchPosition1.ReadValue<Vector2>();
 
-        touch0.x /= Screen.width;
-        touch1.x /= Screen.width;
-        touch0.y /= Screen.height;
-        touch1.y /= Screen.height;
+            _zoomPositionOnScreen = Vector2.Lerp(touch0, touch1, 0.5f);
+            _zoomPositionInWorld = CameraScreenPositionToPlanePosition(_zoomPositionOnScreen);
+            _zoomBaseValue = _zoom;
 
-        _zoomBaseDistance = Vector2.Distance(touch0, touch1);
+            touch0.x /= Screen.width;
+            touch1.x /= Screen.width;
+            touch0.y /= Screen.height;
+            touch1.y /= Screen.height;
 
-        _zooming = true;
+            _zoomBaseDistance = Vector2.Distance(touch0, touch1);
+            _zooming = true;
+        }
     }
 
     void ZoomCanceled()
@@ -100,7 +105,7 @@ public class CameraController : MonoBehaviour
 
         _zoom = 10f;
         _zoomMin = 5;
-        _zoomMax = 20;
+        _zoomMax = 15;
 
         _pivot.SetParent(_root);
         _target.SetParent(_pivot);
@@ -126,9 +131,9 @@ public class CameraController : MonoBehaviour
             float mouseScroll = _inputs.Main.MouseScroll.ReadValue<float>();
 
             if (mouseScroll > 0)
-                _zoom -= 15f * Time.deltaTime;
+                _zoom -= _zoomSpeed * Time.deltaTime;
             else if (mouseScroll < 0)
-                _zoom += 15f * Time.deltaTime;
+                _zoom += _zoomSpeed * Time.deltaTime;
         }
 
         if (_zooming)
