@@ -9,9 +9,16 @@ public class Building : MonoBehaviour
     [SerializeField] int _columns;
     [SerializeField] MeshRenderer _baseArea;
 
-    int _level;
-    int _currentX;
-    int _currentY;
-
     public BuildingId Id { get { return _id; } }
+    public int Rows { get { return _rows; } }
+    public int Columns { get { return _columns; } }
+    public int X { get; private set; }
+    public int Y { get; private set; }
+
+    public void SetPosition(int x, int y)
+    {
+        X = x;
+        Y = y;
+        transform.position = GameManager.Instance.Grid.GetCenterPosition(x, y, Rows, Columns);
+    }
 }

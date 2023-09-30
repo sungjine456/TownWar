@@ -32,6 +32,8 @@ public class CameraController : MonoBehaviour
     Transform _pivot;
     Transform _target;
 
+    Vector3 buildBasePos;
+
     void Awake()
     {
         _inputs = new Controls();
@@ -61,12 +63,29 @@ public class CameraController : MonoBehaviour
     void MoveStarted()
     {
         if (UIMain.Instance.IsActive)
-            _moving = true;
+        {
+            if (GameManager.Instance.IsPlacing)
+            {
+                buildBasePos = CameraScreenPositionToPlanePosition(_inputs.Main.PointerPosition.ReadValue<Vector2>());
+                Building building = BuildManager.Instance.CurrentTarget;
+
+                if (GameManager.Instance.Grid.IsWorldPositionIsOnPlane(buildBasePos, building))
+                {
+                    BuildManager.Instance.StartMovingOnGrid();
+                }
+            }
+
+            if (!BuildManager.Instance.IsMoveingBuilding)
+            {
+                _moving = true;
+            }
+        }
     }
 
     void MoveCanceled()
     {
         _moving = false;
+        BuildManager.Instance.IsMoveingBuilding = false;
     }
 
     void ZoomStarted()
@@ -171,6 +190,12 @@ public class CameraController : MonoBehaviour
             _camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, _zoom, _zoomSmooth * Time.deltaTime);
         if (_camera.transform.position != _target.position)
             _camera.transform.position = Vector3.Lerp(_camera.transform.position, _target.position, _moveSmooth * Time.deltaTime);
+
+        if (BuildManager.Instance.IsMoveingBuilding)
+        {
+            Vector3 pos = CameraScreenPositionToPlanePosition(_inputs.Main.PointerPosition.ReadValue<Vector2>());
+            BuildManager.Instance.UpdateFromGrid(buildBasePos, pos);
+        }
     }
 
     void AdjustBounds()
