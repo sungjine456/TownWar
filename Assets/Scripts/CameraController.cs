@@ -240,7 +240,7 @@ public class CameraController : MonoBehaviour
         return ancher + (_camera.transform.right * position.x / Screen.width * w) + (_camera.transform.up * position.y / Screen.height * h);
     }
 
-    Vector3 CameraScreenPositionToPlanePosition(Vector2 position)
+    public Vector3 CameraScreenPositionToPlanePosition(Vector2 position)
     {
         Vector3 point = CameraScreenPositionToWorldPosition(position);
 

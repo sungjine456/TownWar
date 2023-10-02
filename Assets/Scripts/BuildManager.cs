@@ -7,7 +7,9 @@ public class BuildManager : SingletonMonoBehaviour<BuildManager>
     int _baseX;
     int _baseY;
 
-    public Building CurrentTarget;
+    Building _currentTarget;
+
+    public Building CurrentTarget { get { return _currentTarget; } private set { _currentTarget = value; } }
     public bool IsMoveingBuilding { get; set; }
 
     public void CreateBuilding(BuildingId id)
@@ -20,31 +22,56 @@ public class BuildManager : SingletonMonoBehaviour<BuildManager>
             PlacedOnGrid(20, 20);
             GameManager.Instance.IsPlacing = true;
         }
+
+        UIBuild.Instance.SetActive(true);
     }
 
     public void StartMovingOnGrid()
     {
-        _baseX = CurrentTarget.X;
-        _baseY = CurrentTarget.Y;
+        if (HasTarget())
+        {
+            _baseX = CurrentTarget.X;
+            _baseY = CurrentTarget.Y;
 
-        IsMoveingBuilding = true;
+            IsMoveingBuilding = true;
+        }
     }
 
     public void PlacedOnGrid(int x, int y)
     {
-        _baseX = x;
-        _baseY = y;
-        CurrentTarget.SetPosition(x, y);
+        if (HasTarget())
+        {
+            _baseX = x;
+            _baseY = y;
+            CurrentTarget.SetPosition(x, y);
+        }
     }
 
     public void UpdateFromGrid(Vector3 basePos, Vector3 currentPos)
     {
-        BuildGrid grid = GameManager.Instance.Grid;
-        Vector3 dir = grid.transform.TransformPoint(currentPos) - grid.transform.TransformPoint(basePos);
+        if (HasTarget())
+        {
+            BuildGrid grid = GameManager.Instance.Grid;
+            Vector3 dir = grid.transform.TransformPoint(currentPos) - grid.transform.TransformPoint(basePos);
 
-        int xDis = Mathf.RoundToInt(-dir.z / CELL_SIZE);
-        int yDis = Mathf.RoundToInt(dir.x / CELL_SIZE);
+            int xDis = Mathf.RoundToInt(dir.z / CELL_SIZE);
+            int yDis = Mathf.RoundToInt(-dir.x / CELL_SIZE);
 
-        CurrentTarget.SetPosition(_baseX + xDis, _baseY + yDis);
+            CurrentTarget.SetPosition(_baseX + xDis, _baseY + yDis);
+        }
     }
+
+    public void RemoveFromGrid()
+    {
+        if (HasTarget())
+        {
+            GameManager.Instance.IsPlacing = false;
+            Destroy(CurrentTarget.gameObject);
+            CurrentTarget = null;
+        }
+    }
+
+    public bool HasTarget() => CurrentTarget != null;
+
+    public bool EmptyTarget() => !HasTarget();
 }

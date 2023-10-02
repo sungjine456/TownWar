@@ -6,9 +6,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 {
     [SerializeField] Building[] _buildingPrefabs;
     [SerializeField] BuildGrid _grid;
+    [SerializeField] CameraController _camera;
 
     public bool IsPlacing { get; set; }
     public BuildGrid Grid => _grid;
+    public CameraController Camera => _camera;
 
     public Building GetBuildingPrefab(BuildingId id)
     {

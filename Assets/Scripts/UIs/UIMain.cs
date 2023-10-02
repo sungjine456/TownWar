@@ -18,6 +18,7 @@ public class UIMain : UIMonoBehaviour<UIMain>
     {
         SetActive(false);
         UIShop.Instance.SetActive(true);
+        UIBuild.Instance.Cancel();
     }
 
     public override void SetActive(bool active)
