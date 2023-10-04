@@ -61,6 +61,17 @@ public class BuildManager : SingletonMonoBehaviour<BuildManager>
         }
     }
 
+    public void AddFromGrid()
+    {
+        if (HasTarget())
+        {
+            GameManager.Instance.Grid.AddBuilding(CurrentTarget);
+            Player.Instance.SaveBuilding(CurrentTarget);
+            GameManager.Instance.IsPlacing = false;
+            CurrentTarget = null;
+        }
+    }
+
     public void RemoveFromGrid()
     {
         if (HasTarget())

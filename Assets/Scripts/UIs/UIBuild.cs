@@ -47,9 +47,8 @@ public class UIBuild : UIMonoBehaviour<UIBuild>
 
         if (GameManager.Instance.Grid.CanPlaceBuilding(building))
         {
-            GameManager.Instance.Grid.AddBuilding(building);
-            Player.Instance.SaveBuilding(building);
-            Cancel();
+            BuildManager.Instance.AddFromGrid();
+            SetActive(false);
         }
     }
 
@@ -57,7 +56,6 @@ public class UIBuild : UIMonoBehaviour<UIBuild>
     {
         if (BuildManager.Instance.HasTarget())
         {
-            GameManager.Instance.IsPlacing = false;
             BuildManager.Instance.RemoveFromGrid();
             SetActive(false);
         }
