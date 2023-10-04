@@ -9,6 +9,7 @@ public class Building : MonoBehaviour
     [SerializeField] int _columns;
     [SerializeField] MeshRenderer _baseArea;
 
+    public int Idx { get; set; }
     public BuildingId Id { get { return _id; } }
     public int Rows { get { return _rows; } }
     public int Columns { get { return _columns; } }
@@ -30,4 +31,6 @@ public class Building : MonoBehaviour
         transform.position = GameManager.Instance.Grid.GetCenterPosition(x, y, Rows, Columns);
         SetBaseColor();
     }
+
+    public Data.Building GetBuildingData() => new(Idx, Id, X, Y, Columns, Rows);
 }

@@ -48,6 +48,7 @@ public class UIBuild : UIMonoBehaviour<UIBuild>
         if (GameManager.Instance.Grid.CanPlaceBuilding(building))
         {
             GameManager.Instance.Grid.AddBuilding(building);
+            Player.Instance.SaveBuilding(building);
             Cancel();
         }
     }
