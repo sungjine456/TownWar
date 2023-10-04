@@ -19,6 +19,7 @@ public class BuildManager : SingletonMonoBehaviour<BuildManager>
         if (prefab != null)
         {
             CurrentTarget = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+            CurrentTarget.SetActiveBaseArea(true);
             PlacedOnGrid(20, 20);
             GameManager.Instance.IsPlacing = true;
         }
@@ -65,9 +66,10 @@ public class BuildManager : SingletonMonoBehaviour<BuildManager>
     {
         if (HasTarget())
         {
+            GameManager.Instance.IsPlacing = false;
+            CurrentTarget.SetActiveBaseArea(false);
             GameManager.Instance.Grid.AddBuilding(CurrentTarget);
             Player.Instance.SaveBuilding(CurrentTarget);
-            GameManager.Instance.IsPlacing = false;
             CurrentTarget = null;
         }
     }

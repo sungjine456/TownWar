@@ -16,12 +16,22 @@ public class Building : MonoBehaviour
     public int X { get; private set; }
     public int Y { get; private set; }
 
+    void Awake()
+    {
+        SetActiveBaseArea(false);
+    }
+
     void SetBaseColor()
     {
         if (GameManager.Instance.Grid.CanPlaceBuilding(this))
             _baseArea.sharedMaterial.color = Color.green;
         else
             _baseArea.sharedMaterial.color = Color.red;
+    }
+
+    public void SetActiveBaseArea(bool active)
+    {
+        _baseArea.gameObject.SetActive(active);
     }
 
     public void SetPosition(int x, int y)
