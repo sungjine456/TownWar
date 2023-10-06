@@ -6,7 +6,6 @@ public class Player : SingletonMonoBehaviour<Player>
 
     protected override void OnStart()
     {
-
         if (!Load())
         {
             data = new Data.Player { gold = 1000 };
@@ -21,7 +20,9 @@ public class Player : SingletonMonoBehaviour<Player>
             if (prefab)
             {
                 Building b = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-                b.SetPosition(data.buildings[i].x, data.buildings[i].y);
+                b.PlacedOnGrid(data.buildings[i].x, data.buildings[i].y);
+                b.Idx = i;
+                b.SetActiveBaseArea(false);
                 GameManager.Instance.Grid.AddBuilding(b);
             }
         }

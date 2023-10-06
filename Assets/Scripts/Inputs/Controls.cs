@@ -98,6 +98,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PointerClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""bc45d40b-e8b3-452e-a03f-c658ffda2e9e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Tap"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -243,6 +252,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""PointerPosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""68883dc0-a341-4658-9840-473785b1641f"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PointerClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f685e690-2809-4b3d-9ebf-bbd6ca3661ba"",
+                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PointerClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -259,6 +290,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Main_TouchPosition0 = m_Main.FindAction("TouchPosition0", throwIfNotFound: true);
         m_Main_TouchPosition1 = m_Main.FindAction("TouchPosition1", throwIfNotFound: true);
         m_Main_PointerPosition = m_Main.FindAction("PointerPosition", throwIfNotFound: true);
+        m_Main_PointerClick = m_Main.FindAction("PointerClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -328,6 +360,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_TouchPosition0;
     private readonly InputAction m_Main_TouchPosition1;
     private readonly InputAction m_Main_PointerPosition;
+    private readonly InputAction m_Main_PointerClick;
     public struct MainActions
     {
         private @Controls m_Wrapper;
@@ -340,6 +373,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @TouchPosition0 => m_Wrapper.m_Main_TouchPosition0;
         public InputAction @TouchPosition1 => m_Wrapper.m_Main_TouchPosition1;
         public InputAction @PointerPosition => m_Wrapper.m_Main_PointerPosition;
+        public InputAction @PointerClick => m_Wrapper.m_Main_PointerClick;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -373,6 +407,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @PointerPosition.started += instance.OnPointerPosition;
             @PointerPosition.performed += instance.OnPointerPosition;
             @PointerPosition.canceled += instance.OnPointerPosition;
+            @PointerClick.started += instance.OnPointerClick;
+            @PointerClick.performed += instance.OnPointerClick;
+            @PointerClick.canceled += instance.OnPointerClick;
         }
 
         private void UnregisterCallbacks(IMainActions instance)
@@ -401,6 +438,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @PointerPosition.started -= instance.OnPointerPosition;
             @PointerPosition.performed -= instance.OnPointerPosition;
             @PointerPosition.canceled -= instance.OnPointerPosition;
+            @PointerClick.started -= instance.OnPointerClick;
+            @PointerClick.performed -= instance.OnPointerClick;
+            @PointerClick.canceled -= instance.OnPointerClick;
         }
 
         public void RemoveCallbacks(IMainActions instance)
@@ -428,5 +468,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnTouchPosition0(InputAction.CallbackContext context);
         void OnTouchPosition1(InputAction.CallbackContext context);
         void OnPointerPosition(InputAction.CallbackContext context);
+        void OnPointerClick(InputAction.CallbackContext context);
     }
 }

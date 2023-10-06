@@ -5,31 +5,30 @@ using static Data;
 
 public class BuildGrid : MonoBehaviour
 {
-    List<Building> buildings;
+    List<Building> _buildings;
+
+    public List<Building> Buildings { get { return _buildings; } }
 
     void Awake()
     {
-        buildings = new List<Building>();
+        _buildings = new List<Building>();
     }
 
     public void AddBuilding(Building building)
     {
-        buildings.Add(building);
+        _buildings.Add(building);
     }
 
     public bool CanPlaceBuilding(Building building)
     {
-        if (BuildManager.Instance.EmptyTarget())
-            return false;
-
         if (building.X < 0 || building.Y < 0 || building.X + building.Columns > GRID_SIZE || building.Y + building.Rows > GRID_SIZE)
             return false;
 
-        for (int i = 0; i < buildings.Count; i++)
+        for (int i = 0; i < _buildings.Count; i++)
         {
-            if (buildings[i] != building)
+            if (_buildings[i] != building)
             {
-                Rect rect1 = new(buildings[i].X, buildings[i].Y, buildings[i].Columns, buildings[i].Rows);
+                Rect rect1 = new(_buildings[i].X, _buildings[i].Y, _buildings[i].Columns, _buildings[i].Rows);
                 Rect rect2 = new(building.X, building.Y, building.Columns, building.Rows);
 
                 if (rect2.Overlaps(rect1))

@@ -9,6 +9,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     [SerializeField] CameraController _camera;
 
     public bool IsPlacing { get; set; }
+    public bool IsReplacing { get; set; }
+    public bool IsMoveingBuilding { get; set; }
     public BuildGrid Grid => _grid;
     public CameraController Camera => _camera;
 

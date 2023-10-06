@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -32,7 +35,10 @@ public class CameraController : MonoBehaviour
     Transform _pivot;
     Transform _target;
 
-    Vector3 buildBasePos;
+    Vector3 _replaceBasePos;
+    Vector3 _buildBasePos;
+
+    public bool IsReplacing { get; set; } = false;
 
     void Awake()
     {
@@ -49,6 +55,7 @@ public class CameraController : MonoBehaviour
         _inputs.Main.Move.canceled += _ => MoveCanceled();
         _inputs.Main.TouchZoom.started += _ => ZoomStarted();
         _inputs.Main.TouchZoom.canceled += _ => ZoomCanceled();
+        _inputs.Main.PointerClick.performed += _ => ScreenClicked();
     }
 
     void OnDisable()
@@ -57,7 +64,38 @@ public class CameraController : MonoBehaviour
         _inputs.Main.Move.canceled -= _ => MoveCanceled();
         _inputs.Main.TouchZoom.started -= _ => ZoomStarted();
         _inputs.Main.TouchZoom.canceled -= _ => ZoomCanceled();
+        _inputs.Main.PointerClick.performed -= _ => ScreenClicked();
         _inputs.Disable();
+    }
+
+    void ScreenClicked()
+    {
+        if (IsScreenPointOverBuilding())
+        {
+            bool found = false;
+            Building building;
+            Vector2 pos = _inputs.Main.PointerPosition.ReadValue<Vector2>();
+            Vector3 planePos = CameraScreenPositionToPlanePosition(pos);
+            for (int i = 0; i < GameManager.Instance.Grid.Buildings.Count; i++)
+            {
+                building = GameManager.Instance.Grid.Buildings[i];
+                if (GameManager.Instance.Grid.IsWorldPositionIsOnPlane(planePos, building))
+                {
+                    found = true;
+                    BuildingController.Instance.SelectBuilding(building);
+                    break;
+                }
+            }
+            if (!found)
+                BuildingController.Instance.DeselectBuilding();
+        }
+        else
+            BuildingController.Instance.DeselectBuilding();
+    }
+
+    bool IsScreenPointOverBuilding()
+    {
+        return Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), 150);
     }
 
     void MoveStarted()
@@ -66,16 +104,29 @@ public class CameraController : MonoBehaviour
         {
             if (GameManager.Instance.IsPlacing)
             {
-                buildBasePos = CameraScreenPositionToPlanePosition(_inputs.Main.PointerPosition.ReadValue<Vector2>());
+                _buildBasePos = CameraScreenPositionToPlanePosition(_inputs.Main.PointerPosition.ReadValue<Vector2>());
                 Building building = BuildManager.Instance.CurrentTarget;
 
-                if (GameManager.Instance.Grid.IsWorldPositionIsOnPlane(buildBasePos, building))
+                if (GameManager.Instance.Grid.IsWorldPositionIsOnPlane(_buildBasePos, building))
                 {
-                    BuildManager.Instance.StartMovingOnGrid();
+                    BuildManager.Instance.CurrentTarget.StartMovingOnGrid();
                 }
             }
 
-            if (!BuildManager.Instance.IsMoveingBuilding)
+            if (BuildingController.Instance.SelectedBuilding != null)
+            {
+                _replaceBasePos = CameraScreenPositionToPlanePosition(_inputs.Main.PointerPosition.ReadValue<Vector2>());
+                Building building = BuildingController.Instance.SelectedBuilding;
+                if (GameManager.Instance.Grid.IsWorldPositionIsOnPlane(_replaceBasePos, building))
+                {
+                    if (!IsReplacing)
+                        IsReplacing = true;
+                    building.StartMovingOnGrid();
+                    GameManager.Instance.IsReplacing = true;
+                }
+            }
+
+            if (!GameManager.Instance.IsMoveingBuilding && !GameManager.Instance.IsReplacing)
             {
                 _moving = true;
             }
@@ -85,7 +136,8 @@ public class CameraController : MonoBehaviour
     void MoveCanceled()
     {
         _moving = false;
-        BuildManager.Instance.IsMoveingBuilding = false;
+        GameManager.Instance.IsMoveingBuilding = false;
+        GameManager.Instance.IsReplacing = false;
     }
 
     void ZoomStarted()
@@ -191,10 +243,16 @@ public class CameraController : MonoBehaviour
         if (_camera.transform.position != _target.position)
             _camera.transform.position = Vector3.Lerp(_camera.transform.position, _target.position, _moveSmooth * Time.deltaTime);
 
-        if (BuildManager.Instance.IsMoveingBuilding)
+        if (GameManager.Instance.IsMoveingBuilding)
         {
             Vector3 pos = CameraScreenPositionToPlanePosition(_inputs.Main.PointerPosition.ReadValue<Vector2>());
-            BuildManager.Instance.UpdateFromGrid(buildBasePos, pos);
+            BuildManager.Instance.CurrentTarget.UpdateFromGrid(_buildBasePos, pos);
+        }
+
+        if (IsReplacing && GameManager.Instance.IsReplacing)
+        {
+            Vector3 pos = CameraScreenPositionToPlanePosition(_inputs.Main.PointerPosition.ReadValue<Vector2>());
+            BuildingController.Instance.SelectedBuilding.UpdateFromGrid(_replaceBasePos, pos);
         }
     }
 

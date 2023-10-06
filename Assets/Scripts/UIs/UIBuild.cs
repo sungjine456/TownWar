@@ -6,6 +6,13 @@ public class UIBuild : UIMonoBehaviour<UIBuild>
     public RectTransform confirmButton;
     public RectTransform cancelButton;
 
+    [HideInInspector] public Button clickConfirmButton;
+
+    protected override void OnAwake()
+    {
+        clickConfirmButton = confirmButton.gameObject.GetComponent<Button>();
+    }
+
     protected override void OnStart()
     {
         base.OnStart();
