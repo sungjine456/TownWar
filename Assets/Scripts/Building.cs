@@ -10,8 +10,8 @@ public class Building : MonoBehaviour
     [SerializeField] int _columns = 1;
     [SerializeField] MeshRenderer _baseArea;
 
-    int baseX;
-    int baseY;
+    int _baseX;
+    int _baseY;
 
     public int Idx { get { return _idx; } set { _idx = value; } }
     public BuildingId Id { get { return _id; } set { _id = value; } }
@@ -38,16 +38,16 @@ public class Building : MonoBehaviour
     {
         X = x;
         Y = y;
-        baseX = x;
-        baseY = y;
+        _baseX = x;
+        _baseY = y;
         transform.position = GameManager.Instance.Grid.GetCenterPosition(x, y, _rows, _columns);
         SetBaseColor();
     }
 
     public void StartMovingOnGrid()
     {
-        baseX = X;
-        baseY = Y;
+        _baseX = X;
+        _baseY = Y;
     }
 
     public void RemoveFromGrid()
@@ -65,8 +65,8 @@ public class Building : MonoBehaviour
         int xDis = Mathf.RoundToInt(dir.z / CELL_SIZE);
         int yDis = Mathf.RoundToInt(-dir.x / CELL_SIZE);
 
-        X = baseX + xDis;
-        Y = baseY + yDis;
+        X = _baseX + xDis;
+        Y = _baseY + yDis;
         transform.position = grid.GetCenterPosition(X, Y, _rows, _columns);
 
         SetBaseColor();
@@ -78,4 +78,14 @@ public class Building : MonoBehaviour
     }
 
     public Data.Building GetBuildingData() => new(Idx, Id, X, Y, Columns, Rows);
+
+    public override bool Equals(object other)
+    {
+        if (other is Building b)
+            return b.Idx == _idx;
+
+        return false;
+    }
+
+    public override int GetHashCode() => base.GetHashCode();
 }

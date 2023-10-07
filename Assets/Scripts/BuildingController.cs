@@ -15,6 +15,7 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
 
         SelectedBuilding = building;
         SelectedBuilding.SetActiveBaseArea(true);
+
         UIBuildingOption.Instance.SetActive(true);
     }
 
@@ -29,6 +30,11 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
                 if (!GameManager.Instance.Grid.CanPlaceBuilding(SelectedBuilding))
                 {
                     SelectedBuilding.PlacedOnGrid(_originalX, _originalY);
+                }
+                else
+                {
+                    SelectedBuilding.PlacedOnGrid(SelectedBuilding.X, SelectedBuilding.Y);
+                    Player.Instance.UpdateBuilding(SelectedBuilding);
                 }
             }
 

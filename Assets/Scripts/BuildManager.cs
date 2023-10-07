@@ -4,9 +4,7 @@ using static Data;
 
 public class BuildManager : SingletonMonoBehaviour<BuildManager>
 {
-    Building _currentTarget;
-
-    public Building CurrentTarget { get { return _currentTarget; } private set { _currentTarget = value; } }
+    public Building CurrentTarget { get; private set; }
 
     public void CreateBuilding(BuildingId id)
     {
@@ -28,6 +26,7 @@ public class BuildManager : SingletonMonoBehaviour<BuildManager>
         if (HasTarget())
         {
             GameManager.Instance.IsPlacing = false;
+            CurrentTarget.Idx = Player.Instance.NextBuildingIdx();
             CurrentTarget.SetActiveBaseArea(false);
             GameManager.Instance.Grid.AddBuilding(CurrentTarget);
             Player.Instance.SaveBuilding(CurrentTarget);

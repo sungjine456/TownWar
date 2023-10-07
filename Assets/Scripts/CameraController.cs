@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -38,8 +35,6 @@ public class CameraController : MonoBehaviour
     Vector3 _replaceBasePos;
     Vector3 _buildBasePos;
 
-    public bool IsReplacing { get; set; } = false;
-
     void Awake()
     {
         _inputs = new Controls();
@@ -73,16 +68,16 @@ public class CameraController : MonoBehaviour
         if (IsScreenPointOverBuilding())
         {
             bool found = false;
-            Building building;
+
             Vector2 pos = _inputs.Main.PointerPosition.ReadValue<Vector2>();
             Vector3 planePos = CameraScreenPositionToPlanePosition(pos);
+
             for (int i = 0; i < GameManager.Instance.Grid.Buildings.Count; i++)
             {
-                building = GameManager.Instance.Grid.Buildings[i];
-                if (GameManager.Instance.Grid.IsWorldPositionIsOnPlane(planePos, building))
+                if (GameManager.Instance.Grid.IsWorldPositionIsOnPlane(planePos, GameManager.Instance.Grid.Buildings[i]))
                 {
                     found = true;
-                    BuildingController.Instance.SelectBuilding(building);
+                    BuildingController.Instance.SelectBuilding(GameManager.Instance.Grid.Buildings[i]);
                     break;
                 }
             }
@@ -100,36 +95,29 @@ public class CameraController : MonoBehaviour
 
     void MoveStarted()
     {
-        if (UIMain.Instance.IsActive)
+        if (GameManager.Instance.IsPlacing)
         {
-            if (GameManager.Instance.IsPlacing)
-            {
-                _buildBasePos = CameraScreenPositionToPlanePosition(_inputs.Main.PointerPosition.ReadValue<Vector2>());
-                Building building = BuildManager.Instance.CurrentTarget;
+            _buildBasePos = CameraScreenPositionToPlanePosition(_inputs.Main.PointerPosition.ReadValue<Vector2>());
 
-                if (GameManager.Instance.Grid.IsWorldPositionIsOnPlane(_buildBasePos, building))
-                {
-                    BuildManager.Instance.CurrentTarget.StartMovingOnGrid();
-                }
-            }
+            if (GameManager.Instance.Grid.IsWorldPositionIsOnPlane(_buildBasePos, BuildManager.Instance.CurrentTarget))
+                BuildManager.Instance.CurrentTarget.StartMovingOnGrid();
+        }
 
-            if (BuildingController.Instance.SelectedBuilding != null)
-            {
-                _replaceBasePos = CameraScreenPositionToPlanePosition(_inputs.Main.PointerPosition.ReadValue<Vector2>());
-                Building building = BuildingController.Instance.SelectedBuilding;
-                if (GameManager.Instance.Grid.IsWorldPositionIsOnPlane(_replaceBasePos, building))
-                {
-                    if (!IsReplacing)
-                        IsReplacing = true;
-                    building.StartMovingOnGrid();
-                    GameManager.Instance.IsReplacing = true;
-                }
-            }
+        if (BuildingController.Instance.SelectedBuilding != null)
+        {
+            _replaceBasePos = CameraScreenPositionToPlanePosition(_inputs.Main.PointerPosition.ReadValue<Vector2>());
+            Building building = BuildingController.Instance.SelectedBuilding;
 
-            if (!GameManager.Instance.IsMoveingBuilding && !GameManager.Instance.IsReplacing)
+            if (GameManager.Instance.Grid.IsWorldPositionIsOnPlane(_replaceBasePos, building))
             {
-                _moving = true;
+                building.StartMovingOnGrid();
+                GameManager.Instance.IsReplacing = true;
             }
+        }
+
+        if (!GameManager.Instance.IsMoveingBuilding && !GameManager.Instance.IsReplacing)
+        {
+            _moving = true;
         }
     }
 
@@ -248,8 +236,7 @@ public class CameraController : MonoBehaviour
             Vector3 pos = CameraScreenPositionToPlanePosition(_inputs.Main.PointerPosition.ReadValue<Vector2>());
             BuildManager.Instance.CurrentTarget.UpdateFromGrid(_buildBasePos, pos);
         }
-
-        if (IsReplacing && GameManager.Instance.IsReplacing)
+        if (GameManager.Instance.IsReplacing)
         {
             Vector3 pos = CameraScreenPositionToPlanePosition(_inputs.Main.PointerPosition.ReadValue<Vector2>());
             BuildingController.Instance.SelectedBuilding.UpdateFromGrid(_replaceBasePos, pos);
