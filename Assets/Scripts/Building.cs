@@ -6,19 +6,19 @@ public class Building : MonoBehaviour
 {
     [SerializeField] int _idx;
     [SerializeField] BuildingId _id;
-    [SerializeField] int _rows = 1;
-    [SerializeField] int _columns = 1;
     [SerializeField] MeshRenderer _baseArea;
 
     int _baseX;
     int _baseY;
+    BuildingToBuild _data;
 
     public int Idx { get { return _idx; } set { _idx = value; } }
     public BuildingId Id { get { return _id; } set { _id = value; } }
-    public int Rows { get { return _rows; } }
-    public int Columns { get { return _columns; } }
+    public int Rows { get; private set; }
+    public int Columns { get; private set; }
     public int X { get; private set; }
     public int Y { get; private set; }
+    public int RequiredGold { get; set; }
 
     void SetBaseColor()
     {
@@ -34,13 +34,23 @@ public class Building : MonoBehaviour
         }
     }
 
+    public void Initialized(BuildingToBuild data, int x, int y)
+    {
+        _data = data;
+        Rows = data.rows;
+        Columns = data.columns;
+        RequiredGold = data.requiredGold;
+        SetActiveBaseArea(true);
+        PlacedOnGrid(x, y);
+    }
+
     public void PlacedOnGrid(int x, int y)
     {
         X = x;
         Y = y;
         _baseX = x;
         _baseY = y;
-        transform.position = GameManager.Instance.Grid.GetCenterPosition(x, y, _rows, _columns);
+        transform.position = GameManager.Instance.Grid.GetCenterPosition(x, y, Rows, Columns);
         SetBaseColor();
     }
 
@@ -67,7 +77,7 @@ public class Building : MonoBehaviour
 
         X = _baseX + xDis;
         Y = _baseY + yDis;
-        transform.position = grid.GetCenterPosition(X, Y, _rows, _columns);
+        transform.position = grid.GetCenterPosition(X, Y, Rows, Columns);
 
         SetBaseColor();
     }
@@ -77,7 +87,7 @@ public class Building : MonoBehaviour
         _baseArea.gameObject.SetActive(status);
     }
 
-    public Data.Building GetBuildingData() => new(Idx, Id, X, Y, Columns, Rows);
+    public BuildingToSave GetSaveBuildingData() => new(Idx, Id, X, Y);
 
     public override bool Equals(object other)
     {

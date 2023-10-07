@@ -9,7 +9,7 @@ public static class Data
     public class Player
     {
         public int gold;
-        public List<Building> buildings = new();
+        public List<BuildingToSave> buildings = new();
     }
 
     public enum BuildingId
@@ -26,8 +26,9 @@ public static class Data
         public int y;
         public int columns;
         public int rows;
+        public int requiredGold;
 
-        public Building(int idx, BuildingId buildingId, int x, int y, int columns, int rows)
+        public Building(int idx, BuildingId buildingId, int x, int y, int columns, int rows, int requiredGold)
         {
             this.idx = idx;
             this.buildingId = buildingId;
@@ -35,6 +36,33 @@ public static class Data
             this.y = y;
             this.columns = columns;
             this.rows = rows;
+            this.requiredGold = requiredGold;
+        }
+    }
+
+    [System.Serializable]
+    public class BuildingToBuild
+    {
+        public BuildingId buildingId;
+        public int requiredGold;
+        public int columns;
+        public int rows;
+    }
+
+    [System.Serializable]
+    public class BuildingToSave
+    {
+        public int idx;
+        public BuildingId buildingId;
+        public int x;
+        public int y;
+
+        public BuildingToSave(int idx, BuildingId buildingId, int x, int y)
+        {
+            this.idx = idx;
+            this.buildingId = buildingId;
+            this.x = x;
+            this.y = y;
         }
     }
 }

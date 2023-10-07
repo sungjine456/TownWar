@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Player : SingletonMonoBehaviour<Player>
 {
+    [SerializeField] BuildingInfo _info;
+
     Data.Player _data;
     int _buildingIdx;
 
@@ -14,6 +16,8 @@ public class Player : SingletonMonoBehaviour<Player>
             Save();
         }
 
+        UIMain.Instance.SetGold(_data.gold);
+
         for (int i = 0; i < _data.buildings.Count; i++)
         {
             Building prefab = GameManager.Instance.GetBuildingPrefab(_data.buildings[i].buildingId);
@@ -21,8 +25,8 @@ public class Player : SingletonMonoBehaviour<Player>
             if (prefab)
             {
                 Building b = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-                b.PlacedOnGrid(_data.buildings[i].x, _data.buildings[i].y);
                 b.Idx = _data.buildings[i].idx;
+                b.Initialized(_info.GetBuildingData(_data.buildings[i].buildingId), _data.buildings[i].x, _data.buildings[i].y);
                 b.SetActiveBaseArea(false);
 
                 if (b.Idx > _buildingIdx)
@@ -69,7 +73,14 @@ public class Player : SingletonMonoBehaviour<Player>
 
     public void SaveBuilding(Building building)
     {
-        _data.buildings.Add(building.GetBuildingData());
-        Save();
+        if (_data.gold >= building.RequiredGold)
+        {
+            _data.buildings.Add(building.GetSaveBuildingData());
+            _data.gold -= building.RequiredGold;
+
+            UIMain.Instance.SetGold(_data.gold);
+
+            Save();
+        }
     }
 }

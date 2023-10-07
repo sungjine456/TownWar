@@ -4,6 +4,8 @@ using static Data;
 
 public class BuildManager : SingletonMonoBehaviour<BuildManager>
 {
+    [SerializeField] BuildingInfo _info;
+
     public Building CurrentTarget { get; private set; }
 
     public void CreateBuilding(BuildingId id)
@@ -13,8 +15,7 @@ public class BuildManager : SingletonMonoBehaviour<BuildManager>
         if (prefab != null)
         {
             CurrentTarget = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-            CurrentTarget.SetActiveBaseArea(true);
-            CurrentTarget.PlacedOnGrid(20, 20);
+            CurrentTarget.Initialized(_info.GetBuildingData(id), 20, 20);
             GameManager.Instance.IsPlacing = true;
         }
 

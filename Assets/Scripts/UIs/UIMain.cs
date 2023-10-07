@@ -21,6 +21,11 @@ public class UIMain : UIMonoBehaviour<UIMain>
         UIBuild.Instance.Cancel();
     }
 
+    public void SetGold(int gold)
+    {
+        _goldText.text = gold.ToString();
+    }
+
     public override void SetActive(bool active)
     {
         base.SetActive(active);
