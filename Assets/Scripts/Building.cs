@@ -85,14 +85,4 @@ public class Building : MonoBehaviour
     }
 
     public BuildingToSave GetSaveBuildingData() => new(Idx, Id, X, Y);
-
-    public override bool Equals(object other)
-    {
-        if (other is Building b)
-            return b.Idx == Idx;
-
-        return false;
-    }
-
-    public override int GetHashCode() => base.GetHashCode();
 }

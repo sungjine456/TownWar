@@ -7,16 +7,16 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
 
     public void SelectBuilding(Building building)
     {
-        _originalX = building.X;
-        _originalY = building.Y;
+        if (SelectedBuilding == null || (SelectedBuilding != null && !(building.Idx == SelectedBuilding.Idx)))
+        {
+            _originalX = building.X;
+            _originalY = building.Y;
 
-        if (SelectedBuilding != null && SelectedBuilding != building)
-            DeselectBuilding();
+            SelectedBuilding = building;
+            SelectedBuilding.SetActiveBaseArea(true);
 
-        SelectedBuilding = building;
-        SelectedBuilding.SetActiveBaseArea(true);
-
-        UIBuildingOption.Instance.SetActive(true);
+            UIBuildingOption.Instance.SetActive(true);
+        }
     }
 
     public void DeselectBuilding()
