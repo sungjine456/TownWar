@@ -37,7 +37,7 @@ public class Building : MonoBehaviour
     public void PlacedOnGrid(int x, int y)
     {
         X = x;
-        X = y;
+        Y = y;
         baseX = x;
         baseY = y;
         transform.position = GameManager.Instance.Grid.GetCenterPosition(x, y, _rows, _columns);
@@ -47,7 +47,7 @@ public class Building : MonoBehaviour
     public void StartMovingOnGrid()
     {
         baseX = X;
-        baseY = X;
+        baseY = Y;
     }
 
     public void RemoveFromGrid()
@@ -62,12 +62,12 @@ public class Building : MonoBehaviour
         BuildGrid grid = GameManager.Instance.Grid;
         Vector3 dir = grid.transform.TransformPoint(currentPos) - grid.transform.TransformPoint(basePos);
 
-        int xDis = Mathf.RoundToInt(dir.z / Data.CELL_SIZE);
-        int yDis = Mathf.RoundToInt(-dir.x / Data.CELL_SIZE);
+        int xDis = Mathf.RoundToInt(dir.z / CELL_SIZE);
+        int yDis = Mathf.RoundToInt(-dir.x / CELL_SIZE);
 
         X = baseX + xDis;
-        X = baseY + yDis;
-        transform.position = grid.GetCenterPosition(X, X, _rows, _columns);
+        Y = baseY + yDis;
+        transform.position = grid.GetCenterPosition(X, Y, _rows, _columns);
 
         SetBaseColor();
     }
@@ -77,5 +77,5 @@ public class Building : MonoBehaviour
         _baseArea.gameObject.SetActive(status);
     }
 
-    public Data.Building GetBuildingData() => new(Idx, Id, X, X, Columns, Rows);
+    public Data.Building GetBuildingData() => new(Idx, Id, X, Y, Columns, Rows);
 }
