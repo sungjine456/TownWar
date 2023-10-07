@@ -4,15 +4,13 @@ using static Data;
 
 public class Building : MonoBehaviour
 {
-    [SerializeField] int _idx;
     [SerializeField] BuildingId _id;
     [SerializeField] MeshRenderer _baseArea;
 
     int _baseX;
     int _baseY;
-    BuildingToBuild _data;
 
-    public int Idx { get { return _idx; } set { _idx = value; } }
+    public int Idx { get; set; }
     public BuildingId Id { get { return _id; } set { _id = value; } }
     public int Rows { get; private set; }
     public int Columns { get; private set; }
@@ -36,7 +34,6 @@ public class Building : MonoBehaviour
 
     public void Initialized(BuildingToBuild data, int x, int y)
     {
-        _data = data;
         Rows = data.rows;
         Columns = data.columns;
         RequiredGold = data.requiredGold;
@@ -92,7 +89,7 @@ public class Building : MonoBehaviour
     public override bool Equals(object other)
     {
         if (other is Building b)
-            return b.Idx == _idx;
+            return b.Idx == Idx;
 
         return false;
     }

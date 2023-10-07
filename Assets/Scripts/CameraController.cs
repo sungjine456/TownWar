@@ -35,6 +35,8 @@ public class CameraController : MonoBehaviour
     Vector3 _replaceBasePos;
     Vector3 _buildBasePos;
 
+    bool _isMoveingBuilding;
+
     void Awake()
     {
         _inputs = new Controls();
@@ -98,9 +100,11 @@ public class CameraController : MonoBehaviour
         if (GameManager.Instance.IsPlacing)
         {
             _buildBasePos = CameraScreenPositionToPlanePosition(_inputs.Main.PointerPosition.ReadValue<Vector2>());
-
             if (GameManager.Instance.Grid.IsWorldPositionIsOnPlane(_buildBasePos, BuildManager.Instance.CurrentTarget))
+            {
                 BuildManager.Instance.CurrentTarget.StartMovingOnGrid();
+                _isMoveingBuilding = true;
+            }
         }
 
         if (BuildingController.Instance.SelectedBuilding != null)
@@ -115,7 +119,7 @@ public class CameraController : MonoBehaviour
             }
         }
 
-        if (!GameManager.Instance.IsMoveingBuilding && !GameManager.Instance.IsReplacing)
+        if (!_isMoveingBuilding && !GameManager.Instance.IsReplacing)
         {
             _moving = true;
         }
@@ -124,29 +128,26 @@ public class CameraController : MonoBehaviour
     void MoveCanceled()
     {
         _moving = false;
-        GameManager.Instance.IsMoveingBuilding = false;
+        _isMoveingBuilding = false;
         GameManager.Instance.IsReplacing = false;
     }
 
     void ZoomStarted()
     {
-        if (UIMain.Instance.IsActive)
-        {
-            Vector2 touch0 = _inputs.Main.TouchPosition0.ReadValue<Vector2>();
-            Vector2 touch1 = _inputs.Main.TouchPosition1.ReadValue<Vector2>();
+        Vector2 touch0 = _inputs.Main.TouchPosition0.ReadValue<Vector2>();
+        Vector2 touch1 = _inputs.Main.TouchPosition1.ReadValue<Vector2>();
 
-            _zoomPositionOnScreen = Vector2.Lerp(touch0, touch1, 0.5f);
-            _zoomPositionInWorld = CameraScreenPositionToPlanePosition(_zoomPositionOnScreen);
-            _zoomBaseValue = _zoom;
+        _zoomPositionOnScreen = Vector2.Lerp(touch0, touch1, 0.5f);
+        _zoomPositionInWorld = CameraScreenPositionToPlanePosition(_zoomPositionOnScreen);
+        _zoomBaseValue = _zoom;
 
-            touch0.x /= Screen.width;
-            touch1.x /= Screen.width;
-            touch0.y /= Screen.height;
-            touch1.y /= Screen.height;
+        touch0.x /= Screen.width;
+        touch1.x /= Screen.width;
+        touch0.y /= Screen.height;
+        touch1.y /= Screen.height;
 
-            _zoomBaseDistance = Vector2.Distance(touch0, touch1);
-            _zooming = true;
-        }
+        _zoomBaseDistance = Vector2.Distance(touch0, touch1);
+        _zooming = true;
     }
 
     void ZoomCanceled()
@@ -234,7 +235,7 @@ public class CameraController : MonoBehaviour
             _camera.transform.position = Vector3.SmoothDamp(_camera.transform.position, _target.position, ref velocity, _moveSmooth * Time.deltaTime);
         }
 
-        if (GameManager.Instance.IsMoveingBuilding)
+        if (_isMoveingBuilding)
         {
             Vector3 pos = CameraScreenPositionToPlanePosition(_inputs.Main.PointerPosition.ReadValue<Vector2>());
             BuildManager.Instance.CurrentTarget.UpdateFromGrid(_buildBasePos, pos);
