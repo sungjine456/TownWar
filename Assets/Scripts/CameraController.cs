@@ -219,8 +219,8 @@ public class CameraController : MonoBehaviour
             {
                 move.x /= Screen.width;
                 move.y /= Screen.height;
-                _root.position -= move.x * _moveSpeed * _root.right;
-                _root.position -= move.y * _moveSpeed * _root.forward;
+                _root.position -= move.x * _moveSpeed * _zoom / _zoomMax * _root.right;
+                _root.position -= move.y * _moveSpeed * _zoom / _zoomMax * _root.forward;
             }
         }
 
@@ -229,7 +229,10 @@ public class CameraController : MonoBehaviour
         if (_camera.orthographicSize != _zoom)
             _camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, _zoom, _zoomSmooth * Time.deltaTime);
         if (_camera.transform.position != _target.position)
-            _camera.transform.position = Vector3.Lerp(_camera.transform.position, _target.position, _moveSmooth * Time.deltaTime);
+        {
+            Vector3 velocity = Vector3.zero;
+            _camera.transform.position = Vector3.SmoothDamp(_camera.transform.position, _target.position, ref velocity, _moveSmooth * Time.deltaTime);
+        }
 
         if (GameManager.Instance.IsMoveingBuilding)
         {
