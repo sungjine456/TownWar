@@ -27,8 +27,8 @@ public class UIBuild : UIMonoBehaviour<UIBuild>
         {
             Vector3 end = GameManager.Instance.Grid.GetEndPosition(BuildManager.Instance.CurrentTarget);
 
-            Vector3 planDownLeft = GameManager.Instance.Camera.CameraScreenPositionToPlanePosition(Vector2.zero);
-            Vector3 planTopRight = GameManager.Instance.Camera.CameraScreenPositionToPlanePosition(new Vector2(Screen.width, Screen.height));
+            Vector3 planDownLeft = GameManager.Instance.Camera.planDownLeft;
+            Vector3 planTopRight = GameManager.Instance.Camera.planTopRight;
 
             float w = planTopRight.x - planDownLeft.x;
             float h = planTopRight.z - planDownLeft.z;

@@ -34,7 +34,7 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
                 else
                 {
                     SelectedBuilding.PlacedOnGrid(SelectedBuilding.X, SelectedBuilding.Y);
-                    Player.Instance.UpdateBuilding(SelectedBuilding);
+                    Player.Instance.UpdateBuildingPosition(SelectedBuilding);
                 }
             }
 

@@ -14,6 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingDataList:
   - buildingId: 0
+    requiredGold: 0
+    columns: 4
+    rows: 4
+    capacity: 1000
+    speed: 0
+  - buildingId: 1
     requiredGold: 100
     columns: 3
     rows: 3
+    capacity: 1000
+    speed: 200
+  - buildingId: 2
+    requiredGold: 150
+    columns: 3
+    rows: 3
+    capacity: 5000
+    speed: 0

@@ -6,6 +6,7 @@ public class Building : MonoBehaviour
 {
     [SerializeField] BuildingId _id;
     [SerializeField] MeshRenderer _baseArea;
+    [Header("확인용"), SerializeField] float _storage;
 
     int _baseX;
     int _baseY;
@@ -17,6 +18,20 @@ public class Building : MonoBehaviour
     public int X { get; private set; }
     public int Y { get; private set; }
     public int RequiredGold { get; set; }
+    public int Capacity { get; set; }
+    public float Speed { get; set; }
+    public float Storage
+    {
+        get => _storage;
+        set 
+        {
+            if (_storage != value)
+            {
+                Player.Instance.UpdateBuildingResources(this);
+                _storage = value;
+            }
+        }
+    }
 
     void SetBaseColor()
     {
@@ -37,8 +52,23 @@ public class Building : MonoBehaviour
         Rows = data.rows;
         Columns = data.columns;
         RequiredGold = data.requiredGold;
+        Capacity = data.capacity;
+        Speed = data.speed;
         SetActiveBaseArea(true);
         PlacedOnGrid(x, y);
+    }
+
+    public void Initialized(BuildingToSave saveData, BuildingToBuild data)
+    {
+        Rows = data.rows;
+        Columns = data.columns;
+        RequiredGold = data.requiredGold;
+        Capacity = data.capacity;
+        Speed = data.speed;
+        Idx = saveData.idx;
+        Storage = saveData.storage;
+        SetActiveBaseArea(true);
+        PlacedOnGrid(saveData.x, saveData.y);
     }
 
     public void PlacedOnGrid(int x, int y)
@@ -84,5 +114,11 @@ public class Building : MonoBehaviour
         _baseArea.gameObject.SetActive(status);
     }
 
-    public BuildingToSave GetSaveBuildingData() => new(Idx, Id, X, Y);
+    public BuildingToSave GetSaveBuildingData() => new(Idx, Id, X, Y, Storage);
+
+    public override string ToString()
+    {
+        return "Id : " + Id + "Idx : " + Idx + "X : " + X + "Y : " + Y
+             + "Capacity : " + Capacity + "Storage : " + Storage;
+    }
 }

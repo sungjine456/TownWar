@@ -27,10 +27,19 @@ public class BuildManager : SingletonMonoBehaviour<BuildManager>
         if (HasTarget())
         {
             GameManager.Instance.IsPlacing = false;
-            CurrentTarget.Idx = Player.Instance.NextBuildingIdx();
-            CurrentTarget.SetActiveBaseArea(false);
-            GameManager.Instance.Grid.AddBuilding(CurrentTarget);
-            Player.Instance.SaveBuilding(CurrentTarget);
+
+            if (CurrentTarget.RequiredGold <= Player.Instance.Gold)
+            {
+                CurrentTarget.Idx = Player.Instance.NextBuildingIdx();
+                CurrentTarget.SetActiveBaseArea(false);
+                GameManager.Instance.Grid.AddBuilding(CurrentTarget);
+                Player.Instance.SaveBuilding(CurrentTarget);
+            }
+            else
+            {
+                //TODO : 사용자에게 실패한 이유를 Alert으로 알려주는 기능을 추가해야함
+            }
+
             CurrentTarget = null;
         }
     }

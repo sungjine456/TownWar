@@ -35,6 +35,9 @@ public class CameraController : MonoBehaviour
     Vector3 _replaceBasePos;
     Vector3 _buildBasePos;
 
+    public Vector3 planDownLeft;
+    public Vector3 planTopRight;
+
     bool _isMoveingBuilding;
 
     void Awake()
@@ -245,6 +248,9 @@ public class CameraController : MonoBehaviour
             Vector3 pos = CameraScreenPositionToPlanePosition(_inputs.Main.PointerPosition.ReadValue<Vector2>());
             BuildingController.Instance.SelectedBuilding.UpdateFromGrid(_replaceBasePos, pos);
         }
+
+        planDownLeft = CameraScreenPositionToPlanePosition(Vector2.zero);
+        planTopRight = CameraScreenPositionToPlanePosition(new Vector2(Screen.width, Screen.height));
     }
 
     void AdjustBounds()
