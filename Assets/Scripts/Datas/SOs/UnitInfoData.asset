@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 396628c1f096cbc44abbf25329ef3803, type: 3}
+  m_Name: UnitInfoData
+  m_EditorClassIdentifier: 
+  unitDataList:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 1
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 1
+    _keyValues: 0000000001000000
+    _keys: 0000000001000000
+    _values:
+    - units:
+      - id: 0
+        level: 1
+        numberOfPopulation: 1
+        trainTime: 10
+        damage: 2
+        moveSpeed: 2
+        health: 150
+        attackRange: 0
+        attackSpeed: 1
+        rangedSpeed: 5
+    - units:
+      - id: 1
+        level: 1
+        numberOfPopulation: 1
+        trainTime: 10
+        damage: 5
+        moveSpeed: 2
+        health: 100
+        attackRange: 5
+        attackSpeed: 1
+        rangedSpeed: 5

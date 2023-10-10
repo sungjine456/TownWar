@@ -21,6 +21,7 @@ public static class YieldInstructionCache
     public static readonly WaitForEndOfFrame _waitForEndOfFrame = new();
     public static readonly WaitForFixedUpdate _waitForFixedUpdate = new();
     static readonly Dictionary<float, WaitForSeconds> _timeInterval = new(new FloatComparer());
+    static readonly Dictionary<float, WaitForSecondsRealtime> _realTimeInterval = new(new FloatComparer());
 
     public static WaitForSeconds WaitForSeconds(float seconds)
     {
@@ -28,5 +29,13 @@ public static class YieldInstructionCache
             _timeInterval.Add(seconds, wfs = new WaitForSeconds(seconds));
 
         return wfs;
+    }
+
+    public static WaitForSecondsRealtime WaitForSecondsRealtime(float seconds)
+    {
+        if (!_realTimeInterval.TryGetValue(seconds, out WaitForSecondsRealtime wfsr))
+            _realTimeInterval.Add(seconds, wfsr = new WaitForSecondsRealtime(seconds));
+
+        return wfsr;
     }
 }

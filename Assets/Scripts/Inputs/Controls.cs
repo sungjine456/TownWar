@@ -25,12 +25,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     ""maps"": [
         {
             ""name"": ""Main"",
-            ""id"": ""3b5fa910-6094-4875-bf99-ec56d9ee9eaa"",
+            ""id"": ""f4c6a683-bce8-4163-8309-ff2326d39e51"",
             ""actions"": [
                 {
                     ""name"": ""Move"",
                     ""type"": ""Button"",
-                    ""id"": ""1c1c3a28-d9db-41fc-81eb-9dfb5282c845"",
+                    ""id"": ""cd22a19f-f300-49e9-8c83-007191f3e377"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press"",
@@ -39,7 +39,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""MoveDelta"",
                     ""type"": ""Value"",
-                    ""id"": ""a697ef6f-b3b8-426d-acc3-8525771cac9c"",
+                    ""id"": ""6cccdcfc-d44e-4f80-861f-7e7f97f7e40b"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -48,7 +48,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""MouseScroll"",
                     ""type"": ""Value"",
-                    ""id"": ""f211767f-314a-4440-aec9-67c2b8f7f0a4"",
+                    ""id"": ""fd63394e-b2fc-48ad-8d0a-41797f5853fa"",
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -57,7 +57,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""MousePosition"",
                     ""type"": ""Value"",
-                    ""id"": ""bd2e7a14-b5ee-49cb-a05c-e4088147e8f9"",
+                    ""id"": ""c498f511-be82-4f90-af2b-a7061a446641"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -66,7 +66,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""TouchZoom"",
                     ""type"": ""Button"",
-                    ""id"": ""689c7da9-b8ba-48f8-9724-90949239a5b0"",
+                    ""id"": ""0f512c74-a3d6-450b-a1d2-f00762c6ad0e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press"",
@@ -75,7 +75,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""TouchPosition0"",
                     ""type"": ""Value"",
-                    ""id"": ""c5111b4f-c590-489c-af73-24efa1e24806"",
+                    ""id"": ""17331456-182a-4ac8-b4e5-1d188c3b8dad"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -84,7 +84,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""TouchPosition1"",
                     ""type"": ""Value"",
-                    ""id"": ""9f78fc78-b97f-42a5-a12a-37ef69812fd7"",
+                    ""id"": ""952b9e28-5e02-4f1b-a289-479292b6d5a9"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -93,7 +93,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""PointerPosition"",
                     ""type"": ""Value"",
-                    ""id"": ""c31c080a-d563-49cd-8aa1-ab2613959367"",
+                    ""id"": ""76f8934b-ed7d-45ac-a4d2-f257e0dc015b"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -102,7 +102,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""PointerClick"",
                     ""type"": ""Button"",
-                    ""id"": ""bc45d40b-e8b3-452e-a03f-c658ffda2e9e"",
+                    ""id"": ""170bc9fb-c16e-4920-a98f-a7a6817347ca"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Tap"",
@@ -112,7 +112,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""6c11a729-133c-4782-b1a1-d1652e4ddcf9"",
+                    ""id"": ""7a4abc4c-b2e2-4cc4-a5c9-608fb50d9641"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -123,7 +123,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""0621f8de-d028-4fbb-b367-9d922f027d2b"",
+                    ""id"": ""ec4c8135-e917-4695-8bd9-74f983e2ba5c"",
                     ""path"": ""<Touchscreen>/primaryTouch/press"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -134,7 +134,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""137b6a7b-ccd1-46e8-9856-08067304041e"",
+                    ""id"": ""e1a24d40-dd1d-4bfc-8496-ec9b22daf454"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -145,8 +145,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""022a3d8c-c57c-43be-9fe3-49e55bf3c171"",
-                    ""path"": ""<Touchscreen>/primaryTouch/delta"",
+                    ""id"": ""77ba0671-5045-47b1-a3bc-43d77f3c293d"",
+                    ""path"": ""<Touchscreen>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -156,7 +156,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""44e623fb-77ce-4a3b-b830-6859b865742e"",
+                    ""id"": ""20f0ac5e-857d-4594-85d5-c32eea2ac563"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -167,7 +167,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""2796e04a-be41-4aa2-8756-3998413d3722"",
+                    ""id"": ""8748a649-de88-4180-a23e-f46335b00ed1"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -178,7 +178,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""One Modifier"",
-                    ""id"": ""e20eefad-d80f-4686-9f17-339b0cbcc314"",
+                    ""id"": ""5dd98af0-4798-49ae-a3b9-8585ca2b6775"",
                     ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -189,7 +189,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""modifier"",
-                    ""id"": ""8e5c1f7d-0a8b-4947-83ac-5376e336adf2"",
+                    ""id"": ""dd7d0d9c-aa50-4e39-87a5-d7a88d9f9ede"",
                     ""path"": ""<Touchscreen>/touch0/press"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -200,7 +200,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""binding"",
-                    ""id"": ""f8c76fee-a260-4a81-9d34-d5433a9f29f0"",
+                    ""id"": ""133d46a2-b27a-4daf-9dc9-86d803e4a445"",
                     ""path"": ""<Touchscreen>/touch1/press"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -211,7 +211,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b60b030d-45db-456a-b793-5a65e0873feb"",
+                    ""id"": ""d0af7efb-51c7-48c6-84d0-8e20475596b2"",
                     ""path"": ""<Touchscreen>/touch0/position"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -222,7 +222,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3818a8d0-4867-43b5-9bf5-9b1155030f9b"",
+                    ""id"": ""b4a6d367-28a5-40ac-8157-1c819c2ce3e0"",
                     ""path"": ""<Touchscreen>/touch1/position"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -233,7 +233,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ad92e22d-f9fa-4b14-87b0-a3645780e53e"",
+                    ""id"": ""714e75d8-7c55-4bb8-9d1e-5ea0dfb9519a"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -244,7 +244,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""e7859334-e710-429b-ab9f-da84a8265367"",
+                    ""id"": ""d7a8cf98-0c63-4ab5-8dce-21aa70557b98"",
                     ""path"": ""<Touchscreen>/primaryTouch/position"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -255,7 +255,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""68883dc0-a341-4658-9840-473785b1641f"",
+                    ""id"": ""72d4a412-0326-4993-8d38-438c6c21ea55"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -266,7 +266,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f685e690-2809-4b3d-9ebf-bbd6ca3661ba"",
+                    ""id"": ""53be77ed-c4f4-4bbc-8c15-5d00ae591d21"",
                     ""path"": ""<Touchscreen>/primaryTouch/tap"",
                     ""interactions"": """",
                     ""processors"": """",

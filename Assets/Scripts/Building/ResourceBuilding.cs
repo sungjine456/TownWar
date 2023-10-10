@@ -1,75 +1,120 @@
 using System.Collections;
 using UnityEngine;
 
-public class ResourceBuilding : Building
+public class ResourceBuilding : GameBuilding
 {
-    UIButton collectButton;
-
-    void Awake()
-    {
-        switch (Id)
-        {
-            case Data.BuildingId.GoldMine:
-                collectButton = Instantiate(UIMain.Instance._collectGold, UIMain.Instance._buttonsParent);
-                collectButton.button.onClick.AddListener(Collect);
-                break;
-        }
-    }
+    UIButton _collectButton;
+    bool _workingCollect;
 
     void Start()
     {
-        StartCoroutine(CollectReources());
+        if (!GameManager.Instance.IsBattling)
+            StartCoroutine(CollectReources());
     }
 
-    void Update()
+    protected override void Update()
     {
-        AdjustUI();
+        base.Update();
+
+        if (!GameManager.Instance.IsBattling)
+        {
+            if (!IsConstructing)
+                AdjustCollectUI();
+
+            if (!IsConstructing && !_workingCollect)
+                StartCoroutine(CollectReources());
+            else if (IsConstructing && _workingCollect)
+                StopCoroutine(CollectReources());
+        }
     }
 
     IEnumerator CollectReources()
     {
+        _workingCollect = true;
+
         while (true)
         {
-            if (Storage > Capacity)
-                Storage = Capacity;
-            else
-                Storage += (Speed / 360f);
+            if (!GameCameraCtrl.Instance.IsPlacingBuilding || IsConstructing)
+            {
+                if (data.storage > data.capacity)
+                    data.storage = data.capacity;
+                else
+                    data.storage += (data.speed / 3600f);
+            }
 
-            yield return new WaitForSecondsRealtime(1.0f);
+            yield return YieldInstructionCache.WaitForSecondsRealtime(1f);
         }
     }
 
-    void AdjustUI()
+    void AdjustCollectUI()
     {
-        switch (Id)
+        if (!GameCameraCtrl.Instance.IsPlacingBuilding || !IsConstructing)
         {
-            case Data.BuildingId.GoldMine:
-                collectButton.gameObject.SetActive(Storage >= Data.MIN_COLLECT_RESOUCES);
-                break;
-        }
+            if (!_collectButton && data.storage >= Data.minGoldCollect)
+            {
+                switch (BuildingId)
+                {
+                    case Data.BuildingId.goldMine:
+                        _collectButton = UICollectPoolManager.Instance.GetGold();
+                        _collectButton._button.onClick.AddListener(Collect);
+                        break;
+                    case Data.BuildingId.elixirMine:
+                        _collectButton = UICollectPoolManager.Instance.GetElixir();
+                        _collectButton._button.onClick.AddListener(Collect);
+                        break;
+                }
+            }
 
-        if (collectButton.gameObject.activeSelf)
-        {
-            Vector3 end = GameManager.Instance.Grid.GetEndPosition(this);
-            Vector3 planDownLeft = GameManager.Instance.Camera.planDownLeft;
-            Vector3 planTopRight = GameManager.Instance.Camera.planTopRight;
+            if (_collectButton)
+            {
+                Vector3 end = UIMain.Instance.Grid.GetEndPosition(this);
+                Vector3 planDownLeft = GameCameraCtrl.Instance._planDownLeft;
+                Vector3 planTopRight = GameCameraCtrl.Instance._planTopRight;
 
-            float w = planTopRight.x - planDownLeft.x;
-            float h = planTopRight.z - planDownLeft.z;
+                float w = planTopRight.x - planDownLeft.x;
+                float h = planTopRight.z - planDownLeft.z;
 
-            float endW = end.x - planDownLeft.x;
-            float endH = end.z - planDownLeft.z;
+                float endW = end.x - planDownLeft.x;
+                float endH = end.z - planDownLeft.z;
 
-            Vector2 screenPoint = new(endW / w * Screen.width, endH / h * Screen.height);
-            collectButton.rect.anchoredPosition = screenPoint;
+                Vector2 screenPoint = new(endW / w * Screen.width, endH / h * Screen.height);
+                _collectButton._rect.anchoredPosition = screenPoint;
+            }
         }
     }
 
     public void Collect()
     {
-        collectButton.gameObject.SetActive(false);
-        int gold = (int)Storage;
-        Storage -= gold;
-        Player.Instance.CollectGold(gold);
+        int remainedResource = 0;
+        int resource = (int)data.storage;
+
+        switch (BuildingId)
+        {
+            case Data.BuildingId.goldMine:
+                remainedResource = UIMain.Instance.CollectGold(resource);
+                break;
+            case Data.BuildingId.elixirMine:
+                remainedResource = UIMain.Instance.CollectElixir(resource);
+                break;
+        }
+
+        if (remainedResource < Data.minGoldCollect)
+        {
+            switch (BuildingId)
+            {
+                case Data.BuildingId.goldMine:
+                    UICollectPoolManager.Instance.RemoveGold(_collectButton);
+                    break;
+                case Data.BuildingId.elixirMine:
+                    UICollectPoolManager.Instance.RemoveElixir(_collectButton);
+                    break;
+            }
+            
+            data.storage = remainedResource;
+        }
+        else if (remainedResource != resource)
+            data.storage = remainedResource;
+        else
+            AlertManager.Instance.Error("자원이 가득 찼습니다.");
     }
 }
