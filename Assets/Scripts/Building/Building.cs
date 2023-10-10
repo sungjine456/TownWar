@@ -6,12 +6,14 @@ public class Building : MonoBehaviour
 {
     [SerializeField] BuildingId _id;
     [SerializeField] MeshRenderer _baseArea;
+
     [Header("확인용"), SerializeField] float _storage;
+    [SerializeField] int _idx;
 
     int _baseX;
     int _baseY;
 
-    public int Idx { get; set; }
+    public int Idx { get { return _idx; } set { _idx = value; } }
     public BuildingId Id { get { return _id; } set { _id = value; } }
     public int Rows { get; private set; }
     public int Columns { get; private set; }

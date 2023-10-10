@@ -22,7 +22,7 @@ public class BuildManager : SingletonMonoBehaviour<BuildManager>
         UIBuild.Instance.SetActive(true);
     }
 
-    public void AddFromGrid()
+    public bool AddFromGrid()
     {
         if (HasTarget())
         {
@@ -34,14 +34,14 @@ public class BuildManager : SingletonMonoBehaviour<BuildManager>
                 CurrentTarget.SetActiveBaseArea(false);
                 GameManager.Instance.Grid.AddBuilding(CurrentTarget);
                 Player.Instance.SaveBuilding(CurrentTarget);
+                CurrentTarget = null;
+                return true;
             }
             else
-            {
-                //TODO : 사용자에게 실패한 이유를 Alert으로 알려주는 기능을 추가해야함
-            }
-
-            CurrentTarget = null;
+                AlertManager.Instance.Error("자원이 부족합니다.");
         }
+
+        return false;
     }
 
     public void RemoveFromGrid()

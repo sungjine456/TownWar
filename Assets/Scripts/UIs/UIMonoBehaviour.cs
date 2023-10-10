@@ -4,7 +4,7 @@ public class UIMonoBehaviour<T> : SingletonMonoBehaviour<T> where T : UIMonoBeha
 {
     [SerializeField] GameObject _elements;
 
-    protected override void OnAwake()
+    protected override void OnStart()
     {
         SetActive(this is UIMain);
     }

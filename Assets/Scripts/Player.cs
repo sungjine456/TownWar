@@ -177,4 +177,9 @@ public class Player : SingletonMonoBehaviour<Player>
         Gold += gold;
         Save();
     }
+
+    public bool CanMakeBuilding(BuildingId id)
+    {
+        return _info.GetBuildingData(id).requiredGold <= _gold;
+    }
 }
