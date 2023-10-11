@@ -173,6 +173,8 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
             UIBuildingOptions.Instance.SetStatus(true);
             UIMain.Instance.UpdateBuilder();
         }
+        else
+            print("Gem이 부족합니다.");
     }
 
     public void SelectBuilding(GameBuilding building)

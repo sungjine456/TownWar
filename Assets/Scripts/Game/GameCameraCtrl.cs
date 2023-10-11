@@ -41,49 +41,6 @@ public class GameCameraCtrl : CameraController<GameCameraCtrl>
             if (!found)
                 BuildingController.Instance.DeselectBuilding();
         }
-        else
-        {
-            if (BuildingController.Instance != null && BuildingController.Instance.SelectedBuilding != null)
-            {
-                bool hasNext = false;
-
-                for (int i = 0; i < results.Count; i++)
-                {
-                    if (results[i].gameObject == UIBuildingOptions.Instance._infoBtn.gameObject)
-                    {
-                        // TODO: 정보 보여주기
-                        hasNext = true;
-                    }
-                    else if (results[i].gameObject == UIBuildingOptions.Instance._upgradeBtn.gameObject)
-                    {
-                        hasNext = true;
-
-                        var buildingData = BuildingController.Instance.GetNextLevelBuildingInfo();
-
-                        if (buildingData != null)
-                            UIBuildingUpgrade.Instance.Open(buildingData);
-                        else
-                            print("다음 레벨이 없습니다.");
-
-                    }
-                    else if (results[i].gameObject == UIBuildingOptions.Instance._instantBtn.gameObject)
-                    {
-                        hasNext = true;
-                        BuildingController.Instance.InstantUpgradeBuilding();
-                    }
-                    else if (results[i].gameObject == UIBuildingOptions.Instance._trainBtn.gameObject)
-                    {
-                        hasNext = true;
-                        UITrain.Instance.SetStatus(true);
-                    }
-                    else if (results[i].gameObject == UIBuildingUpgrade.Instance._upgradeBtn.gameObject)
-                        hasNext = true;
-                }
-
-                if (!hasNext)
-                    BuildingController.Instance.DeselectBuilding();
-            }
-        }
     }
 
     protected override void MoveStarted()

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIBuildingOptions : SingletonMonoBehaviour<UIBuildingOptions>
 {
@@ -8,14 +9,51 @@ public class UIBuildingOptions : SingletonMonoBehaviour<UIBuildingOptions>
     [SerializeField] RectTransform _upgradePanel;
     [SerializeField] RectTransform _instantPanel;
     [SerializeField] RectTransform _trainPanel;
-    public Button _infoBtn;
-    public Button _upgradeBtn;
-    public Button _instantBtn;
-    public Button _trainBtn;
+    [SerializeField] Button _infoBtn;
+    [SerializeField] Button _upgradeBtn;
+    [SerializeField] Button _instantBtn;
+    [SerializeField] Button _trainBtn;
+    [SerializeField] TextMeshProUGUI _instantResourceText;
+
+    int requiredGems;
 
     protected override void OnAwake()
     {
         SetStatus(false);
+        _infoBtn.onClick.AddListener(ClickedInfoBtn);
+        _upgradeBtn.onClick.AddListener(ClickedUpgradeBtn);
+        _instantBtn.onClick.AddListener(ClickedInstantBtn);
+        _trainBtn.onClick.AddListener(ClickedTrainBtn);
+    }
+
+    void ClickedInfoBtn()
+    {
+        // TODO: 정보 보여주기
+    }
+
+    void ClickedUpgradeBtn()
+    {
+        var buildingData = BuildingController.Instance.GetNextLevelBuildingInfo();
+
+        if (buildingData != null)
+            UIBuildingUpgrade.Instance.Open(buildingData);
+        else
+            print("다음 레벨이 없습니다.");
+    }
+
+    void ClickedInstantBtn()
+    {
+        if (GameManager.Instance.MyPlayer.ConsumeResources(0, 0, requiredGems))
+        {
+            BuildingController.Instance.InstantUpgradeBuilding();
+        }
+        else
+            print("Gem이 부족합니다.");
+    }
+
+    void ClickedTrainBtn()
+    {
+        UITrain.Instance.SetStatus(true);
     }
 
     public void SetStatus(bool status)
@@ -29,6 +67,9 @@ public class UIBuildingOptions : SingletonMonoBehaviour<UIBuildingOptions>
                 !BuildingController.Instance.SelectedBuilding.IsConstructing && 
                 (BuildingController.Instance.SelectedBuilding.BuildingId == Data.BuildingId.barracks || 
                 BuildingController.Instance.SelectedBuilding.BuildingId == Data.BuildingId.armyCamp));
+
+            requiredGems = GameManager.Instance.GetInstantTimeRequiredGems(BuildingController.Instance.SelectedBuilding.BuildTime);
+            _instantResourceText.text = requiredGems.ToString();
         }
 
         _elements.SetActive(status);
