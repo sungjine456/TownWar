@@ -61,9 +61,27 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
         return count;
     }
 
-    public Data.BuildingToBuild GetNextLevelBuilding()
+    public Data.BuildingToBuild GetNextLevelBuildingInfo()
     {
         return _buildingInfo.GetBuildingData(SelectedBuilding.BuildingId, SelectedBuilding.CurrentLevel + 1);
+    }
+
+    public int GetRequiredGold(Data.BuildingId id, int level)
+    {
+        return _buildingInfo.GetBuildingData(id, level).requiredGold;
+    }
+
+    public int GetRequiredElixir(Data.BuildingId id, int level)
+    {
+        return _buildingInfo.GetBuildingData(id, level).requiredElixir;
+    }
+
+    public int GetRequiredGems(Data.BuildingId id, int level)
+    {
+        if (id == Data.BuildingId.buildersHut)
+            return _needfulGemsForBuilderHut[CountBuildBuildingHut()];
+
+        return _buildingInfo.GetBuildingData(id, level).requiredGems;
     }
 
     public bool CanBuild()
@@ -77,48 +95,39 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
 
     public void UpgradeBuilding()
     {
-        if (GetNextLevelBuilding() != null)
+        var nextInfo = GetNextLevelBuildingInfo();
+
+        if (nextInfo != null && CanBuild())
         {
-            if (CanBuild())
+            if (SelectedBuilding.CurrentLevel < _buildingLimit.GetBuildingLimitLevel(_hallLevel, SelectedBuilding.BuildingId))
             {
-                for (int i = 0; i < UIMain.Instance.Grid._buildings.Count; i++)
+                if (GameManager.Instance.MyPlayer.ConsumeResources(nextInfo.requiredGold, nextInfo.requiredElixir, nextInfo.requiredGems))
                 {
-                    if (SelectedBuilding.CurrentLevel < _buildingLimit.GetBuildingLimitLevel(_hallLevel, SelectedBuilding.BuildingId))
+                    switch (nextInfo.buildingId)
                     {
-                        if (UIMain.Instance.Grid._buildings[i].Id == SelectedBuilding.Id)
-                        {
-                            var next = GetNextLevelBuilding();
-
-                            if (GameManager.Instance.MyPlayer.ConsumeResources(next.requiredGold, next.requiredElixir, next.requiredGems))
-                            {
-                                switch (next.buildingId)
-                                {
-                                    case Data.BuildingId.townHall:
-                                        UIMain.Instance.AddMaxGold(next.capacity - UIMain.Instance.Grid._buildings[i].Capacity);
-                                        UIMain.Instance.AddMaxElixir(next.capacity - UIMain.Instance.Grid._buildings[i].Capacity);
-                                        break;
-                                    case Data.BuildingId.goldStorage:
-                                        UIMain.Instance.AddMaxGold(next.capacity - UIMain.Instance.Grid._buildings[i].Capacity);
-                                        break;
-                                    case Data.BuildingId.elixirStorage:
-                                        UIMain.Instance.AddMaxElixir(next.capacity - UIMain.Instance.Grid._buildings[i].Capacity);
-                                        break;
-                                }
-
-                                SelectedBuilding.Upgrade(next);
-
-                                if (next.buildingId == Data.BuildingId.townHall)
-                                    _hallLevel = next.level;
-
-                                GameManager.Instance.MyPlayer.UpdateBuilding(SelectedBuilding.Id, next);
-                                UIMain.Instance.UpdateBuilder();
-                            }
-                        }
+                        case Data.BuildingId.townHall:
+                            UIMain.Instance.AddMaxGold(nextInfo.capacity - SelectedBuilding.Capacity);
+                            UIMain.Instance.AddMaxElixir(nextInfo.capacity - SelectedBuilding.Capacity);
+                            break;
+                        case Data.BuildingId.goldStorage:
+                            UIMain.Instance.AddMaxGold(nextInfo.capacity - SelectedBuilding.Capacity);
+                            break;
+                        case Data.BuildingId.elixirStorage:
+                            UIMain.Instance.AddMaxElixir(nextInfo.capacity - SelectedBuilding.Capacity);
+                            break;
                     }
-                    else
-                        print("회관에 따른 최대 레벨은 넘길 수 없습니다.");
+
+                    SelectedBuilding.Upgrade(nextInfo);
+
+                    if (nextInfo.buildingId == Data.BuildingId.townHall)
+                        _hallLevel = nextInfo.level;
+
+                    GameManager.Instance.MyPlayer.UpdateBuilding(SelectedBuilding.Id, nextInfo);
+                    UIMain.Instance.UpdateBuilder();
                 }
             }
+            else
+                print("회관에 따른 최대 레벨은 넘길 수 없습니다.");
         }
         else
             print("다음 레벨이 없습니다.");

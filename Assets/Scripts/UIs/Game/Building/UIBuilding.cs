@@ -1,17 +1,40 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIBuilding : MonoBehaviour
 {
     [SerializeField] Button _btn;
     [SerializeField] Data.BuildingId _buildingId;
+    [SerializeField] TextMeshProUGUI _requiredResourceText;
+    [SerializeField] Image _type;
 
     void Start()
     {
         _btn.onClick.AddListener(Clicked);
-    }
+        switch (_buildingId)
+        {
+            case Data.BuildingId.goldMine:
+            case Data.BuildingId.goldStorage:
+            case Data.BuildingId.armyCamp:
+            case Data.BuildingId.barracks:
+                _type.color = Color.yellow;
+                _requiredResourceText.text = BuildingController.Instance.GetRequiredElixir(_buildingId, 1).ToString();
+                break;
+            case Data.BuildingId.elixirMine:
+            case Data.BuildingId.elixirStorage:
+            case Data.BuildingId.wall:
+            case Data.BuildingId.cannon:
+                _type.color = new Color32(255, 109, 221, 255);
+                _requiredResourceText.text = BuildingController.Instance.GetRequiredGold(_buildingId, 1).ToString();
+                break;
+            case Data.BuildingId.buildersHut:
+                _type.color = Color.green;
+                _requiredResourceText.text = BuildingController.Instance.GetRequiredGems(_buildingId, 1).ToString();
+                break;
+        }
 
-    void Clicked()
+        void Clicked()
     {
         if (BuildingController.Instance.CanBuild())
         {
@@ -34,5 +57,6 @@ public class UIBuilding : MonoBehaviour
                 UIBuild.Instance.SetStatus(true);
             }
         }
+    }
     }
 }

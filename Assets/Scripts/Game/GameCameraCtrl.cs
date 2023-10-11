@@ -58,7 +58,7 @@ public class GameCameraCtrl : CameraController<GameCameraCtrl>
                     {
                         hasNext = true;
 
-                        var buildingData = BuildingController.Instance.GetNextLevelBuilding();
+                        var buildingData = BuildingController.Instance.GetNextLevelBuildingInfo();
 
                         if (buildingData != null)
                             UIBuildingUpgrade.Instance.Open(buildingData);
