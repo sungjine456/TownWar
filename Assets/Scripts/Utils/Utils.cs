@@ -1,5 +1,21 @@
 using System;
 
+using UnityEngine;
+using UnityEngine.UI;
+
+public static class Utils
+{
+    public static void ChangeButtonColor(Button btn, Color color)
+    {
+        var colors = btn.colors;
+        colors.normalColor = color;
+        colors.highlightedColor = color;
+        colors.pressedColor = color;
+        colors.selectedColor = color;
+        btn.colors = colors;
+    }
+}
+
 [Serializable]
 struct JsonDateTime
 {

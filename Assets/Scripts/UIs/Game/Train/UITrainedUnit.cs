@@ -10,14 +10,7 @@ public class UITrainedUnit : TrainUnit
     void Enable(bool enable)
     {
         _isReady = enable;
-        var colors = _button.colors;
-
-        if (enable)
-            colors.normalColor = Color.white;
-        else
-            colors.normalColor = Color.gray;
-
-        _button.colors = colors;
+        Utils.ChangeButtonColor(_button, enable ? Color.white : Color.gray);
     }
 
     public override void Initialize(Data.Unit unitData, int count = 1)

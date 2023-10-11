@@ -70,6 +70,12 @@ public class UIBuildingOptions : SingletonMonoBehaviour<UIBuildingOptions>
 
             requiredGems = GameManager.Instance.GetInstantTimeRequiredGems(BuildingController.Instance.SelectedBuilding.BuildTime);
             _instantResourceText.text = requiredGems.ToString();
+
+            if (requiredGems > GameManager.Instance.MyPlayer.Gems)
+            {
+                Utils.ChangeButtonColor(_instantBtn, Color.gray);
+                _instantResourceText.color = Color.red;
+            }
         }
 
         _elements.SetActive(status);

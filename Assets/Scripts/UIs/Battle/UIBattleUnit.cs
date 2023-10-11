@@ -38,24 +38,7 @@ public class UIBattleUnit : MonoBehaviour
 
     public void Active(bool isActive)
     {
-        ColorBlock colors = _btn.colors;
-
-        if (isActive)
-        {
-            colors.normalColor = Color.white;
-            colors.highlightedColor = Color.white;
-            colors.pressedColor = Color.white;
-            colors.selectedColor = Color.white;
-        }
-        else
-        {
-            colors.normalColor = Color.gray;
-            colors.highlightedColor = Color.gray;
-            colors.pressedColor = Color.gray;
-            colors.selectedColor = Color.gray;
-        }
-
-        _btn.colors = colors;
+        Utils.ChangeButtonColor(_btn, isActive ? Color.white : Color.gray);
     }
 
     public Data.Unit Pop()

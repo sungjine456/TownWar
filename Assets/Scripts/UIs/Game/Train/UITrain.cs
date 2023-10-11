@@ -43,8 +43,6 @@ public class UITrain : SingletonMonoBehaviour<UITrain>
 
     void ChangeTab(Button target)
     {
-        ColorBlock colors;
-
         for (int i = 0; i < _btnList.Count; i++)
         {
             if (target == _btnList[i].Item1)
@@ -55,9 +53,7 @@ public class UITrain : SingletonMonoBehaviour<UITrain>
         
         void Change(Button targetBtn, RectTransform targetPanel, bool isSelect)
         {
-            colors = targetBtn.colors;
-            colors.normalColor = isSelect ? Color.white : Color.gray;
-            targetBtn.colors = colors;
+            Utils.ChangeButtonColor(targetBtn, isSelect ? Color.white : Color.gray);
             targetPanel.gameObject.SetActive(isSelect);
         }
     }
