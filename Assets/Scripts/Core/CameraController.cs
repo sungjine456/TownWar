@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -38,7 +39,7 @@ public class CameraController<T> : SingletonMonoBehaviour<T> where T : CameraCon
 
     protected override void OnAwake()
     {
-        _inputs = new Controls();
+        _inputs = new();
         _root = new GameObject("CameraHelper").transform;
         _pivot = new GameObject("CameraPivot").transform;
         _target = new GameObject("CameraTarget").transform;
@@ -62,16 +63,16 @@ public class CameraController<T> : SingletonMonoBehaviour<T> where T : CameraCon
         _root.localEulerAngles = Vector3.zero;
 
         _pivot.localPosition = Vector3.zero;
-        _pivot.localEulerAngles = new Vector3(_angle, 0f, 0f);
+        _pivot.localEulerAngles = new(_angle, 0f, 0f);
 
-        _target.localPosition = new Vector3(0f, 0f, -100f);
+        _target.localPosition = new(0f, 0f, -100f);
         _target.localEulerAngles = Vector3.zero;
 
         _camera.transform.rotation = _target.rotation;
         _camera.orthographicSize = _zoom;
 
         _planDownLeft = CameraScreenPositionToPlanePosition(Vector2.zero);
-        _planTopRight = CameraScreenPositionToPlanePosition(new Vector2(Screen.width, Screen.height));
+        _planTopRight = CameraScreenPositionToPlanePosition(new(Screen.width, Screen.height));
     }
 
     void OnEnable()
@@ -188,7 +189,7 @@ public class CameraController<T> : SingletonMonoBehaviour<T> where T : CameraCon
         }
 
         _planDownLeft = CameraScreenPositionToPlanePosition(Vector2.zero);
-        _planTopRight = CameraScreenPositionToPlanePosition(new Vector2(Screen.width, Screen.height));
+        _planTopRight = CameraScreenPositionToPlanePosition(new(Screen.width, Screen.height));
     }
 
     void AdjustBounds()

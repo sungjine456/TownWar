@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+
 using UnityEngine;
+
+using static Data;
 
 public class UICollectPoolManager : SingletonMonoBehaviour<UICollectPoolManager>
 {
@@ -15,7 +18,7 @@ public class UICollectPoolManager : SingletonMonoBehaviour<UICollectPoolManager>
         {
             {
                 ResourceType.gold,
-                new GameObjectPool<UIButton>(3, () =>
+                new(3, () =>
                 {
                     var obj = Instantiate(_goldPrefab, _parent);
                     obj.gameObject.SetActive(false);
@@ -24,7 +27,7 @@ public class UICollectPoolManager : SingletonMonoBehaviour<UICollectPoolManager>
             },
             {
                 ResourceType.elixir,
-                new GameObjectPool<UIButton>(3, () =>
+                new(3, () =>
                 {
                     var obj = Instantiate(_elixirPrefab, _parent);
                     obj.gameObject.SetActive(false);

@@ -7,7 +7,7 @@ public class UITrainedUnit : TrainUnit
 
     bool _isReady;
 
-    void Enable(bool enable)
+    public void Enable(bool enable)
     {
         _isReady = enable;
         Utils.ChangeButtonColor(_button, enable ? Color.white : Color.gray);
@@ -40,6 +40,4 @@ public class UITrainedUnit : TrainUnit
         else
             GameManager.Instance.MyPlayer.RemoveUnit(_unit.id, Data.UnitStatus.trained);
     }
-
-    public void SetReady() => Enable(true);
 }

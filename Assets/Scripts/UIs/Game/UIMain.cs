@@ -1,7 +1,10 @@
 using System.Text;
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
+using static Data;
 
 public class UIMain : SingletonMonoBehaviour<UIMain>
 {

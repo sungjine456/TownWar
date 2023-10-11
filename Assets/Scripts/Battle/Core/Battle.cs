@@ -64,7 +64,7 @@ public class Battle
                 for (int y = startY; y < endY; y++)
                 {
                     _grid[x, y].Blocked = true;
-                    _blockedTiles.Add(new Tile(buildings[i]._building.buildingId, new BattleVector2Int(x, y), i));
+                    _blockedTiles.Add(new(buildings[i]._building.buildingId, new(x, y), i));
                 }
             }
         }
@@ -169,7 +169,7 @@ public class Battle
                     _units[index]._path = null;
                 else
                 {
-                    BattleVector2 targetPosition = GridToWorldPosition(new BattleVector2Int(_units[index]._path.LastCell().Location._x, _units[index]._path.LastCell().Location._y));
+                    BattleVector2 targetPosition = GridToWorldPosition(new(_units[index]._path.LastCell().Location._x, _units[index]._path.LastCell().Location._y));
                     float distance = BattleVector2.Distance(_units[index]._position, targetPosition);
 
                     if (distance <= Data.CELL_SIZE * 0.05f)
@@ -485,12 +485,12 @@ public class Battle
 
     BattleVector2 GridToWorldPosition(BattleVector2Int position)
     {
-        return new BattleVector2(position._x * Data.CELL_SIZE + Data.CELL_SIZE / 2f, position._y * Data.CELL_SIZE + Data.CELL_SIZE / 2f);
+        return new(position._x * Data.CELL_SIZE + Data.CELL_SIZE / 2f, position._y * Data.CELL_SIZE + Data.CELL_SIZE / 2f);
     }
 
     BattleVector2Int WorldToGridPosition(BattleVector2 position)
     {
-        return new BattleVector2Int((int)Math.Floor(position._x / Data.CELL_SIZE), (int)Math.Floor(position._y / Data.CELL_SIZE));
+        return new((int)Math.Floor(position._x / Data.CELL_SIZE), (int)Math.Floor(position._y / Data.CELL_SIZE));
     }
 
     public bool CanAddUnit(int x, int y)
@@ -531,7 +531,7 @@ public class Battle
             _dieCallback = dieCallback,
             _damageCallback = damageCallback,
             _health = unit.health,
-            _position = GridToWorldPosition(new BattleVector2Int(x, y))
+            _position = GridToWorldPosition(new(x, y))
         };
 
         if (!_isStart)

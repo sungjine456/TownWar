@@ -12,7 +12,7 @@ public class GameObjectPool<T> where T : MonoBehaviour
     {
         _count = count;
         _createFunc = createFunc;
-        _queue = new Queue<T>(count);
+        _queue = new(count);
         Allocate();
     }
 

@@ -14,7 +14,7 @@ public class AlertManager : SingletonDontDestroy<AlertManager>
 
     protected override void OnAwake()
     {
-        _list = new List<Alert>();
+        _list = new();
         SceneManager.activeSceneChanged += ChangedActiveScene;
     }
 
@@ -23,7 +23,7 @@ public class AlertManager : SingletonDontDestroy<AlertManager>
         _canvas = FindFirstObjectByType<Canvas>();
         _alerts = Instantiate(_parent);
         _alerts.transform.SetParent(_canvas.transform, false);
-        _alertPool = new GameObjectPool<Alert>(5, () =>
+        _alertPool = new(5, () =>
         {
             var obj = Instantiate(_prefab, _alerts);
             obj.gameObject.SetActive(false);
@@ -34,7 +34,7 @@ public class AlertManager : SingletonDontDestroy<AlertManager>
     public void Error(string message)
     {
         var alert = _alertPool.Get();
-        alert.Initialize(message, new Color32(255, 105, 105, 255));
+        alert.Initialize(message, new(255, 105, 105, 255));
         _list.Add(alert);
     }
 

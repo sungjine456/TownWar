@@ -19,13 +19,13 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     {
         if (LoadedNumberOfMap >= 1)
         {
-            List<Data.Building> buildings = new List<Data.Building>();
+            List<Data.Building> buildings = new();
             datas = maps.GetMapData(LoadedNumberOfMap);
 
             for (int i = 0; i < datas.Length; i++)
             {
                 var d = buildingInfo.GetBuildingData(datas[i].id, datas[i].level);
-                var data = new Data.Building(d)
+                Data.Building data = new(d)
                 {
                     id = i,
                     x = datas[i].x,
@@ -38,9 +38,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
             UIBattleMain.Instance.Initialize(buildings);
         }
         else
-        {
             print("맵 정보를 불러올 수 없습니다.");
-        }
     }
 
     public BattleFieldUnit GetUnitPrefab(Data.UnitId id)

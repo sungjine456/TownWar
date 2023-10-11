@@ -44,7 +44,7 @@ public class UIBuild : SingletonMonoBehaviour<UIBuild>
             float endW = end.x - planDownLeft.x;
             float endH = end.z - planDownLeft.z;
 
-            Vector2 screenPoint = new Vector2(endW / w * Screen.width, endH / h * Screen.height);
+            Vector2 screenPoint = new(endW / w * Screen.width, endH / h * Screen.height);
 
             Vector2 confirmPos = screenPoint;
             confirmPos.x += _buttonConfirm.rect.width + 10f;

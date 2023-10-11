@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
 
     void FirstStartSettins()
     {
-        _data = new Data.Player { gold = 100000, elixir = 100000, gems = 5000, lastPlayTime = DateTime.Now };
+        _data = new(){ gold = 100000, elixir = 100000, gems = 5000, lastPlayTime = DateTime.Now };
 
         var buildData = _buildingInfo.GetBuildingData(BuildingId.townHall, 1);
         Data.Building building = new(0, BuildingId.townHall, 1, 25, 25, 4, 4);
@@ -90,9 +90,9 @@ public class Player : MonoBehaviour
 
     void Load()
     {
-        _armyUnits = new LinkedList<Unit>();
-        _trainedUnits = new LinkedList<Unit>();
-        _trainingUnits = new LinkedList<Unit>();
+        _armyUnits = new();
+        _trainedUnits = new();
+        _trainingUnits = new();
 
         if (!PlayerPrefs.HasKey("PLAYER_DATA"))
             FirstStartSettins();
@@ -103,19 +103,19 @@ public class Player : MonoBehaviour
 
             for (int i = 0; i < _data.armyUnits.Length; i++)
             {
-                var unit = new Unit(_unitInfo.GetUnitData(_data.armyUnits[i].id, _data.armyUnits[i].level));
+                Unit unit = new(_unitInfo.GetUnitData(_data.armyUnits[i].id, _data.armyUnits[i].level));
                 _armyUnits.AddLast(unit);
             }
 
             for (int i = 0; i < _data.trainedUnits.Length; i++)
             {
-                var unit = new Unit(_unitInfo.GetUnitData(_data.trainedUnits[i].id, _data.trainedUnits[i].level));
+                Unit unit = new(_unitInfo.GetUnitData(_data.trainedUnits[i].id, _data.trainedUnits[i].level));
                 _trainedUnits.AddLast(unit);
             }
 
             for (int i = 0; i < _data.trainingUnits.Length; i++)
             {
-                var unit = new Unit(_unitInfo.GetUnitData(_data.trainingUnits[i].id, _data.trainingUnits[i].level))
+                Unit unit = new(_unitInfo.GetUnitData(_data.trainingUnits[i].id, _data.trainingUnits[i].level))
                 {
                     trainedTime = _data.trainingUnits[i].trainedTime
                 };
@@ -167,7 +167,7 @@ public class Player : MonoBehaviour
         {
             for (int i = 0; i < _data.buildings.Count; i++)
             {
-                var building = new Data.Building(_buildingInfo.GetBuildingData(_data.buildings[i].buildingId, _data.buildings[i].level))
+                Data.Building building = new(_buildingInfo.GetBuildingData(_data.buildings[i].buildingId, _data.buildings[i].level))
                 {
                     id = _data.buildings[i].id,
                     x = _data.buildings[i].x,

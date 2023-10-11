@@ -27,7 +27,7 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
     [SerializeField] RectTransform _healthBarGrid;
     [SerializeField] BattleFieldUnit[] _battleUnits;
 
-    public int _selectedUnitIndex = -1;
+    int _selectedUnitIndex = -1;
 
     Battle _battle;
 
@@ -127,7 +127,7 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
         float endW = position.x - planDownLeft.x;
         float endH = position.z - planDownLeft.z;
 
-        return new Vector2(endW / w * Screen.width, endH / h * Screen.height);
+        return new(endW / w * Screen.width, endH / h * Screen.height);
     }
 
     public void Initialize(List<Data.Building> buildings)
@@ -137,7 +137,7 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
         for (int i = 0; i < buildings.Count; i++)
         {
-            battleBuildings.Add(new BattleBuilding(buildings[i]));
+            battleBuildings.Add(new(buildings[i]));
 
             switch (buildings[i].buildingId)
             {
@@ -187,10 +187,10 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
             }
         }
 
-        _battle = new Battle(battleBuildings, gold, elixir);
+        _battle = new(battleBuildings, gold, elixir);
     }
 
-    public void SelectUnit()
+    public void PlaceUnit(int x, int y)
     {
         for (int i = 0; i < UIBattleUnits.Instance._units.Count; i++)
         {
@@ -201,12 +201,6 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
             }
         }
 
-        if (_selectedUnitIndex >= 0 && UIBattleUnits.Instance._units[_selectedUnitIndex].Count <= 0)
-            _selectedUnitIndex = -1;
-    }
-
-    public void PlaceUnit(int x, int y)
-    {
         if (_selectedUnitIndex >= 0 && UIBattleUnits.Instance._units[_selectedUnitIndex].Count > 0 && _battle.CanAddUnit(x, y))
         {
             var u = UIBattleUnits.Instance._target.Pop();
@@ -232,7 +226,7 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
                 if (prefab)
                 {
                     BattleFieldUnit unit = Instantiate(prefab, BattleManager.Instance.Grid.transform);
-                    unit.transform.localPosition = new Vector3(_battle._units[i]._position._x, 0, _battle._units[i]._position._y);
+                    unit.transform.localPosition = new(_battle._units[i]._position._x, 0, _battle._units[i]._position._y);
                     unit.Initialize(i, _battle._units[i]._data);
                     unit.healthBar = Instantiate(_healthBarPrefab, _healthBarGrid);
                     unit.healthBar.gameObject.SetActive(false);

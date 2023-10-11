@@ -23,9 +23,6 @@ public struct Vector2Int
 
     public override int GetHashCode()
     {
-        int hashCode = 1502939027;
-        hashCode = hashCode * -1521134295 + _x.GetHashCode();
-        hashCode = hashCode * -1521134295 + _y.GetHashCode();
-        return hashCode;
+        return System.HashCode.Combine(_x, _y);
     }
 }

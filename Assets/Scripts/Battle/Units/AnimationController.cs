@@ -12,8 +12,6 @@ public class AnimationController : MonoBehaviour
     }
 
     Animator _animator;
-    
-    readonly StringBuilder _sb = new();
 
     public AniMotion Motion { get; private set; }
 
@@ -49,9 +47,7 @@ public class AnimationController : MonoBehaviour
     public void Play(AniMotion motion, bool isBlend = true)
     {
         Motion = motion;
-        _sb.Append(motion);
-        Play(_sb.ToString(), isBlend);
-        _sb.Clear();
+        Play(motion.ToString(), isBlend);
     }
 
     public void Play(string aniName, bool isBlend = true)

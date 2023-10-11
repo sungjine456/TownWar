@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -79,7 +80,8 @@ public class GameCameraCtrl : CameraController<GameCameraCtrl>
 
     protected override void MoveCanceled()
     {
-        _moving = false;
+        base.MoveCanceled();
+
         _isMoveingBuilding = false;
         IsReplacingBuilding = false;
     }

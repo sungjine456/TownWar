@@ -79,7 +79,7 @@ public class TrainingController : SingletonMonoBehaviour<TrainingController>
             {
                 var unit = Instantiate(_trainedPrefab, _armyGrid);
                 unit.Initialize(t.Value.Item1, t.Value.Item2);
-                unit.SetReady();
+                unit.Enable(true);
                 _armyUnits.Add(unit);
             }
             else if (status == Data.UnitStatus.trained)
@@ -146,7 +146,7 @@ public class TrainingController : SingletonMonoBehaviour<TrainingController>
 
     void ResizeGrid(RectTransform grid, int count)
     {
-        grid.sizeDelta = new Vector2(TRAIN_UNIT_WIDTH * count, 0);
+        grid.sizeDelta = new(TRAIN_UNIT_WIDTH * count, 0);
     }
 
     void AddUnit(Data.Unit unit)
@@ -167,7 +167,7 @@ public class TrainingController : SingletonMonoBehaviour<TrainingController>
         {
             var t = Instantiate(_trainedPrefab, _armyGrid);
             t.Initialize(unit);
-            t.SetReady();
+            t.Enable(true);
             _armyUnits.Add(t);
         }
 

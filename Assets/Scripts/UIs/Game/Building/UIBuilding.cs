@@ -25,7 +25,7 @@ public class UIBuilding : MonoBehaviour
             case Data.BuildingId.elixirStorage:
             case Data.BuildingId.wall:
             case Data.BuildingId.cannon:
-                _type.color = new Color32(255, 109, 221, 255);
+                _type.color = new(255, 109, 221, 255);
                 _requiredResourceText.text = BuildingController.Instance.GetRequiredGold(_buildingId, 1).ToString();
                 break;
             case Data.BuildingId.buildersHut:

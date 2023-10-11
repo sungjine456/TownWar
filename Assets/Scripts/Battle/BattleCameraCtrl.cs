@@ -20,7 +20,6 @@ public class BattleCameraCtrl : CameraController<BattleCameraCtrl>
                     planePos.z >= (0 - Data.battleGridOffset) &&
                     planePos.z < (Data.GRID_SIZE + Data.battleGridOffset))
                 {
-                    UIBattleMain.Instance.SelectUnit();
                     UIBattleMain.Instance.PlaceUnit(Mathf.FloorToInt(planePos.x), Mathf.FloorToInt(planePos.z));
                 }
             }

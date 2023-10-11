@@ -1,10 +1,5 @@
 using UnityEngine;
 
-public enum ResourceType
-{
-    gold, elixir
-}
-
 public class GameManager : SingletonDontDestroy<GameManager>
 {
     [SerializeField] GameBuilding[] _buildingPrefabs;

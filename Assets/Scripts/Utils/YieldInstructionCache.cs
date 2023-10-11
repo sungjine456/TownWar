@@ -26,7 +26,7 @@ public static class YieldInstructionCache
     public static WaitForSeconds WaitForSeconds(float seconds)
     {
         if (!_timeInterval.TryGetValue(seconds, out WaitForSeconds wfs))
-            _timeInterval.Add(seconds, wfs = new WaitForSeconds(seconds));
+            _timeInterval.Add(seconds, wfs = new(seconds));
 
         return wfs;
     }
@@ -34,7 +34,7 @@ public static class YieldInstructionCache
     public static WaitForSecondsRealtime WaitForSecondsRealtime(float seconds)
     {
         if (!_realTimeInterval.TryGetValue(seconds, out WaitForSecondsRealtime wfsr))
-            _realTimeInterval.Add(seconds, wfsr = new WaitForSecondsRealtime(seconds));
+            _realTimeInterval.Add(seconds, wfsr = new(seconds));
 
         return wfsr;
     }

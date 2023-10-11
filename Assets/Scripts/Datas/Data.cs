@@ -27,13 +27,18 @@ public class Data
         army, trained, training
     }
 
+    public enum ResourceType
+    {
+        gold, elixir
+    }
+
     [Serializable]
     public class Player
     {
         public int gold;
         public int elixir;
         public int gems;
-        public List<PlayerBuilding> buildings = new List<PlayerBuilding>();
+        public List<PlayerBuilding> buildings = new();
         public PlayerUnit[] armyUnits;
         public PlayerUnit[] trainedUnits;
         public PlayerUnit[] trainingUnits;
@@ -119,7 +124,7 @@ public class Data
 
         public PlayerUnit GetPlayerUnit()
         {
-            return new PlayerUnit(id, level, trainedTime);
+            return new(id, level, trainedTime);
         }
     }
 
@@ -214,12 +219,12 @@ public class Data
         {
             var span = constructTime - DateTime.Now;
 
-            return new PlayerBuilding(id, buildingId, level, x, y, capacity, storage, (float)span.TotalSeconds);
+            return new(id, buildingId, level, x, y, capacity, storage, (float)span.TotalSeconds);
         }
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             sb.Append("level : ");
             sb.Append(level);
             sb.Append(", storage : ");
@@ -263,7 +268,7 @@ public class Data
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             sb.Append("level : ");
             sb.Append(level);
             sb.Append(", storage : ");

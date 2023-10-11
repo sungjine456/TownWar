@@ -11,11 +11,6 @@ public class UIBattleUnits : SingletonMonoBehaviour<UIBattleUnits>
     [HideInInspector] public List<UIBattleUnit> _units;
     [HideInInspector] public UIBattleUnit _target;
 
-    protected override void OnAwake()
-    {
-        _units = new();
-    }
-
     protected override void OnStart()
     {
         Dictionary<(Data.UnitId, int), Queue<Data.Unit>> group = new();
