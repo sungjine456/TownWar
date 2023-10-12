@@ -6,6 +6,8 @@ public class ResourceBuilding : GameBuilding
     UIButton _collectButton;
     bool _workingCollect;
 
+    readonly WaitForSecondsRealtime _wfsr = new(1f);
+
     void Start()
     {
         if (!GameManager.Instance.IsBattling)
@@ -42,7 +44,7 @@ public class ResourceBuilding : GameBuilding
                     data.storage += (data.speed / 3600f);
             }
 
-            yield return YieldInstructionCache.WaitForSecondsRealtime(1f);
+            yield return _wfsr;
         }
     }
 

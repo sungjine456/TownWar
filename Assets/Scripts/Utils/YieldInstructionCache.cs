@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+//TODO: 하나의 WaitForSeconds를 같이 사용할 때 예상하지 못하는 문제가 발생한다. WaitForSeconds 재사용 방법을 변경할 필요가 있다.
 public static class YieldInstructionCache
 {
     class FloatComparer : IEqualityComparer<float>
