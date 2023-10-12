@@ -29,8 +29,18 @@ public class UIBattleUnit : MonoBehaviour
             _id = units.Peek().id;
             _units = units;
             _levelText.text = level.ToString();
-            _nameText.text = units.Peek().id.ToString();
             _countText.text = units.Count.ToString();
+
+            switch (units.Peek().id)
+            {
+                case Data.UnitId.warrior:
+                    _nameText.text = "전사";
+                    break;
+                case Data.UnitId.archer:
+                    _nameText.text = "궁수";
+                    break;
+            }
+
             Active(false);
             gameObject.SetActive(true);
         }

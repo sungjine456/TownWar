@@ -33,6 +33,15 @@ public class TrainUnit : MonoBehaviour
     {
         _unit = unitData;
         Count = count;
-        _nameText.text = unitData.id.ToString();
+
+        switch (unitData.id)
+        {
+            case Data.UnitId.warrior:
+                _nameText.text = "전사";
+                break;
+            case Data.UnitId.archer:
+                _nameText.text = "궁수";
+                break;
+        }
     }
 }
