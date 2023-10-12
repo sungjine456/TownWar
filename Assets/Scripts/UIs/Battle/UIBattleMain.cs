@@ -210,6 +210,8 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
                 if (UIBattleUnits.Instance._units[_selectedUnitIndex].Count <= 0)
                     _selectedUnitIndex = -1;
 
+                GameManager.Instance.MyPlayer.RemoveUnit(u.id, Data.UnitStatus.army);
+
                 _battle.AddUnit(u, x, y, UnitSpawnCallBack, UnitAttackCallBack, UnitDiedCallBack, UnitDamageCallBack);
             }
         }
