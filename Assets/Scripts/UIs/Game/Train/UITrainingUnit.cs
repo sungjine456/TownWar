@@ -1,8 +1,8 @@
-using UnityEngine.UI;
+using UnityEngine;
 
 public class UITrainingUnit : TrainUnit
 {
-    public Image _bar;
+    [SerializeField] UIBar _bar;
 
     protected override void Cancel()
     {
@@ -15,5 +15,11 @@ public class UITrainingUnit : TrainUnit
         }
 
         GameManager.Instance.MyPlayer.RemoveUnit(_unit.id, Data.UnitStatus.training);
+    }
+
+    public void UpdateTrainTime(float time)
+    {
+        _unit.trainedTime += time;
+        _bar.FillAmount(_unit.trainedTime / _unit.trainTime);
     }
 }

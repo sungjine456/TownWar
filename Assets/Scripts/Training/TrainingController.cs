@@ -54,10 +54,7 @@ public class TrainingController : SingletonMonoBehaviour<TrainingController>
                 ReduceFirstUnit(_trainingUnits);
             }
             else
-            {
-                _trainingUnits.First.Value._unit.trainedTime += Time.deltaTime;
-                _trainingUnits.First.Value._bar.fillAmount = _trainingUnits.First.Value._unit.trainedTime / _trainingUnits.First.Value._unit.trainTime;
-            }
+                _trainingUnits.First.Value.UpdateTrainTime(Time.deltaTime);
         }
     }
 
