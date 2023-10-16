@@ -171,7 +171,8 @@ public class Player : MonoBehaviour
                 {
                     id = _data.buildings[i].id,
                     x = _data.buildings[i].x,
-                    y = _data.buildings[i].y
+                    y = _data.buildings[i].y,
+                    storage = _data.buildings[i].storage
                 };
 
                 switch (building.buildingId)
@@ -186,12 +187,16 @@ public class Player : MonoBehaviour
 
                             if (building.storage > building.capacity)
                                 building.storage = building.capacity;
+
+                            _data.buildings[i].storage = building.storage;
                         }
                         break;
                 }
 
                 UIMain.Instance.Grid.AddBuilding(building);
             }
+
+            Save();
         }
 
         UIMain.Instance.UpdateBuilder();
@@ -280,6 +285,18 @@ public class Player : MonoBehaviour
         {
             b.x = x;
             b.y = y;
+
+            Save();
+        }
+    }
+
+    public void UpdateResourceBuildingStorage(int id, float storage)
+    {
+        var b = FindBuilding(id);
+
+        if (b != null)
+        {
+            b.storage = storage;
 
             Save();
         }

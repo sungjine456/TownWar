@@ -42,6 +42,8 @@ public class ResourceBuilding : GameBuilding
                     data.storage = data.capacity;
                 else
                     data.storage += (data.speed / 3600f);
+
+                GameManager.Instance.MyPlayer.UpdateResourceBuildingStorage(Id, data.storage);
             }
 
             yield return _wfsr;

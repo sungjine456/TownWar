@@ -24,8 +24,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
             for (int i = 0; i < datas.Length; i++)
             {
-                var d = buildingInfo.GetBuildingData(datas[i].id, datas[i].level);
-                Data.Building data = new(d)
+                Data.Building data = new(buildingInfo.GetBuildingData(datas[i].id, datas[i].level))
                 {
                     id = i,
                     x = datas[i].x,
