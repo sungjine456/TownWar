@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class BuildGrid : MonoBehaviour
 {
-    public virtual void AddBuilding(Data.Building buildingData, bool nowConstruct = false) { }
-
     public Vector3 GetStartPosition(int x, int y)
     {
         Vector3 position = transform.position;

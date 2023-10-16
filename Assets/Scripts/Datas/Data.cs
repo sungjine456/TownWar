@@ -190,9 +190,14 @@ public class Data
             this.rows = rows;
         }
 
-        void SetBuildTime(int buildTime)
+        public void SetConstructTime(int buildTime)
         {
             this.buildTime = buildTime;
+            constructTime = DateTime.Now.AddSeconds(buildTime);
+        }
+
+        public void SetConstructTime()
+        {
             constructTime = DateTime.Now.AddSeconds(buildTime);
         }
 
@@ -211,8 +216,7 @@ public class Data
             radius = data.radius;
             blindRange = data.blindRange;
             rangedSpeed = data.rangedSpeed;
-
-            SetBuildTime(data.buildTime);
+            buildTime = data.buildTime;
         }
 
         public PlayerBuilding GetPlayerBuilding()

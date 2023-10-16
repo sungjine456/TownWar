@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class BuildingController : SingletonMonoBehaviour<BuildingController>
@@ -12,6 +13,7 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
     readonly int[] _needfulGemsForBuilderHut = new int[] { 0, 250, 500, 1000, 2000 };
 
     public GameBuilding SelectedBuilding { get; private set; }
+    public int HallLevel { get { return _hallLevel; } set { _hallLevel = value; } }
 
     protected override void OnStart()
     {
@@ -102,34 +104,12 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
             if (SelectedBuilding.CurrentLevel < _buildingLimit.GetBuildingLimitLevel(_hallLevel, SelectedBuilding.BuildingId))
             {
                 if (GameManager.Instance.MyPlayer.ConsumeResources(nextInfo.requiredGold, nextInfo.requiredElixir, nextInfo.requiredGems))
-                {
-                    switch (nextInfo.buildingId)
-                    {
-                        case Data.BuildingId.townHall:
-                            UIMain.Instance.AddMaxGold(nextInfo.capacity - SelectedBuilding.Capacity);
-                            UIMain.Instance.AddMaxElixir(nextInfo.capacity - SelectedBuilding.Capacity);
-                            break;
-                        case Data.BuildingId.goldStorage:
-                            UIMain.Instance.AddMaxGold(nextInfo.capacity - SelectedBuilding.Capacity);
-                            break;
-                        case Data.BuildingId.elixirStorage:
-                            UIMain.Instance.AddMaxElixir(nextInfo.capacity - SelectedBuilding.Capacity);
-                            break;
-                    }
-
                     SelectedBuilding.Upgrade(nextInfo);
-
-                    if (nextInfo.buildingId == Data.BuildingId.townHall)
-                        _hallLevel = nextInfo.level;
-
-                    GameManager.Instance.MyPlayer.UpdateBuilding(SelectedBuilding.Id, nextInfo);
-                    UIMain.Instance.UpdateBuilder();
-                }
             }
             else
                 print("회관에 따른 최대 레벨은 넘길 수 없습니다.");
         }
-        else
+        else if (nextInfo == null)
             print("다음 레벨이 없습니다.");
     }
 
@@ -153,8 +133,10 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
                 if (GameManager.Instance.MyPlayer.ConsumeResources(gold, elixir, gems))
                 {
                     building.SetData(buildingData);
+                    building.SetConstructTime();
 
                     GameManager.Instance.MyPlayer.AddBuilding(building);
+                    UIMain.Instance.Grid.BuildBuilding(building);
                     UIMain.Instance.UpdateBuilder();
                 }
             }
@@ -168,11 +150,7 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
         var requiredGems = GameManager.Instance.GetInstantTimeRequiredGems(SelectedBuilding.BuildTime);
 
         if (GameManager.Instance.MyPlayer.ConsumeResources(0, 0, requiredGems))
-        {
-            SelectedBuilding.IsConstructing = false;
-            UIBuildingOptions.Instance.SetStatus(true);
-            UIMain.Instance.UpdateBuilder();
-        }
+            SelectedBuilding.InstantUpgrade();
         else
             print("Gem이 부족합니다.");
     }

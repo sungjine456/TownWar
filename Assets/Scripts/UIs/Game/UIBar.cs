@@ -17,7 +17,7 @@ public class UIBar : MonoBehaviour
 
     public void FillAmount(float amount)
     {
-        _bar.fillAmount = amount;
+        _bar.fillAmount = amount < 0.01f ? 0.01f : amount;
     }
 
     public void AdjustUI(int buildTime, TimeSpan span)
@@ -25,7 +25,7 @@ public class UIBar : MonoBehaviour
         if (!gameObject.activeSelf)
             gameObject.SetActive(true);
 
-        _bar.fillAmount = 1f - ((float)span.TotalSeconds / buildTime);
+        FillAmount(1f - ((float)span.TotalSeconds / buildTime));
 
         if (_time)
             _time.text = span.ToString(@"hh\:mm\:ss");

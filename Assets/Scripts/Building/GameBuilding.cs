@@ -7,7 +7,9 @@ public class GameBuilding : Building
     int _baseX;
     int _baseY;
     bool _isConstrucing;
-
+    Data.BuildingToBuild _nextBuilding;
+    
+    public bool IsBuilding { get; set; }
     public bool IsConstructing
     {
         get => _isConstrucing;
@@ -40,7 +42,7 @@ public class GameBuilding : Building
         if (IsConstructing)
         {
             TimeSpan span = data.ConstructTime - DateTime.Now;
-
+            
             if (span.TotalSeconds > 0.01)
             {
                 _bar.AdjustUI(BuildTime, span);
@@ -59,10 +61,7 @@ public class GameBuilding : Building
                 _bar._rect.anchoredPosition = screenPoint;
             }
             else
-            {
-                IsConstructing = false;
-                UIMain.Instance.UpdateBuilder();
-            }
+                InstantUpgrade();
         }
     }
 
@@ -124,7 +123,8 @@ public class GameBuilding : Building
 
     public void Upgrade(Data.BuildingToBuild next)
     {
-        data.SetData(next);
+        _nextBuilding = next;
+        data.SetConstructTime(_nextBuilding.buildTime);
 
         for (int i = 0; i < levels.Length; i++)
         {
@@ -136,6 +136,59 @@ public class GameBuilding : Building
 
         IsConstructing = true;
         UIBuildingOptions.Instance.SetStatus(true);
+        UIMain.Instance.UpdateBuilder();
+    }
+
+    public void InstantUpgrade()
+    {
+        if (_nextBuilding != null)
+        {
+            switch (_nextBuilding.buildingId)
+            {
+                case Data.BuildingId.townHall:
+                    UIMain.Instance.AddMaxGold(_nextBuilding.capacity - Capacity);
+                    UIMain.Instance.AddMaxElixir(_nextBuilding.capacity - Capacity);
+                    break;
+                case Data.BuildingId.goldStorage:
+                    UIMain.Instance.AddMaxGold(_nextBuilding.capacity - Capacity);
+                    break;
+                case Data.BuildingId.elixirStorage:
+                    UIMain.Instance.AddMaxElixir(_nextBuilding.capacity - Capacity);
+                    break;
+            }
+
+            if (_nextBuilding.buildingId == Data.BuildingId.townHall)
+                BuildingController.Instance.HallLevel = _nextBuilding.level;
+
+            data.SetData(_nextBuilding);
+
+            GameManager.Instance.MyPlayer.UpdateBuilding(Id, _nextBuilding);
+
+            _nextBuilding = null;
+        }
+
+        if (IsBuilding)
+        {
+            switch (BuildingId)
+            {
+                case Data.BuildingId.townHall:
+                    UIMain.Instance.AddMaxGold(Capacity);
+                    UIMain.Instance.AddMaxElixir(Capacity);
+                    break;
+                case Data.BuildingId.goldStorage:
+                    UIMain.Instance.AddMaxGold(Capacity);
+                    break;
+                case Data.BuildingId.elixirStorage:
+                    UIMain.Instance.AddMaxElixir(Capacity);
+                    break;
+            }
+
+            IsBuilding = false;
+        }
+        
+        IsConstructing = false;
+        UIBuildingOptions.Instance.SetStatus(false);
+        UIMain.Instance.UpdateBuilder();
     }
 
     public bool CanUpgrade()

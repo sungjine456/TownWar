@@ -26,12 +26,14 @@ public class UIBuildingUpgrade : SingletonMonoBehaviour<UIBuildingUpgrade>
     void Upgrade()
     {
         BuildingController.Instance.UpgradeBuilding();
+
         Close();
     }
 
     void Close()
     {
         SetStatus(false);
+
         UIMain.Instance.SetStatus(true);
     }
 
@@ -43,6 +45,7 @@ public class UIBuildingUpgrade : SingletonMonoBehaviour<UIBuildingUpgrade>
     public void Open(Data.BuildingToBuild data)
     {
         SetStatus(true);
+
         _reqGold.text = data.requiredGold.ToString();
         _reqElixir.text = data.requiredElixir.ToString();
         _reqGems.text = data.requiredGems.ToString();

@@ -5,6 +5,21 @@ public class GameBuildGrid : BuildGrid
 {
     public List<GameBuilding> _buildings;
 
+    GameBuilding InstantiateBuilding(Data.Building data)
+    {
+        var prefab = GameManager.Instance.GetBuildingPrefab(data.buildingId);
+        GameBuilding b = null;
+
+        if (prefab)
+        {
+            b = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+            b.Initialize(data);
+            b.Id = data.id;
+        }
+
+        return b;
+    }
+
     public GameBuilding GetBuilding(int id)
     {
         for (int i = 0; i < _buildings.Count; i++)
@@ -16,30 +31,38 @@ public class GameBuildGrid : BuildGrid
         return null;
     }
 
-    public override void AddBuilding(Data.Building buildingData, bool nowConstruct = false)
+    public void BuildBuilding(Data.Building data)
     {
-        GameBuilding prefab = GameManager.Instance.GetBuildingPrefab(buildingData.buildingId);
+        GameBuilding b = InstantiateBuilding(data);
 
-        if (prefab)
+        if (b)
         {
-            var building = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-            building.Initialize(buildingData);
-            building.Id = buildingData.id;
-            building.IsConstructing = nowConstruct;
+            b.IsConstructing = true;
+            b.IsBuilding = true;
 
-            _buildings?.Add(building);
+            _buildings?.Add(b);
+        }
+    }
 
-            switch (building.BuildingId)
+    public void AddBuilding(Data.Building data)
+    {
+        GameBuilding b = InstantiateBuilding(data);
+
+        if (b)
+        {
+            _buildings?.Add(b);
+
+            switch (b.BuildingId)
             {
                 case Data.BuildingId.townHall:
-                    UIMain.Instance.AddMaxGold(building.Capacity);
-                    UIMain.Instance.AddMaxElixir(building.Capacity);
+                    UIMain.Instance.AddMaxGold(b.Capacity);
+                    UIMain.Instance.AddMaxElixir(b.Capacity);
                     break;
                 case Data.BuildingId.goldStorage:
-                    UIMain.Instance.AddMaxGold(building.Capacity);
+                    UIMain.Instance.AddMaxGold(b.Capacity);
                     break;
                 case Data.BuildingId.elixirStorage:
-                    UIMain.Instance.AddMaxElixir(building.Capacity);
+                    UIMain.Instance.AddMaxElixir(b.Capacity);
                     break;
             }
         }

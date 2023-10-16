@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
 
     void FirstStartSettins()
     {
-        _data = new(){ gold = 100000, elixir = 100000, gems = 5000, lastPlayTime = DateTime.Now };
+        _data = new(){ gold = 10000, elixir = 10000, gems = 5000, lastPlayTime = DateTime.Now };
 
         var buildData = _buildingInfo.GetBuildingData(BuildingId.townHall, 1);
         Data.Building building = new(0, BuildingId.townHall, 1, 25, 25, 4, 4);
@@ -196,6 +196,7 @@ public class Player : MonoBehaviour
                 UIMain.Instance.Grid.AddBuilding(building);
             }
 
+            UIMain.Instance.SyncResourcesData();
             Save();
         }
 
@@ -261,7 +262,7 @@ public class Player : MonoBehaviour
     public void AddBuilding(Data.Building building)
     {
         _data.buildings.Add(building.GetPlayerBuilding());
-        UIMain.Instance.Grid.AddBuilding(building, true);
+        
         Save();
     }
 
