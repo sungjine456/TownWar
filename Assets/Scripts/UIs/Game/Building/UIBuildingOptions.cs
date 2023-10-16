@@ -20,6 +20,7 @@ public class UIBuildingOptions : SingletonMonoBehaviour<UIBuildingOptions>
     protected override void OnAwake()
     {
         SetStatus(false);
+
         _infoBtn.onClick.AddListener(ClickedInfoBtn);
         _upgradeBtn.onClick.AddListener(ClickedUpgradeBtn);
         _instantBtn.onClick.AddListener(ClickedInstantBtn);

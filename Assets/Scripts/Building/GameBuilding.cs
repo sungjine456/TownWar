@@ -140,6 +140,8 @@ public class GameBuilding : Building
 
     public bool CanUpgrade()
     {
-        return !IsConstructing && Data.BuildingId.buildersHut != buildingId;
+        return !IsConstructing 
+            && Data.BuildingId.buildersHut != buildingId 
+            && BuildingController.Instance.GetNextLevelBuildingInfo() != null;
     }
 }
