@@ -63,9 +63,12 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
         return count;
     }
 
-    public Data.BuildingToBuild GetNextLevelBuildingInfo()
+    public Data.BuildingToBuild GetNextLevelBuildingInfo(GameBuilding target = null)
     {
-        return _buildingInfo.GetBuildingData(SelectedBuilding.BuildingId, SelectedBuilding.CurrentLevel + 1);
+        if (target == null)
+            target = SelectedBuilding;
+
+        return _buildingInfo.GetBuildingData(target.BuildingId, target.CurrentLevel + 1);
     }
 
     public int GetRequiredGold(Data.BuildingId id, int level)
@@ -122,18 +125,15 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
 
             if (CountBuilding(buildingData.buildingId) < _buildingLimit.GetBuildingLimitCount(_hallLevel, buildingData.buildingId))
             {
-                Data.Building building = new(_index++, buildingData.buildingId, buildingData.level, x, y, buildingData.columns, buildingData.rows);
-                int gold = buildingData.requiredGold;
-                int elixir = buildingData.requiredElixir;
+                Data.Building building = new(_index++, buildingData.buildingId, 0, x, y, buildingData.columns, buildingData.rows);
                 int gems = buildingData.requiredGems;
 
                 if (buildingData.buildingId == Data.BuildingId.buildersHut)
                     gems = _needfulGemsForBuilderHut[CountBuildBuildingHut()];
 
-                if (GameManager.Instance.MyPlayer.ConsumeResources(gold, elixir, gems))
+                if (GameManager.Instance.MyPlayer.ConsumeResources(buildingData.requiredGold, buildingData.requiredElixir, gems))
                 {
                     building.SetData(buildingData);
-                    building.SetConstructTime();
 
                     GameManager.Instance.MyPlayer.AddBuilding(building);
                     UIMain.Instance.Grid.BuildBuilding(building);

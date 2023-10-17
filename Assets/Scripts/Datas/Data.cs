@@ -71,8 +71,10 @@ public class Data
         public int capacity;
         public float storage;
         public float constructedTime;
+        public bool isBuilding;
+        public bool isConstructing;
 
-        public PlayerBuilding(int id, BuildingId buildingId, int level, int x, int y, int capacity, float storage, float constructedTime)
+        public PlayerBuilding(int id, BuildingId buildingId, int level, int x, int y, int capacity, float storage, float constructedTime, bool isBuilding, bool isConstructing)
         {
             this.id = id;
             this.buildingId = buildingId;
@@ -82,14 +84,19 @@ public class Data
             this.capacity = capacity;
             this.storage = storage;
             this.constructedTime = constructedTime;
+            this.isBuilding = isBuilding;
+            this.isConstructing = isConstructing;
         }
 
-        public void SetData(BuildingToBuild data)
+        public void SetData(BuildingToBuild data, bool isBuilding, bool isConstructing, float constructedTime)
         {
             level = data.level;
             buildingId = data.buildingId;
             storage = data.storage;
             capacity = data.capacity;
+            this.constructedTime = constructedTime;
+            this.isBuilding = isBuilding;
+            this.isConstructing = isConstructing;
         }
     }
 
@@ -190,14 +197,15 @@ public class Data
             this.rows = rows;
         }
 
+        public void SetConstructTime(int buildTime, float constructedTime)
+        {
+            this.buildTime = buildTime;
+            constructTime = DateTime.Now.AddSeconds(buildTime - constructedTime);
+        }
+
         public void SetConstructTime(int buildTime)
         {
             this.buildTime = buildTime;
-            constructTime = DateTime.Now.AddSeconds(buildTime);
-        }
-
-        public void SetConstructTime()
-        {
             constructTime = DateTime.Now.AddSeconds(buildTime);
         }
 
@@ -217,13 +225,14 @@ public class Data
             blindRange = data.blindRange;
             rangedSpeed = data.rangedSpeed;
             buildTime = data.buildTime;
+            constructTime = DateTime.Now.AddSeconds(buildTime);
         }
 
-        public PlayerBuilding GetPlayerBuilding()
+        public PlayerBuilding GetPlayerBuilding(bool isBuilding, bool isConstructing)
         {
             var span = constructTime - DateTime.Now;
 
-            return new(id, buildingId, level, x, y, capacity, storage, (float)span.TotalSeconds);
+            return new(id, buildingId, level, x, y, capacity, storage, (float)span.TotalSeconds, isBuilding, isConstructing);
         }
 
         public override string ToString()

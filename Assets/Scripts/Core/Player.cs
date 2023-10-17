@@ -7,6 +7,8 @@ using static Data;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] bool deleteData;
+
     [SerializeField] BuildingInfo _buildingInfo;
     [SerializeField] UnitInfo _unitInfo;
     [SerializeField] Data.Player _data;
@@ -21,6 +23,9 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        if (deleteData)
+            PlayerPrefs.DeleteAll();
+        
         Load();
 
         StartCoroutine(nameof(Coroutine_UpdateTime));
@@ -41,17 +46,17 @@ public class Player : MonoBehaviour
 
     void FirstStartSettins()
     {
-        _data = new(){ gold = 10000, elixir = 10000, gems = 5000, lastPlayTime = DateTime.Now };
+        _data = new(){ gold = 100000, elixir = 10000, gems = 5000, lastPlayTime = DateTime.Now };
 
         var buildData = _buildingInfo.GetBuildingData(BuildingId.townHall, 1);
         Data.Building building = new(0, BuildingId.townHall, 1, 25, 25, 4, 4);
         building.SetData(buildData);
-        _data.buildings.Add(building.GetPlayerBuilding());
+        _data.buildings.Add(building.GetPlayerBuilding(false, false));
 
         buildData = _buildingInfo.GetBuildingData(BuildingId.buildersHut, 1);
         building = new(1, BuildingId.buildersHut, 1, 25, 20, 2, 2);
         building.SetData(buildData);
-        _data.buildings.Add(building.GetPlayerBuilding());
+        _data.buildings.Add(building.GetPlayerBuilding(false, false));
 
         Save();
     }
@@ -163,11 +168,31 @@ public class Player : MonoBehaviour
             }
         }
 
+        span = DateTime.Now - _data.lastPlayTime;
+
         if (_data.buildings.Count > 0)
         {
             for (int i = 0; i < _data.buildings.Count; i++)
             {
-                Data.Building building = new(_buildingInfo.GetBuildingData(_data.buildings[i].buildingId, _data.buildings[i].level))
+                int level = _data.buildings[i].level;
+                bool isConstructing = false;
+                bool isBuilding = _data.buildings[i].isBuilding;
+                var b = _buildingInfo.GetBuildingData(_data.buildings[i].buildingId, level);
+
+                if (_data.buildings[i].isConstructing)
+                {
+                    var next = _buildingInfo.GetBuildingData(_data.buildings[i].buildingId, level + 1);
+
+                    if (next.buildTime > _data.buildings[i].constructedTime + (float)span.TotalSeconds)
+                    {
+                        b.buildTime = next.buildTime;
+                        isConstructing = true;
+                    }
+                    else
+                        b = next;
+                }
+
+                Data.Building building = new(b)
                 {
                     id = _data.buildings[i].id,
                     x = _data.buildings[i].x,
@@ -193,7 +218,12 @@ public class Player : MonoBehaviour
                         break;
                 }
 
-                UIMain.Instance.Grid.AddBuilding(building);
+                if (isBuilding)
+                    UIMain.Instance.Grid.BuildBuilding(building);
+                else if (isConstructing)
+                    UIMain.Instance.Grid.AddBuilding(building, _data.buildings[i].constructedTime + (float)span.TotalSeconds);
+                else
+                    UIMain.Instance.Grid.AddBuilding(building);
             }
 
             UIMain.Instance.SyncResourcesData();
@@ -261,7 +291,7 @@ public class Player : MonoBehaviour
 
     public void AddBuilding(Data.Building building)
     {
-        _data.buildings.Add(building.GetPlayerBuilding());
+        _data.buildings.Add(building.GetPlayerBuilding(true, true));
         
         Save();
     }
@@ -272,7 +302,7 @@ public class Player : MonoBehaviour
         
         if (b != null)
         {
-            b.SetData(building);
+            b.SetData(building, false, false, 0);
 
             Save();
         }
@@ -287,6 +317,41 @@ public class Player : MonoBehaviour
             b.x = x;
             b.y = y;
 
+            Save();
+        }
+    }
+
+    public void UpdateBuildingIsBuilding(int id, bool isBuilding)
+    {
+        var b = FindBuilding(id);
+
+        if (b != null)
+        {
+            b.isBuilding = isBuilding;
+
+            Save();
+        }
+    }
+
+    public void UpdateBuildingIsConstructing(int id, bool isConstructing)
+    {
+        var b = FindBuilding(id);
+
+        if (b != null)
+        {
+            b.isConstructing = isConstructing;
+
+            Save();
+        }
+    }
+
+    public void UpdateBuildingConstructTime(int id, float time)
+    {
+        var b = FindBuilding(id);
+
+        if (b != null)
+        {
+            b.constructedTime = time;
             Save();
         }
     }

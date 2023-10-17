@@ -7,7 +7,7 @@ public class UIBarPoolManager : SingletonMonoBehaviour<UIBarPoolManager>
 
     GameObjectPool<UIBar> _barPool;
 
-    protected override void OnStart()
+    protected override void OnAwake()
     {
         _barPool = new(5, () =>
         {

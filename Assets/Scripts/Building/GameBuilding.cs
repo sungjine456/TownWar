@@ -18,9 +18,15 @@ public class GameBuilding : Building
             _isConstrucing = value;
 
             if (value)
+            {
+                GameManager.Instance.MyPlayer.UpdateBuildingIsConstructing(id, true);
                 _bar = UIBarPoolManager.Instance.Get();
+            }
             else if (_bar)
+            {
+                GameManager.Instance.MyPlayer.UpdateBuildingIsConstructing(id, false);
                 UIBarPoolManager.Instance.Remove(_bar);
+            }
         }
     }
 
@@ -59,6 +65,8 @@ public class GameBuilding : Building
 
                 Vector2 screenPoint = new(endW / w * Screen.width, endH / h * Screen.height);
                 _bar._rect.anchoredPosition = screenPoint;
+
+                GameManager.Instance.MyPlayer.UpdateBuildingConstructTime(data.id, BuildTime - (float)span.TotalSeconds);
             }
             else
                 InstantUpgrade();
@@ -125,14 +133,17 @@ public class GameBuilding : Building
     {
         _nextBuilding = next;
         data.SetConstructTime(_nextBuilding.buildTime);
+        GameManager.Instance.MyPlayer.UpdateBuildingConstructTime(data.id, 0);
 
-        for (int i = 0; i < levels.Length; i++)
-        {
-            if (levels[i].level != data.level)
-                levels[i].mesh.SetActive(false);
-            else
-                levels[i].mesh.SetActive(true);
-        }
+        IsConstructing = true;
+        UIBuildingOptions.Instance.SetStatus(true);
+        UIMain.Instance.UpdateBuilder();
+    }
+
+    public void Upgrade(Data.BuildingToBuild next, float constructedTime)
+    {
+        _nextBuilding = next;
+        data.SetConstructTime(next.buildTime, constructedTime);
 
         IsConstructing = true;
         UIBuildingOptions.Instance.SetStatus(true);
@@ -162,6 +173,14 @@ public class GameBuilding : Building
 
             data.SetData(_nextBuilding);
 
+            for (int i = 0; i < levels.Length; i++)
+            {
+                if (levels[i].level != data.level)
+                    levels[i].mesh.SetActive(false);
+                else
+                    levels[i].mesh.SetActive(true);
+            }
+
             GameManager.Instance.MyPlayer.UpdateBuilding(Id, _nextBuilding);
 
             _nextBuilding = null;
@@ -184,6 +203,7 @@ public class GameBuilding : Building
             }
 
             IsBuilding = false;
+            GameManager.Instance.MyPlayer.UpdateBuildingIsBuilding(id, false);
         }
         
         IsConstructing = false;

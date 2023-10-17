@@ -5837,6 +5837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a40362140ca4a74ead80d771f5fae0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deleteData: 0
   _buildingInfo: {fileID: 11400000, guid: ba1ef15b866762d429823f16cd454cff, type: 2}
   _unitInfo: {fileID: 11400000, guid: 6ba0d4aa37e65ac4ea3a53d5b434918d, type: 2}
   _data:

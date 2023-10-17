@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,14 +32,14 @@ public class GameBuildGrid : BuildGrid
         return null;
     }
 
-    public void BuildBuilding(Data.Building data)
+    public void BuildBuilding(Data.Building data, bool isBuilding = true)
     {
         GameBuilding b = InstantiateBuilding(data);
 
         if (b)
         {
-            b.IsConstructing = true;
-            b.IsBuilding = true;
+            b.IsConstructing = isBuilding;
+            b.IsBuilding = isBuilding;
 
             _buildings?.Add(b);
         }
@@ -47,9 +48,35 @@ public class GameBuildGrid : BuildGrid
     public void AddBuilding(Data.Building data)
     {
         GameBuilding b = InstantiateBuilding(data);
+        
+        if (b)
+        {
+            _buildings?.Add(b);
+
+            switch (b.BuildingId)
+            {
+                case Data.BuildingId.townHall:
+                    UIMain.Instance.AddMaxGold(b.Capacity);
+                    UIMain.Instance.AddMaxElixir(b.Capacity);
+                    break;
+                case Data.BuildingId.goldStorage:
+                    UIMain.Instance.AddMaxGold(b.Capacity);
+                    break;
+                case Data.BuildingId.elixirStorage:
+                    UIMain.Instance.AddMaxElixir(b.Capacity);
+                    break;
+            }
+        }
+    }
+
+    public void AddBuilding(Data.Building data, float constructedTime)
+    {
+        GameBuilding b = InstantiateBuilding(data);
 
         if (b)
         {
+            b.Upgrade(BuildingController.Instance.GetNextLevelBuildingInfo(b), constructedTime);
+
             _buildings?.Add(b);
 
             switch (b.BuildingId)
