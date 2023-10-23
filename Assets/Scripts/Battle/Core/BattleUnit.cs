@@ -15,7 +15,7 @@ public class BattleUnit
     public double _pathTraveledTime;
     public double _attackTimer;
     public Dictionary<int, float> _targets;
-    public AttackCallback _attackCallback;
+    public AttackBuildingCallback _attackCallback;
     public IndexCallback _dieCallback;
     public FloatCallback _damageCallback;
 

@@ -5,30 +5,30 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 {
     public static int LoadedNumberOfMap = -1;
 
-    [SerializeField] UIBattleMain main;
-    [SerializeField] BattleMap maps;
-    [SerializeField] BuildingInfo buildingInfo;
-    [SerializeField] BuildGrid grid;
-    [SerializeField] BattleFieldUnit[] unitPrefabs;
+    [SerializeField] UIBattleMain _main;
+    [SerializeField] BattleMap _maps;
+    [SerializeField] BuildingInfo _buildingInfo;
+    [SerializeField] BuildGrid _grid;
+    [SerializeField] BattleFieldUnit[] _unitPrefabs;
 
-    BattleMapData[] datas;
+    BattleMapData[] _datas;
 
-    public BuildGrid Grid => grid;
+    public BuildGrid Grid => _grid;
 
     protected override void OnStart()
     {
         if (LoadedNumberOfMap >= 1)
         {
             List<Data.Building> buildings = new();
-            datas = maps.GetMapData(LoadedNumberOfMap);
+            _datas = _maps.GetMapData(LoadedNumberOfMap);
 
-            for (int i = 0; i < datas.Length; i++)
+            for (int i = 0; i < _datas.Length; i++)
             {
-                Data.Building data = new(buildingInfo.GetBuildingData(datas[i].id, datas[i].level))
+                Data.Building data = new(_buildingInfo.GetBuildingData(_datas[i].id, _datas[i].level))
                 {
                     id = i,
-                    x = datas[i].x,
-                    y = datas[i].y
+                    x = _datas[i].x,
+                    y = _datas[i].y
                 };
 
                 buildings.Add(data);
@@ -42,10 +42,10 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
 
     public BattleFieldUnit GetUnitPrefab(Data.UnitId id)
     {
-        for (int i = 0; i < unitPrefabs.Length; i++)
+        for (int i = 0; i < _unitPrefabs.Length; i++)
         {
-            if (unitPrefabs[i].id == id)
-                return unitPrefabs[i];
+            if (_unitPrefabs[i].Id == id)
+                return _unitPrefabs[i];
         }
 
         return null;

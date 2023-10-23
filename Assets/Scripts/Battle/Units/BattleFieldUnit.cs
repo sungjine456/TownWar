@@ -18,34 +18,35 @@ public class BattleFieldUnit : MonoBehaviour
         public GameObject mesh;
     }
     
-    [SerializeField] Level[] levels;
-    public Data.UnitId id;
-    public UIBar healthBar;
+    [SerializeField] Level[] _levels;
+    public UIBar _healthBar;
 
-    [HideInInspector] public Data.Unit unit;
-    [HideInInspector] public int index = -1;
-    [HideInInspector] public AnimationController aniCtrl;
-    Vector3 lastPosition = Vector3.zero;
-    BattleUnitState state;
-    bool isChangeState;
+    [HideInInspector] public Data.Unit _unit;
+    [HideInInspector] public AnimationController _aniCtrl;
+    Vector3 _lastPosition;
+    BattleUnitState _state;
+    bool _isChangeState;
+    
+    protected BattleBuilding _target;
 
-    public int Index { get { return index; } }
+    public virtual Data.UnitId Id { get { return Data.UnitId.warrior; } }
+    public int Index { get; private set; } = -1;
 
     void Start()
     {
-        aniCtrl = GetComponent<AnimationController>();
+        _aniCtrl = GetComponent<AnimationController>();
     }
 
     void Update()
     {
-        if (Vector3.SqrMagnitude(lastPosition - transform.position) > 0.00000001)
+        if (Vector3.SqrMagnitude(_lastPosition - transform.position) > 0.00000001)
         {
             SetState(BattleUnitState.Run);
-            Vector3 dir = transform.position - lastPosition;
-            lastPosition = transform.position;
+            Vector3 dir = transform.position - _lastPosition;
+            _lastPosition = transform.position;
             transform.rotation = Quaternion.LookRotation(dir);
         }
-        else if (state == BattleUnitState.Run)
+        else if (_state == BattleUnitState.Run)
             SetState(BattleUnitState.Idle);
 
         BehaviourProcess();
@@ -53,41 +54,46 @@ public class BattleFieldUnit : MonoBehaviour
 
     void BehaviourProcess()
     {
-        if (isChangeState)
+        if (_isChangeState)
         {
-            isChangeState = false;
+            _isChangeState = false;
 
-            switch (state)
+            switch (_state)
             {
                 case BattleUnitState.Idle:
-                    aniCtrl.Play(AnimationController.AniMotion.Idle);
+                    _aniCtrl.Play(AnimationController.AniMotion.Idle);
                     break;
                 case BattleUnitState.Run:
-                    aniCtrl.Play(AnimationController.AniMotion.Run);
+                    _aniCtrl.Play(AnimationController.AniMotion.Run);
                     break;
                 case BattleUnitState.Attack:
-                    aniCtrl.Play(AnimationController.AniMotion.Attack);
+                    _aniCtrl.Play(AnimationController.AniMotion.Attack);
                     break;
                 case BattleUnitState.Death:
-                    aniCtrl.Play(AnimationController.AniMotion.Death);
+                    _aniCtrl.Play(AnimationController.AniMotion.Death);
                     break;
             }
         }
     }
 
+    public void SetTarget(BattleBuilding target)
+    {
+        _target = target;
+    }
+
     public void Initialize(int index, Data.Unit unit)
     {
-        this.unit = unit;
-        this.index = index;
-        lastPosition = transform.position;
+        _unit = unit;
+        Index = index;
+        _lastPosition = transform.position;
     }
 
     public void SetState(BattleUnitState state)
     {
-        if (this.state != state)
+        if (_state != state)
         {
-            isChangeState = true;
-            this.state = state;
+            _isChangeState = true;
+            _state = state;
         }
     }
 }

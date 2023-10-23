@@ -108,9 +108,9 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
                 if (_battle._units[unitsOnGrid[i].Index]._health < _battle._units[unitsOnGrid[i].Index]._data.health)
                 {
-                    unitsOnGrid[i].healthBar.gameObject.SetActive(true);
-                    unitsOnGrid[i].healthBar.FillAmount(_battle._units[unitsOnGrid[i].Index]._health / _battle._units[unitsOnGrid[i].Index]._data.health);
-                    unitsOnGrid[i].healthBar._rect.anchoredPosition = GetUnitBarPosition(unitsOnGrid[i].transform.position);
+                    unitsOnGrid[i]._healthBar.gameObject.SetActive(true);
+                    unitsOnGrid[i]._healthBar.FillAmount(_battle._units[unitsOnGrid[i].Index]._health / _battle._units[unitsOnGrid[i].Index]._data.health);
+                    unitsOnGrid[i]._healthBar._rect.anchoredPosition = GetUnitBarPosition(unitsOnGrid[i].transform.position);
                 }
             }
         }
@@ -230,8 +230,8 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
                     BattleFieldUnit unit = Instantiate(prefab, BattleManager.Instance.Grid.transform);
                     unit.transform.localPosition = new(_battle._units[i]._position._x, 0, _battle._units[i]._position._y);
                     unit.Initialize(i, _battle._units[i]._data);
-                    unit.healthBar = Instantiate(_healthBarPrefab, _healthBarGrid);
-                    unit.healthBar.gameObject.SetActive(false);
+                    unit._healthBar = Instantiate(_healthBarPrefab, _healthBarGrid);
+                    unit._healthBar.gameObject.SetActive(false);
 
                     unitsOnGrid.Add(unit);
                 }
@@ -245,9 +245,9 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
     {
         for (int i = 0; i < unitsOnGrid.Count; i++)
         {
-            if (unitsOnGrid[i].index == index)
+            if (unitsOnGrid[i].Index == index)
             {
-                Destroy(unitsOnGrid[i].healthBar.gameObject);
+                Destroy(unitsOnGrid[i]._healthBar.gameObject);
                 Destroy(unitsOnGrid[i].gameObject);
                 unitsOnGrid.RemoveAt(i);
                 break;
@@ -256,12 +256,15 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
         print("Unit killed.");
     }
 
-    public void UnitAttackCallBack(int index, BattleVector2 target)
+    public void UnitAttackCallBack(int index, BattleBuilding target)
     {
         for (int i = 0; i < unitsOnGrid.Count; i++)
         {
-            if (unitsOnGrid[i].index == index)
+            if (unitsOnGrid[i].Index == index)
+            {
                 unitsOnGrid[i].SetState(BattleUnitState.Attack);
+                unitsOnGrid[i].SetTarget(target);
+            }
         }
     }
 
@@ -359,5 +362,16 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
         }
 
         return count;
+    }
+
+    public Vector3? GetPosOfBuilding(int id)
+    {
+        for (int i = 0; i < buildingsOnGrid.Count; i++)
+        {
+            if (buildingsOnGrid[i].id == id)
+                return buildingsOnGrid[i].building.transform.position;
+        }
+
+        return null;
     }
 }

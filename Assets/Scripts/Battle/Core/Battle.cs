@@ -7,10 +7,11 @@ public delegate void SpawnCallBack(int index);
 public delegate void IndexCallback(int index);
 public delegate void FloatCallback(int index, float value);
 public delegate void AttackCallback(int index, BattleVector2 target);
+public delegate void AttackBuildingCallback(int index, BattleBuilding target);
 
 public class Battle
 {
-    public List<BattleBuilding> _buildings = new();
+    public List<BattleBuilding> _buildings;
     public List<BattleUnit> _units = new();
     int _unitIndex;
     BattleGrid _grid;
@@ -22,8 +23,8 @@ public class Battle
     public int _allCount;
     public bool _isStart;
     public DateTime _startTime;
-    int _maxPlunderableGold;
-    int _maxPlunderableElixir;
+    readonly int _maxPlunderableGold;
+    readonly int _maxPlunderableElixir;
 
     public Battle(List<BattleBuilding> buildings, int maxPlunderableGold, int maxPlunderableElixir)
     {
@@ -214,7 +215,7 @@ public class Battle
                             _units[index]._attackTimer -= _units[index]._data.attackSpeed;
 
                             if (_units[index]._attackCallback != null)
-                                _units[index]._attackCallback.Invoke(index, _buildings[_units[index]._target]._worldCenterPosition);
+                                _units[index]._attackCallback.Invoke(index, _buildings[_units[index]._target]);
                         }
                     }
                 }
@@ -522,7 +523,7 @@ public class Battle
         return true;
     }
 
-    public void AddUnit(Data.Unit unit, int x, int y, SpawnCallBack spawnCallback, AttackCallback attackCallback, IndexCallback dieCallback, FloatCallback damageCallback)
+    public void AddUnit(Data.Unit unit, int x, int y, SpawnCallBack spawnCallback, AttackBuildingCallback attackCallback, IndexCallback dieCallback, FloatCallback damageCallback)
     {
         BattleUnit battleUnit = new(unit)
         {
