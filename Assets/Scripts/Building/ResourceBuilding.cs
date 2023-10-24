@@ -46,6 +46,18 @@ public class ResourceBuilding : GameBuilding
                 GameManager.Instance.MyPlayer.UpdateResourceBuildingStorage(Id, data.storage);
             }
 
+            switch (BuildingId)
+            {
+                case Data.BuildingId.goldMine:
+                    if (_collectButton && _collectButton.gameObject.activeSelf)
+                        _collectButton.SetActive(!UIMain.Instance.IsFullGold());
+                    break;
+                case Data.BuildingId.elixirMine:
+                    if (_collectButton && _collectButton.gameObject.activeSelf)
+                        _collectButton.SetActive(!UIMain.Instance.IsFullElixir());
+                    break;
+            }
+
             yield return _wfsr;
         }
     }
@@ -54,22 +66,27 @@ public class ResourceBuilding : GameBuilding
     {
         if (!GameCameraCtrl.Instance.IsPlacingBuilding || !IsConstructing)
         {
-            if (!_collectButton && data.storage >= Data.minGoldCollect)
+            if (data.storage >= Data.minResourceCollect)
             {
-                switch (BuildingId)
+                if (!_collectButton)
                 {
-                    case Data.BuildingId.goldMine:
-                        _collectButton = UICollectPoolManager.Instance.GetGold();
-                        _collectButton._button.onClick.AddListener(Collect);
-                        break;
-                    case Data.BuildingId.elixirMine:
-                        _collectButton = UICollectPoolManager.Instance.GetElixir();
-                        _collectButton._button.onClick.AddListener(Collect);
-                        break;
+                    switch (BuildingId)
+                    {
+                        case Data.BuildingId.goldMine:
+                            _collectButton = UICollectPoolManager.Instance.GetGold();
+                            _collectButton._button.onClick.AddListener(Collect);
+                            break;
+                        case Data.BuildingId.elixirMine:
+                            _collectButton = UICollectPoolManager.Instance.GetElixir();
+                            _collectButton._button.onClick.AddListener(Collect);
+                            break;
+                    }
                 }
+                else if (!_collectButton.gameObject.activeSelf)
+                    _collectButton.gameObject.SetActive(true);
             }
 
-            if (_collectButton)
+            if (_collectButton && _collectButton.gameObject.activeSelf)
             {
                 Vector3 end = UIMain.Instance.Grid.GetEndPosition(this);
                 Vector3 planDownLeft = GameCameraCtrl.Instance._planDownLeft;
@@ -102,7 +119,7 @@ public class ResourceBuilding : GameBuilding
                 break;
         }
 
-        if (remainedResource < Data.minGoldCollect)
+        if (remainedResource < Data.minResourceCollect)
         {
             switch (BuildingId)
             {
@@ -113,7 +130,7 @@ public class ResourceBuilding : GameBuilding
                     UICollectPoolManager.Instance.RemoveElixir(_collectButton);
                     break;
             }
-            
+
             data.storage = remainedResource;
         }
         else if (remainedResource != resource)

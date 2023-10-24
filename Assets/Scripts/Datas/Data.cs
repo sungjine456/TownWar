@@ -9,8 +9,7 @@ public class Data
     public const int battleGridOffset = 1;
     public const int battleTilesWorthOfOneWall = 15;
 
-    public const int minGoldCollect = 10;
-    public const int minElixirCollect = 10;
+    public const int minResourceCollect = 10;
 
     public enum BuildingId
     {
