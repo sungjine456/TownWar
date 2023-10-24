@@ -35,8 +35,8 @@ MonoBehaviour:
       elementIcon: {fileID: 0}
     reqReferences: {fileID: 0}
     isExpanded: 1
-    _keyValues: 0100000002000000
-    _keys: 0100000002000000
+    _keyValues: 010000000200000003000000
+    _keys: 010000000200000003000000
     _values:
     - buildings:
       - id: 0
@@ -54,6 +54,27 @@ MonoBehaviour:
       - id: 5
         level: 1
         x: 20
+        y: 25
+    - buildings:
+      - id: 0
+        level: 2
+        x: 25
+        y: 25
+      - id: 2
+        level: 1
+        x: 25
+        y: 20
+      - id: 1
+        level: 1
+        x: 20
+        y: 20
+      - id: 5
+        level: 1
+        x: 20
+        y: 25
+      - id: 9
+        level: 1
+        x: 30
         y: 25
     - buildings:
       - id: 0
