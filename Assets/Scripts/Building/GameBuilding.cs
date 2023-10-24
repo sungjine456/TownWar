@@ -30,7 +30,7 @@ public class GameBuilding : Building
         }
     }
 
-    public new virtual void Initialize() => base.Initialize();
+    public new virtual void Initialize(bool isStatusBaseArea = false) => base.Initialize(isStatusBaseArea);
 
     public new void Initialize(Data.Building data)
     {

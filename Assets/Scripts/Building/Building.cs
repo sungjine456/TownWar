@@ -29,9 +29,9 @@ public class Building : MonoBehaviour
     public int BuildTime => data.BuildTime;
     public int Capacity => data.capacity;
 
-    public void Initialize()
+    public void Initialize(bool isStatusBaseArea = false)
     {
-        StatusBaseArea(false);
+        StatusBaseArea(isStatusBaseArea);
     }
 
     public void Initialize(Data.Building data) 

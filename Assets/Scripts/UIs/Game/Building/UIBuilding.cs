@@ -48,7 +48,7 @@ public class UIBuilding : MonoBehaviour
                 GameCameraCtrl.Instance.IsPlacingBuilding = true;
 
                 GameBuilding building = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-                building.Initialize();
+                building.Initialize(true);
                 building.SetPosition(20, 20);
                 building.AdjustBaseColor();
                 building.CurrentLevel = 1;
