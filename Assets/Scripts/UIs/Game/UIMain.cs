@@ -63,9 +63,15 @@ public class UIMain : SingletonMonoBehaviour<UIMain>
     void CollectResource(ResourceType type, int resource)
     {
         if (type == ResourceType.gold)
+        {
+            SoundManager.Instance.PlaySFX(SoundManager.SfxClip.getGold);
             GameManager.Instance.MyPlayer.CollectGold(resource);
+        }
         else if (type == ResourceType.elixir)
+        {
+            SoundManager.Instance.PlaySFX(SoundManager.SfxClip.getElixir);
             GameManager.Instance.MyPlayer.CollectElixir(resource);
+        }
 
         SyncResourcesData();
     }
