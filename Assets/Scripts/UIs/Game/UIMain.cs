@@ -15,6 +15,7 @@ public class UIMain : SingletonMonoBehaviour<UIMain>
     [SerializeField] TextMeshProUGUI _builderText;
     [SerializeField] Button _shopBtn;
     [SerializeField] Button _searchBtn;
+    [SerializeField] Button _optionBtn;
     [SerializeField] GameBuildGrid _grid;
 
     [Header("Buttons")] public Transform _buttonsParent;
@@ -35,6 +36,7 @@ public class UIMain : SingletonMonoBehaviour<UIMain>
     {
         _shopBtn.onClick.AddListener(ShopBtnClicked);
         _searchBtn.onClick.AddListener(SearchBtnClicked);
+        _optionBtn.onClick.AddListener(OptionBtnClicked);
     }
 
     void ShopBtnClicked()
@@ -49,6 +51,13 @@ public class UIMain : SingletonMonoBehaviour<UIMain>
         UIBuild.Instance.Cancel();
         SetStatus(false);
         UISearch.Instance.SetStatus(true);
+    }
+
+    void OptionBtnClicked()
+    {
+        UIBuild.Instance.Cancel();
+        SetStatus(false);
+        UISystemOption.Instance.SetStatus(true);
     }
 
     void SetText(TextMeshProUGUI target, int v1, int v2)

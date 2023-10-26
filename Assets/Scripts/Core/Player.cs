@@ -13,10 +13,13 @@ public class Player : MonoBehaviour
     [SerializeField] UnitInfo _unitInfo;
     [SerializeField] Data.Player _data;
 
+    Data.System _systemData;
+
     LinkedList<Unit> _armyUnits;
     LinkedList<Unit> _trainedUnits;
     LinkedList<Unit> _trainingUnits;
 
+    public Data.System SystemData { get { return _systemData; } }
     public int Gold { get { return _data.gold; } }
     public int Elixir { get { return _data.elixir; } }
     public int Gems { get { return _data.gems; } }
@@ -98,6 +101,20 @@ public class Player : MonoBehaviour
         _armyUnits = new();
         _trainedUnits = new();
         _trainingUnits = new();
+
+        if (!PlayerPrefs.HasKey("SYSTEM_DATA"))
+        {
+            _systemData = new(0.5f, false);
+
+            SaveSystemData();
+        }
+        else
+            _systemData = JsonUtility.FromJson<Data.System>(PlayerPrefs.GetString("SYSTEM_DATA"));
+
+        UISystemOption.Instance.SetBGMVolume(_systemData.bgmVolume);
+        UISystemOption.Instance.SetSFXVolume(_systemData.sfxVolume);
+        UISystemOption.Instance.SetMute(_systemData.mute);
+        UISystemOption.Instance.Initialized(_systemData.sfxVolume, _systemData.mute);
 
         if (!PlayerPrefs.HasKey("PLAYER_DATA"))
             FirstStartSettins();
@@ -231,6 +248,12 @@ public class Player : MonoBehaviour
         }
 
         UIMain.Instance.UpdateBuilder();
+    }
+
+    void SaveSystemData()
+    {
+        PlayerPrefs.SetString("SYSTEM_DATA", JsonUtility.ToJson(_systemData));
+        PlayerPrefs.Save();
     }
 
     int GetPopulations(LinkedList<Unit> list)
@@ -438,5 +461,26 @@ public class Player : MonoBehaviour
         }
 
         Save();
+    }
+
+    public void SetBGMVolume(float volume)
+    {
+        _systemData.bgmVolume = volume;
+
+        SaveSystemData();
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        _systemData.sfxVolume = volume;
+
+        SaveSystemData();
+    }
+
+    public void SetMute(bool mute)
+    {
+        _systemData.mute = mute;
+        
+        SaveSystemData();
     }
 }

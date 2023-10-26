@@ -32,6 +32,21 @@ public class Data
     }
 
     [Serializable]
+    public class System
+    {
+        public float bgmVolume;
+        public float sfxVolume;
+        public bool mute;
+
+        public System(float volume, bool mute)
+        {
+            bgmVolume = volume;
+            sfxVolume = volume;
+            this.mute = mute;
+        }
+    }
+
+    [Serializable]
     public class Player
     {
         public int gold;
