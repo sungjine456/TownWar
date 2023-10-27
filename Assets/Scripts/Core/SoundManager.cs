@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 public class SoundManager : SingletonDontDestroy<SoundManager>
@@ -17,8 +18,10 @@ public class SoundManager : SingletonDontDestroy<SoundManager>
     }
     public enum SfxClip
     {
+        bow,
+        getElixir,
         getGold,
-        getElixir
+        sword
     }
 
     const int _maxCount = 5;
@@ -93,7 +96,7 @@ public class SoundManager : SingletonDontDestroy<SoundManager>
 
     public void SetVolumeSFX(float volume)
     {
-        _audios[(int)AudioType.SFX].volume = volume / 2;
+        _audios[(int)AudioType.SFX].volume = volume / 3;
         GameManager.Instance.MyPlayer.SetSFXVolume(volume);
     }
 
