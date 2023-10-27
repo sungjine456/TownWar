@@ -9,7 +9,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     [SerializeField] BattleMap _maps;
     [SerializeField] BuildingInfo _buildingInfo;
     [SerializeField] BuildGrid _grid;
-    [SerializeField] BattleFieldUnit[] _unitPrefabs;
+    [SerializeField] FieldUnit[] _unitPrefabs;
 
     BattleMapData[] _datas;
 
@@ -40,7 +40,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
             print("맵 정보를 불러올 수 없습니다.");
     }
 
-    public BattleFieldUnit GetUnitPrefab(Data.UnitId id)
+    public FieldUnit GetUnitPrefab(Data.UnitId id)
     {
         for (int i = 0; i < _unitPrefabs.Length; i++)
         {

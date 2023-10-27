@@ -12,6 +12,7 @@ public class UIBuilding : MonoBehaviour
     void Start()
     {
         _btn.onClick.AddListener(Clicked);
+
         switch (_buildingId)
         {
             case Data.BuildingId.goldMine:
@@ -33,8 +34,9 @@ public class UIBuilding : MonoBehaviour
                 _requiredResourceText.text = BuildingController.Instance.GetRequiredGems(_buildingId, 1).ToString();
                 break;
         }
+    }
 
-        void Clicked()
+    void Clicked()
     {
         if (BuildingController.Instance.CanBuild())
         {
@@ -57,6 +59,5 @@ public class UIBuilding : MonoBehaviour
                 UIBuild.Instance.SetStatus(true);
             }
         }
-    }
     }
 }

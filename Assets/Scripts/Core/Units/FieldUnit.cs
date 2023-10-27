@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public enum BattleUnitState
+public enum FieldUnitState
 {
     Idle,
     Attack,
@@ -9,7 +9,7 @@ public enum BattleUnitState
     Death
 }
 
-public class BattleFieldUnit : MonoBehaviour
+public class FieldUnit : MonoBehaviour
 {
     [Serializable]
     class Level
@@ -23,13 +23,14 @@ public class BattleFieldUnit : MonoBehaviour
 
     [HideInInspector] public Data.Unit _unit;
     [HideInInspector] public AnimationController _aniCtrl;
-    Vector3 _lastPosition;
-    BattleUnitState _state;
+    public Vector3 _lastPosition;
+    [SerializeField] FieldUnitState _state;
     bool _isChangeState;
     
     protected BattleBuilding _target;
 
     public virtual Data.UnitId Id { get { return Data.UnitId.warrior; } }
+    public FieldUnitState CurrentState { get { return _state; } }
     public int Index { get; private set; } = -1;
 
     void Start()
@@ -39,15 +40,23 @@ public class BattleFieldUnit : MonoBehaviour
 
     void Update()
     {
-        if (Vector3.SqrMagnitude(_lastPosition - transform.position) > 0.00000001)
+        if (Vector3.SqrMagnitude(_lastPosition - transform.position) > 0.0001)
         {
-            SetState(BattleUnitState.Run);
-            Vector3 dir = transform.position - _lastPosition;
-            _lastPosition = transform.position;
-            transform.rotation = Quaternion.LookRotation(dir);
+            SetState(FieldUnitState.Run);
+
+            if (GameManager.Instance.IsBattling)
+            {
+                Vector3 dir = transform.position - _lastPosition;
+                _lastPosition = transform.position;
+                transform.rotation = Quaternion.LookRotation(dir);
+            }
+            else
+                transform.SetPositionAndRotation(
+                    Vector3.MoveTowards(transform.position, _lastPosition, 2 * Time.deltaTime), 
+                    Quaternion.LookRotation(_lastPosition - transform.position));
         }
-        else if (_state == BattleUnitState.Run)
-            SetState(BattleUnitState.Idle);
+        else if (_state == FieldUnitState.Run)
+            SetState(FieldUnitState.Idle);
 
         BehaviourProcess();
     }
@@ -60,16 +69,16 @@ public class BattleFieldUnit : MonoBehaviour
 
             switch (_state)
             {
-                case BattleUnitState.Idle:
+                case FieldUnitState.Idle:
                     _aniCtrl.Play(AnimationController.AniMotion.Idle);
                     break;
-                case BattleUnitState.Run:
+                case FieldUnitState.Run:
                     _aniCtrl.Play(AnimationController.AniMotion.Run);
                     break;
-                case BattleUnitState.Attack:
+                case FieldUnitState.Attack:
                     _aniCtrl.Play(AnimationController.AniMotion.Attack);
                     break;
-                case BattleUnitState.Death:
+                case FieldUnitState.Death:
                     _aniCtrl.Play(AnimationController.AniMotion.Death);
                     break;
             }
@@ -88,7 +97,7 @@ public class BattleFieldUnit : MonoBehaviour
         _lastPosition = transform.position;
     }
 
-    public void SetState(BattleUnitState state)
+    public void SetState(FieldUnitState state)
     {
         if (_state != state)
         {

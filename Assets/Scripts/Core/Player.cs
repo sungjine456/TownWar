@@ -247,6 +247,11 @@ public class Player : MonoBehaviour
             Save();
         }
 
+        foreach (var u in _armyUnits)
+        {
+            UIMain.Instance.AddArmyUnit(u);
+        }
+
         UIMain.Instance.UpdateBuilder();
     }
 
@@ -427,6 +432,7 @@ public class Player : MonoBehaviour
         {
             case UnitStatus.army:
                 _armyUnits.AddLast(unit);
+                UIMain.Instance.AddArmyUnit(unit);
                 break;
             case UnitStatus.trained:
                 _trainedUnits.AddLast(unit);
@@ -456,6 +462,10 @@ public class Player : MonoBehaviour
             if (u.id == id)
             {
                 GetUnits(status).Remove(u);
+
+                if (status == UnitStatus.army)
+                    UIMain.Instance.RemoveArmyUnit(id);
+
                 break;
             }   
         }

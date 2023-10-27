@@ -25,13 +25,13 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
     [SerializeField] Image[] _stars;
     [SerializeField] UIBar _healthBarPrefab;
     [SerializeField] RectTransform _healthBarGrid;
-    [SerializeField] BattleFieldUnit[] _battleUnits;
+    [SerializeField] FieldUnit[] _battleUnits;
 
     int _selectedUnitIndex = -1;
 
     Battle _battle;
 
-    readonly List<BattleFieldUnit> unitsOnGrid = new();
+    readonly List<FieldUnit> unitsOnGrid = new();
     readonly List<BuildingOnGrid> buildingsOnGrid = new();
     readonly List<BattleBuilding> battleBuildings = new();
 
@@ -223,11 +223,11 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
         {
             if (_battle._units[i]._index == index)
             {
-                BattleFieldUnit prefab = BattleManager.Instance.GetUnitPrefab(UIBattleUnits.Instance._target._id);
+                FieldUnit prefab = BattleManager.Instance.GetUnitPrefab(UIBattleUnits.Instance._target._id);
 
                 if (prefab)
                 {
-                    BattleFieldUnit unit = Instantiate(prefab, BattleManager.Instance.Grid.transform);
+                    FieldUnit unit = Instantiate(prefab, BattleManager.Instance.Grid.transform);
                     unit.transform.localPosition = new(_battle._units[i]._position._x, 0, _battle._units[i]._position._y);
                     unit.Initialize(i, _battle._units[i]._data);
                     unit._healthBar = Instantiate(_healthBarPrefab, _healthBarGrid);
@@ -262,7 +262,7 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
         {
             if (unitsOnGrid[i].Index == index)
             {
-                unitsOnGrid[i].SetState(BattleUnitState.Attack);
+                unitsOnGrid[i].SetState(FieldUnitState.Attack);
                 unitsOnGrid[i].SetTarget(target);
             }
         }

@@ -189,4 +189,16 @@ public class UIMain : SingletonMonoBehaviour<UIMain>
     {
         return _maxElixir <= GameManager.Instance.MyPlayer.Elixir;
     }
+
+    public void AddArmyUnit(Unit unit)
+    {
+        ArmyCamp camp = (ArmyCamp)Grid.GetBuilding(BuildingId.armyCamp);
+        camp.AddUnit(unit);
+    }
+
+    public void RemoveArmyUnit(UnitId id)
+    {
+        ArmyCamp camp = (ArmyCamp)Grid.GetBuilding(BuildingId.armyCamp);
+        camp.RemoveUnit(id);
+    }
 }

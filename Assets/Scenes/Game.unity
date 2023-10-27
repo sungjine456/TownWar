@@ -17442,7 +17442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buildingPrefabs:
-  - {fileID: 6243684578391588196, guid: 8a5a67e9149139e4f884a32bcd17497a, type: 3}
+  - {fileID: 5004879506066036589, guid: 8a5a67e9149139e4f884a32bcd17497a, type: 3}
   - {fileID: 717615458703654178, guid: 82f9980d23f2b1645a04aaddf8618298, type: 3}
   - {fileID: 2507425967864940440, guid: 3815afd599d2c664ca97eb0f1ceb6b8b, type: 3}
   - {fileID: 709580244375070, guid: 91714af60b02fde41abdf37386370d23, type: 3}

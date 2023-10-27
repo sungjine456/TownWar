@@ -2,7 +2,7 @@ using UnityEngine;
 
 using static Data;
 
-public class Archer : BattleFieldUnit
+public class Archer : FieldUnit
 {
     [SerializeField] GameObject _weaponPosition;
 

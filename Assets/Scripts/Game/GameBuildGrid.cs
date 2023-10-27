@@ -20,11 +20,11 @@ public class GameBuildGrid : BuildGrid
         return b;
     }
 
-    public GameBuilding GetBuilding(int id)
+    public GameBuilding GetBuilding(Data.BuildingId id)
     {
         for (int i = 0; i < _buildings.Count; i++)
         {
-            if (_buildings[i].Id == id)
+            if (_buildings[i].BuildingId == id)
                 return _buildings[i];
         }
 
