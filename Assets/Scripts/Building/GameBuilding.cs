@@ -207,8 +207,8 @@ public class GameBuilding : Building
         }
         
         IsConstructing = false;
-        UIBuildingOptions.Instance.SetStatus(false);
         UIMain.Instance.UpdateBuilder();
+        BuildingController.Instance.DeselectBuilding();
     }
 
     public bool CanUpgrade()
