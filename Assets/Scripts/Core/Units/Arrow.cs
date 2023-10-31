@@ -18,8 +18,8 @@ public class Arrow : MonoBehaviour
     public void Initialized(Vector3 startPos, Vector3 targetPos)
     {
         transform.position = startPos;
-        _targetPos = targetPos;
+        _targetPos = new(targetPos.x, startPos.y, targetPos.z);
         transform.rotation = Quaternion.LookRotation(targetPos - transform.position);
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x / 2 - 90, transform.eulerAngles.y, transform.eulerAngles.z);
+        transform.eulerAngles = new Vector3(-90, transform.eulerAngles.y, transform.eulerAngles.z);
     }
 }

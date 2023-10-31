@@ -23,8 +23,8 @@ public class FieldUnit : MonoBehaviour
 
     [HideInInspector] public Data.Unit _unit;
     [HideInInspector] public AnimationController _aniCtrl;
-    public Vector3 _lastPosition;
-    [SerializeField] FieldUnitState _state;
+    [HideInInspector] public Vector3 _lastPosition;
+    FieldUnitState _state;
     bool _isChangeState;
     
     protected BattleBuilding _target;
@@ -40,7 +40,7 @@ public class FieldUnit : MonoBehaviour
 
     void Update()
     {
-        if (Vector3.SqrMagnitude(_lastPosition - transform.position) > 0.0001)
+        if (Vector3.SqrMagnitude(_lastPosition - transform.position) > 0.00000001)
         {
             SetState(FieldUnitState.Run);
 
@@ -52,7 +52,7 @@ public class FieldUnit : MonoBehaviour
             }
             else
                 transform.SetPositionAndRotation(
-                    Vector3.MoveTowards(transform.position, _lastPosition, 2 * Time.deltaTime), 
+                    Vector3.MoveTowards(transform.position, _lastPosition, 2 * Time.deltaTime),
                     Quaternion.LookRotation(_lastPosition - transform.position));
         }
         else if (_state == FieldUnitState.Run)
