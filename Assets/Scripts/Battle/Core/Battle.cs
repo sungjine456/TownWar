@@ -539,6 +539,8 @@ public class Battle
         {
             _isStart = true;
             _startTime = DateTime.Now;
+
+            SoundManager.Instance.PlayBGM(SoundManager.BgmClip.battle);
         }
 
         _units.Insert(_units.Count, battleUnit);

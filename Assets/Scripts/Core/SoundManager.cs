@@ -13,8 +13,9 @@ public class SoundManager : SingletonDontDestroy<SoundManager>
     }
     public enum BgmClip
     {
+        battle,
         town,
-        battle
+        waitBattle
     }
     public enum SfxClip
     {
