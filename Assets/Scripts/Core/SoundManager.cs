@@ -13,7 +13,7 @@ public class SoundManager : SingletonDontDestroy<SoundManager>
     }
     public enum BgmClip
     {
-        main,
+        town,
         battle
     }
     public enum SfxClip
@@ -52,7 +52,7 @@ public class SoundManager : SingletonDontDestroy<SoundManager>
         _audios[(int)AudioType.BGM] = bgm;
         _audios[(int)AudioType.SFX] = sfx;
 
-        //_bgmClips = Resources.LoadAll<AudioClip>("Sounds/BGM"); //TODO : BGM 추가
+        _bgmClips = Resources.LoadAll<AudioClip>("Sounds/BGM");
         _sfxClips = Resources.LoadAll<AudioClip>("Sounds/SFX");
     }
 
@@ -90,7 +90,7 @@ public class SoundManager : SingletonDontDestroy<SoundManager>
 
     public void SetVolumeBGM(float volume)
     {
-        _audios[(int)AudioType.BGM].volume = volume;
+        _audios[(int)AudioType.BGM].volume = volume / 3;
         GameManager.Instance.MyPlayer.SetBGMVolume(volume);
     }
 

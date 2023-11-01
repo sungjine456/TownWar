@@ -44,6 +44,8 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
     {
         _goldText.text = GameManager.Instance.MyPlayer.Gold.ToString();
         _elixirText.text = GameManager.Instance.MyPlayer.Elixir.ToString();
+
+        SoundManager.Instance.PlayBGM(SoundManager.BgmClip.town);
     }
 
     void Update()

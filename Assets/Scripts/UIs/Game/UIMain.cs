@@ -37,6 +37,8 @@ public class UIMain : SingletonMonoBehaviour<UIMain>
         _shopBtn.onClick.AddListener(ShopBtnClicked);
         _searchBtn.onClick.AddListener(SearchBtnClicked);
         _optionBtn.onClick.AddListener(OptionBtnClicked);
+
+        SoundManager.Instance.PlayBGM(SoundManager.BgmClip.town);
     }
 
     void ShopBtnClicked()

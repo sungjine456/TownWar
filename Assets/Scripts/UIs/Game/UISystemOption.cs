@@ -5,6 +5,7 @@ public class UISystemOption : SingletonMonoBehaviour<UISystemOption>
 {
     [SerializeField] GameObject _elements;
     [SerializeField] Button _closeBtn;
+    [SerializeField] Slider _bgmVolume;
     [SerializeField] Slider _sfxVolume;
     [SerializeField] Toggle _mute;
 
@@ -22,10 +23,13 @@ public class UISystemOption : SingletonMonoBehaviour<UISystemOption>
         UIMain.Instance.SetStatus(true);
     }
 
-    public void Initialized(float volume, bool mute)
+    public void Initialized(float bgmVolume, float sfxVolume, bool mute)
     {
-        _sfxVolume.value = volume;
+        _bgmVolume.value = bgmVolume;
+        _sfxVolume.value = sfxVolume;
         _mute.isOn = mute;
+
+        SetMute(mute);
     }
 
     public void SetStatus(bool status)

@@ -52,3 +52,4 @@ crashlytics-build.properties
 
 # Externals
 /Assets/Externals/
+/Assets/Resources/Sounds/

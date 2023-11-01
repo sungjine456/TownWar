@@ -111,10 +111,7 @@ public class Player : MonoBehaviour
         else
             _systemData = JsonUtility.FromJson<Data.System>(PlayerPrefs.GetString("SYSTEM_DATA"));
 
-        UISystemOption.Instance.SetBGMVolume(_systemData.bgmVolume);
-        UISystemOption.Instance.SetSFXVolume(_systemData.sfxVolume);
-        UISystemOption.Instance.SetMute(_systemData.mute);
-        UISystemOption.Instance.Initialized(_systemData.sfxVolume, _systemData.mute);
+        UISystemOption.Instance.Initialized(_systemData.bgmVolume, _systemData.sfxVolume, _systemData.mute);
 
         if (!PlayerPrefs.HasKey("PLAYER_DATA"))
             FirstStartSettins();
