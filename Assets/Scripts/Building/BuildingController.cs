@@ -63,6 +63,11 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
         return count;
     }
 
+    public bool HasNextLevelBuildingInfo(GameBuilding target = null)
+    {
+        return GetNextLevelBuildingInfo(target) != null;
+    }
+
     public Data.BuildingToBuild GetNextLevelBuildingInfo(GameBuilding target = null)
     {
         if (target == null)

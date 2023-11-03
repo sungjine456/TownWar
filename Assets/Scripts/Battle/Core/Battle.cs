@@ -101,8 +101,7 @@ public class Battle
                         else
                             _units[_buildings[index]._target].TakeDamage(_buildings[index]._building.damage);
 
-                        if (_buildings[index]._attackCallback != null)
-                            _buildings[index]._attackCallback.Invoke(_buildings[index]._building.id, _units[_buildings[index]._target]);
+                        _buildings[index]._attackCallback?.Invoke(_buildings[index]._building.id, _units[_buildings[index]._target]);
                     }
                 }
             }
@@ -211,9 +210,7 @@ public class Battle
                                 _buildings[_units[index]._target].TakeDamage(_units[index]._data.damage, ref _grid, ref _blockedTiles);
 
                             _units[index]._attackTimer -= _units[index]._data.attackSpeed;
-
-                            if (_units[index]._attackCallback != null)
-                                _units[index]._attackCallback.Invoke(index, _buildings[_units[index]._target]);
+                            _units[index]._attackCallback?.Invoke(index, _buildings[_units[index]._target]);
                         }
                     }
                 }
@@ -321,7 +318,7 @@ public class Battle
                     path1.Create(ref _search, new(columns[x], rows[y]), unitGridPosition);
                     path2.Create(ref _unlimitedSearch, new(columns[x], rows[y]), unitGridPosition);
 
-                    if (path1._points != null && path1._points.Count > 0)
+                    if (path1?._points.Count > 0)
                     {
                         path1._length = GetPathLength(path1._points);
                         int lengthToBlocks = (int)Math.Floor(path1._length / (Data.battleTilesWorthOfOneWall * Data.CELL_SIZE));
@@ -336,7 +333,7 @@ public class Battle
                         tiles.Add(path1);
                     }
 
-                    if (path2._points != null && path2._points.Count > 0)
+                    if (path2?._points.Count > 0)
                     {
                         path2._length = GetPathLength(path2._points);
 
@@ -435,12 +432,9 @@ public class Battle
     {
         float length = 0;
 
-        if(path != null && path.Count > 1)
+        for (int i = 1; i < path?.Count; i++)
         {
-            for (int i = 1; i < path.Count; i++)
-            {
-                length += BattleVector2.Distance(new BattleVector2(path[i - 1].Location), new BattleVector2(path[i].Location));
-            }
+            length += BattleVector2.Distance(new BattleVector2(path[i - 1].Location), new BattleVector2(path[i].Location));
         }
 
         if (includeCellSize)
@@ -459,26 +453,23 @@ public class Battle
         float totalLength = GetPathLength(path);
         float length = 0;
 
-        if (path != null && path.Count > 1)
+        for (int i = 1; i < path?.Count; i++)
         {
-            for (int i = 1; i < path.Count; i++)
+            BattleVector2Int a = new(path[i - 1].Location._x, path[i - 1].Location._y);
+            BattleVector2Int b = new(path[i].Location._x, path[i].Location._y);
+            float l = BattleVector2.Distance(a, b) * Data.CELL_SIZE;
+            float p = (length + l) / totalLength;
+
+            if (p >= t)
             {
-                BattleVector2Int a = new(path[i - 1].Location._x, path[i - 1].Location._y);
-                BattleVector2Int b = new(path[i].Location._x, path[i].Location._y);
-                float l = BattleVector2.Distance(a, b) * Data.CELL_SIZE;
-                float p = (length + l) / totalLength;
+                t = (t - (length / totalLength)) / (p - (length / totalLength));
 
-                if (p >= t)
-                {
-                    t = (t - (length / totalLength)) / (p - (length / totalLength));
-
-                    return BattleVector2.LerpUnclamped(GridToWorldPosition(a), GridToWorldPosition(b), t);
-                }
-
-                length += l;
+                return BattleVector2.LerpUnclamped(GridToWorldPosition(a), GridToWorldPosition(b), t);
             }
-        }
 
+            length += l;
+        }
+        
         return GridToWorldPosition(new(path[0].Location._x, path[0].Location._y));
     }
 

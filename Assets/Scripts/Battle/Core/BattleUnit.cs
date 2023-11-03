@@ -45,15 +45,13 @@ public class BattleUnit
 
         _health -= damage;
 
-        if (_damageCallback != null)
-            _damageCallback.Invoke(_index, damage);
+        _damageCallback?.Invoke(_index, damage);
 
         if (_health <= 0)
         {
             _health = 0;
 
-            if (_dieCallback != null)
-                _dieCallback.Invoke(_index);
+            _dieCallback?.Invoke(_index);
         }
     }
 }

@@ -215,6 +215,6 @@ public class GameBuilding : Building
     {
         return !IsConstructing 
             && Data.BuildingId.buildersHut != buildingId 
-            && BuildingController.Instance.GetNextLevelBuildingInfo() != null;
+            && BuildingController.Instance.HasNextLevelBuildingInfo();
     }
 }

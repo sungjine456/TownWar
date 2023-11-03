@@ -27,8 +27,7 @@ public class BattleBuilding
 
         _health -= damage;
 
-        if (_damageCallback != null)
-            _damageCallback.Invoke(this);
+        _damageCallback?.Invoke(this);
 
         if (_health <= 0)
         {
@@ -51,8 +50,7 @@ public class BattleBuilding
                 }
             }
 
-            if (_destroyCallback != null)
-                _destroyCallback.Invoke(_building.id);
+            _destroyCallback?.Invoke(_building.id);
         }
     }
 }
