@@ -1,8 +1,11 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System.Collections.Generic;
 using System;
+
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+using TMPro;
 
 public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 {
@@ -28,6 +31,8 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
     [SerializeField] FieldUnit[] _battleUnits;
 
     int _selectedUnitIndex = -1;
+    int _plunderedGold;
+    int _plunderedElixir;
 
     Battle _battle;
 
@@ -37,7 +42,7 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
     protected override void OnAwake()
     {
-        _closeBtn.onClick.AddListener(Close);
+        _closeBtn.onClick.AddListener(End);
     }
 
     protected override void OnStart()
@@ -50,26 +55,21 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
     void Update()
     {
-        if (_battle._isStart)
+        if (_battle.isStart)
         {
-            TimeSpan span = _battle._startTime.AddSeconds(180) - DateTime.Now;
+            TimeSpan span = _battle.startTime.AddSeconds(180) - DateTime.Now;
 
             if (span.TotalSeconds > 0.01)
                 _timeText.text = span.ToString(@"m\분\ ss\초");
             else
-                Close();
+                End();
         }
 
         if (buildingsOnGrid.Count == 0 || (unitsOnGrid.Count == 0 && UIBattleUnits.Instance.IsEmpty()))
-            Close();
+            End();
 
         _battle.ExecuteFrame();
         UpdateUnits();
-    }
-
-    void Close()
-    {
-        _battle.End(int.Parse(_plunderGoldText.text), int.Parse(_plunderElixirText.text));
     }
 
     void AddStar()
@@ -86,14 +86,40 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
     void PlunderGold(int gold)
     {
-        GameManager.Instance.MyPlayer.CollectGold(gold);
+        var p = GameManager.Instance.MyPlayer;
+        var g = GameManager.Instance.MaxGold;
+
+        if (g >= p.Gold + gold)
+        {
+            GameManager.Instance.MyPlayer.CollectGold(gold);
+            _plunderedGold += gold;
+        }
+        else if (g > p.Gold && g < p.Gold + gold)
+        {
+            GameManager.Instance.MyPlayer.CollectGold(g - p.Gold);
+            _plunderedGold += g - p.Gold;
+        }
+
         _goldText.text = GameManager.Instance.MyPlayer.Gold.ToString();
         _plunderGoldText.text = (int.Parse(_plunderGoldText.text) - gold).ToString();
     }
 
     void PlunderElixir(int elixir)
     {
-        GameManager.Instance.MyPlayer.CollectElixir(elixir);
+        var p = GameManager.Instance.MyPlayer;
+        var e = GameManager.Instance.MaxElixir;
+
+        if (e >= p.Elixir + elixir)
+        {
+            GameManager.Instance.MyPlayer.CollectElixir(elixir);
+            _plunderedElixir += elixir;
+        }
+        else if (e > p.Elixir && e < p.Elixir + elixir)
+        {
+            GameManager.Instance.MyPlayer.CollectGold(e - p.Elixir);
+            _plunderedElixir += e - p.Elixir;
+        }
+
         _elixirText.text = GameManager.Instance.MyPlayer.Elixir.ToString();
         _plunderElixirText.text = (int.Parse(_plunderElixirText.text) - elixir).ToString();
     }
@@ -299,7 +325,7 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
     public void BuildingDestroyedCallBack(int id)
     {
-        var beforePercent = _battle.GetPercent();
+        var beforePercent = GetPercent();
 
         for (int i = 0; i < buildingsOnGrid.Count; i++)
         {
@@ -329,9 +355,9 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
             }
         }
 
-        if (GetBuildingCountForPercent() < _battle._allCount)
+        if (GetBuildingCountForPercent() < _battle.allCount)
         {
-            var percent = _battle.GetPercent();
+            var percent = GetPercent();
 
             _damage.text = percent.ToString();
 
@@ -340,11 +366,6 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
             else if (beforePercent < 100 && percent >= 100)
                 AddStar();
         }
-    }
-
-    public void End()
-    {
-        _elements.SetActive(false);
     }
 
     public int GetBuildingCountForPercent()
@@ -393,5 +414,23 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
         }
 
         return null;
+    }
+
+    public int GetPercent()
+    {
+        return Mathf.RoundToInt((_battle.allCount - UIBattleMain.Instance.GetBuildingCountForPercent()) * 100f / _battle.allCount);
+    }
+
+    public void End()
+    {
+        if (_battle.isStart)
+        {
+            _elements.SetActive(false);
+
+            UIBattleUnits.Instance.End();
+            UIBattleResult.Instance.SetResult(_plunderedGold, _plunderedElixir, GetPercent(), UIBattleMain.Instance.GetStarsCount());
+        }
+        else
+            SceneManager.LoadScene("Game");
     }
 }

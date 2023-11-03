@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public delegate void SpawnCallBack(int index);
 public delegate void IndexCallback(int index);
@@ -20,16 +20,13 @@ public class Battle
     Search _unlimitedSearch;
     List<Tile> _blockedTiles = new();
     readonly List<Projectile> _projectiles = new();
-    public int _allCount;
-    public bool _isStart;
-    public DateTime _startTime;
-    readonly int _maxPlunderableGold;
-    readonly int _maxPlunderableElixir;
+    
+    public int allCount;
+    public bool isStart;
+    public DateTime startTime;
 
     public Battle(List<BattleBuilding> buildings, int maxPlunderableGold, int maxPlunderableElixir)
     {
-        _maxPlunderableGold = maxPlunderableGold;
-        _maxPlunderableElixir = maxPlunderableElixir;
         _buildings = buildings;
         _grid = new(Data.GRID_SIZE, Data.GRID_SIZE);
         _unlimitedGrid = new(Data.GRID_SIZE, Data.GRID_SIZE);
@@ -39,7 +36,7 @@ public class Battle
         for (int i = 0; i < buildings.Count; i++)
         {
             if (buildings[i]._building.buildingId != Data.BuildingId.wall)
-                _allCount++;
+                allCount++;
         }
 
         for (int i = 0; i < buildings.Count; i++)
@@ -536,10 +533,10 @@ public class Battle
             _position = GridToWorldPosition(new(x, y))
         };
 
-        if (!_isStart)
+        if (!isStart)
         {
-            _isStart = true;
-            _startTime = DateTime.Now;
+            isStart = true;
+            startTime = DateTime.Now;
 
             SoundManager.Instance.PlayBGM(SoundManager.BgmClip.battle);
         }
@@ -551,7 +548,7 @@ public class Battle
 
     public void ExecuteFrame()
     {
-        if (_isStart)
+        if (isStart)
         {
             for (int i = 0; i < _buildings.Count; i++)
             {
@@ -583,25 +580,5 @@ public class Battle
                 }
             }
         }
-    }
-
-    public int GetPercent()
-    {
-        return Mathf.RoundToInt((_allCount - UIBattleMain.Instance.GetBuildingCountForPercent()) * 100f / _allCount);
-    }
-
-    public void End(int remainingGold, int remainingElixir)
-    {
-        if (_isStart)
-        {
-            int gold = _maxPlunderableGold - remainingGold;
-            int elixir = _maxPlunderableElixir - remainingElixir;
-
-            UIBattleUnits.Instance.End();
-            UIBattleMain.Instance.End();
-            UIBattleResult.Instance.SetResult(gold, elixir, GetPercent(), UIBattleMain.Instance.GetStarsCount());
-        }
-        else
-            SceneManager.LoadScene("Game");
     }
 }

@@ -5,9 +5,14 @@ public class GameManager : SingletonDontDestroy<GameManager>
     [SerializeField] GameBuilding[] _buildingPrefabs;
     [SerializeField] Player _myPlayer;
 
+    int _maxGold;
+    int _maxElixir;
+
     public Player MyPlayer => _myPlayer;
     public BuildGrid Grid => IsBattling ? BattleManager.Instance.Grid : UIMain.Instance.Grid;
     public bool IsBattling => BattleManager.Instance != null;
+    public int MaxGold => _maxGold;
+    public int MaxElixir => _maxElixir;
 
     public GameBuilding GetBuildingPrefab(Data.BuildingId buildingId)
     {
@@ -35,5 +40,19 @@ public class GameManager : SingletonDontDestroy<GameManager>
         }
 
         return 0;
+    }
+
+    public void AddMaxGold(int maxGold)
+    {
+        _maxGold += maxGold;
+
+        UIMain.Instance.SyncResourcesData();
+    }
+
+    public void AddMaxElixir(int maxElixir)
+    {
+        _maxElixir += maxElixir;
+
+        UIMain.Instance.SyncResourcesData();
     }
 }

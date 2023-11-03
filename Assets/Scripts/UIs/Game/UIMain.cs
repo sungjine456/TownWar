@@ -21,8 +21,6 @@ public class UIMain : SingletonMonoBehaviour<UIMain>
     [Header("Buttons")] public Transform _buttonsParent;
 
     readonly StringBuilder _sb = new();
-    int _maxGold;
-    int _maxElixir;
 
     public bool IsActive { get; private set; }
     public GameBuildGrid Grid => _grid;
@@ -94,11 +92,11 @@ public class UIMain : SingletonMonoBehaviour<UIMain>
     */
     public int CollectGold(int resource)
     {
-        if (GameManager.Instance.MyPlayer.Gold < _maxGold)
+        if (GameManager.Instance.MyPlayer.Gold < GameManager.Instance.MaxGold)
         {
-            if (resource + GameManager.Instance.MyPlayer.Gold > _maxGold)
+            if (resource + GameManager.Instance.MyPlayer.Gold > GameManager.Instance.MaxGold)
             {
-                int remainedResource = resource + GameManager.Instance.MyPlayer.Gold - _maxGold;
+                int remainedResource = resource + GameManager.Instance.MyPlayer.Gold - GameManager.Instance.MaxGold;
                 CollectResource(ResourceType.gold, resource - remainedResource);
 
                 return remainedResource;
@@ -121,11 +119,11 @@ public class UIMain : SingletonMonoBehaviour<UIMain>
     /// <returns>저장하고 남은 엘릭서이며 0 이상의 값을 보장한다.</returns>
     public int CollectElixir(int resource)
     {
-        if (GameManager.Instance.MyPlayer.Elixir < _maxElixir)
+        if (GameManager.Instance.MyPlayer.Elixir < GameManager.Instance.MaxElixir)
         {
-            if (resource + GameManager.Instance.MyPlayer.Elixir > _maxElixir)
+            if (resource + GameManager.Instance.MyPlayer.Elixir > GameManager.Instance.MaxElixir)
             {
-                int remainedResource = resource + GameManager.Instance.MyPlayer.Elixir - _maxElixir;
+                int remainedResource = resource + GameManager.Instance.MyPlayer.Elixir - GameManager.Instance.MaxElixir;
                 CollectResource(ResourceType.elixir, resource - remainedResource);
 
                 return remainedResource;
@@ -155,20 +153,6 @@ public class UIMain : SingletonMonoBehaviour<UIMain>
         SetText(_builderText, maxBuilder - count, maxBuilder);
     }
 
-    public void AddMaxGold(int maxGold)
-    {
-        _maxGold += maxGold;
-
-        SyncResourcesData();
-    }
-
-    public void AddMaxElixir(int maxElixir)
-    {
-        _maxElixir += maxElixir;
-
-        SyncResourcesData();
-    }
-
     public void SetStatus(bool status)
     {
         _elements.SetActive(status);
@@ -177,19 +161,19 @@ public class UIMain : SingletonMonoBehaviour<UIMain>
 
     public void SyncResourcesData()
     {
-        SetText(_goldText, GameManager.Instance.MyPlayer.Gold, _maxGold);
-        SetText(_elixirText, GameManager.Instance.MyPlayer.Elixir, _maxElixir);
+        SetText(_goldText, GameManager.Instance.MyPlayer.Gold, GameManager.Instance.MaxGold);
+        SetText(_elixirText, GameManager.Instance.MyPlayer.Elixir, GameManager.Instance.MaxElixir);
         _gemsText.text = GameManager.Instance.MyPlayer.Gems.ToString();
     }
 
     public bool IsFullGold()
     {
-        return _maxGold <= GameManager.Instance.MyPlayer.Gold;
+        return GameManager.Instance.MaxGold <= GameManager.Instance.MyPlayer.Gold;
     }
 
     public bool IsFullElixir()
     {
-        return _maxElixir <= GameManager.Instance.MyPlayer.Elixir;
+        return GameManager.Instance.MaxElixir <= GameManager.Instance.MyPlayer.Elixir;
     }
 
     public void AddArmyUnit(Unit unit)

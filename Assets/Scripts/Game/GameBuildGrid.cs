@@ -55,14 +55,14 @@ public class GameBuildGrid : BuildGrid
             switch (b.BuildingId)
             {
                 case Data.BuildingId.townHall:
-                    UIMain.Instance.AddMaxGold(b.Capacity);
-                    UIMain.Instance.AddMaxElixir(b.Capacity);
+                    GameManager.Instance.AddMaxGold(b.Capacity);
+                    GameManager.Instance.AddMaxElixir(b.Capacity);
                     break;
                 case Data.BuildingId.goldStorage:
-                    UIMain.Instance.AddMaxGold(b.Capacity);
+                    GameManager.Instance.AddMaxGold(b.Capacity);
                     break;
                 case Data.BuildingId.elixirStorage:
-                    UIMain.Instance.AddMaxElixir(b.Capacity);
+                    GameManager.Instance.AddMaxElixir(b.Capacity);
                     break;
             }
         }
@@ -81,14 +81,14 @@ public class GameBuildGrid : BuildGrid
             switch (b.BuildingId)
             {
                 case Data.BuildingId.townHall:
-                    UIMain.Instance.AddMaxGold(b.Capacity);
-                    UIMain.Instance.AddMaxElixir(b.Capacity);
+                    GameManager.Instance.AddMaxGold(b.Capacity);
+                    GameManager.Instance.AddMaxElixir(b.Capacity);
                     break;
                 case Data.BuildingId.goldStorage:
-                    UIMain.Instance.AddMaxGold(b.Capacity);
+                    GameManager.Instance.AddMaxGold(b.Capacity);
                     break;
                 case Data.BuildingId.elixirStorage:
-                    UIMain.Instance.AddMaxElixir(b.Capacity);
+                    GameManager.Instance.AddMaxElixir(b.Capacity);
                     break;
             }
         }

@@ -157,14 +157,14 @@ public class GameBuilding : Building
             switch (_nextBuilding.buildingId)
             {
                 case Data.BuildingId.townHall:
-                    UIMain.Instance.AddMaxGold(_nextBuilding.capacity - Capacity);
-                    UIMain.Instance.AddMaxElixir(_nextBuilding.capacity - Capacity);
+                    GameManager.Instance.AddMaxGold(_nextBuilding.capacity - Capacity);
+                    GameManager.Instance.AddMaxElixir(_nextBuilding.capacity - Capacity);
                     break;
                 case Data.BuildingId.goldStorage:
-                    UIMain.Instance.AddMaxGold(_nextBuilding.capacity - Capacity);
+                    GameManager.Instance.AddMaxGold(_nextBuilding.capacity - Capacity);
                     break;
                 case Data.BuildingId.elixirStorage:
-                    UIMain.Instance.AddMaxElixir(_nextBuilding.capacity - Capacity);
+                    GameManager.Instance.AddMaxElixir(_nextBuilding.capacity - Capacity);
                     break;
             }
 
@@ -191,14 +191,14 @@ public class GameBuilding : Building
             switch (BuildingId)
             {
                 case Data.BuildingId.townHall:
-                    UIMain.Instance.AddMaxGold(Capacity);
-                    UIMain.Instance.AddMaxElixir(Capacity);
+                    GameManager.Instance.AddMaxGold(Capacity);
+                    GameManager.Instance.AddMaxElixir(Capacity);
                     break;
                 case Data.BuildingId.goldStorage:
-                    UIMain.Instance.AddMaxGold(Capacity);
+                    GameManager.Instance.AddMaxGold(Capacity);
                     break;
                 case Data.BuildingId.elixirStorage:
-                    UIMain.Instance.AddMaxElixir(Capacity);
+                    GameManager.Instance.AddMaxElixir(Capacity);
                     break;
             }
 
