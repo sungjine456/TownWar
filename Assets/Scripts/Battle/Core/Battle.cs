@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public delegate void SpawnCallBack(int index);
 public delegate void IndexCallback(int index);
 public delegate void FloatCallback(int index, float value);
-public delegate void AttackCallback(int index, BattleVector2 target);
+public delegate void AttackUnitCallback(int index, BattleUnit target);
 public delegate void AttackBuildingCallback(int index, BattleBuilding target);
 
 public class Battle
@@ -91,6 +91,7 @@ public class Battle
                         if (_buildings[index]._building.radius > 0 && _buildings[index]._building.rangedSpeed > 0)
                         {
                             float distance = BattleVector2.Distance(_units[_buildings[index]._target]._position, _buildings[index]._worldCenterPosition);
+                            
                             Projectile projectile = new()
                             {
                                 _type = TargetType.unit,
@@ -104,7 +105,7 @@ public class Battle
                             _units[_buildings[index]._target].TakeDamage(_buildings[index]._building.damage);
 
                         if (_buildings[index]._attackCallback != null)
-                            _buildings[index]._attackCallback.Invoke(_buildings[index]._building.id, _units[_buildings[index]._target]._position);
+                            _buildings[index]._attackCallback.Invoke(_buildings[index]._building.id, _units[_buildings[index]._target]);
                     }
                 }
             }

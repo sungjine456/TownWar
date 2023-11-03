@@ -9,7 +9,7 @@ public class BattleBuilding
     public int _target = -1;
     public double _attackTimer;
     public BattleVector2 _worldCenterPosition;
-    public AttackCallback _attackCallback;
+    public AttackUnitCallback _attackCallback;
     public IndexCallback _destroyCallback;
     public DamageCallback _damageCallback;
 

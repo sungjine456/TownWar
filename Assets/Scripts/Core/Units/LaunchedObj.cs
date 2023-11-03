@@ -2,21 +2,24 @@ using UnityEngine;
 
 using static Utils;
 
-public class Arrow : MonoBehaviour
+public class LaunchedObj : MonoBehaviour
 {
-    readonly float _moveSpeed = 4.2f;
+    [SerializeField] float _moveSpeed;
     Vector3 _targetPos;
+    LaunchedObjPoolManager.Type _type;
 
     void Update()
     {
         transform.position = Vector3.MoveTowards(transform.position, _targetPos, _moveSpeed * Time.deltaTime);
 
         if (V3Equal(transform.position, _targetPos))
-            ArrowPoolManager.Instance.Remove(this);
+            LaunchedObjPoolManager.Instance.Remove(_type, this);
     }
 
-    public void Initialized(Vector3 startPos, Vector3 targetPos)
+    public void Initialized(LaunchedObjPoolManager.Type type, Vector3 startPos, Vector3 targetPos, float speed)
     {
+        _moveSpeed = speed;
+        _type = type;
         transform.position = startPos;
         _targetPos = new(targetPos.x, startPos.y, targetPos.z);
         transform.rotation = Quaternion.LookRotation(targetPos - transform.position);

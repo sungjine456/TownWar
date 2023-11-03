@@ -255,7 +255,6 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
                 break;
             }
         }
-        print("Unit killed.");
     }
 
     public void UnitAttackCallBack(int index, BattleBuilding target)
@@ -275,7 +274,15 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
         print("Unit took damage: " + damage);
     }
 
-    public void BuildingAttackCallBack(int id, BattleVector2 target) { }
+    public void BuildingAttackCallBack(int id, BattleUnit target)
+    {
+        for (int i = 0; i < buildingsOnGrid.Count; i++)
+        {
+            if (buildingsOnGrid[i].id == id && buildingsOnGrid[i].building is Cannon cannon)
+                if (GetPosOfUnit(target._index).HasValue)
+                    cannon.SetTarget(GetPosOfUnit(target._index).Value);
+        }
+    }
 
     public void BuildingDamageCallBack(BattleBuilding building)
     {
@@ -372,6 +379,17 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
         {
             if (buildingsOnGrid[i].id == id)
                 return buildingsOnGrid[i].building.transform.position;
+        }
+
+        return null;
+    }
+
+    public Vector3? GetPosOfUnit(int id)
+    {
+        for (int i = 0; i < unitsOnGrid.Count; i++)
+        {
+            if (unitsOnGrid[i].Index == id)
+                return unitsOnGrid[i].transform.position;
         }
 
         return null;

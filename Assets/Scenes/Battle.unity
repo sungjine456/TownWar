@@ -3680,7 +3680,7 @@ GameObject:
   - component: {fileID: 1616519316}
   - component: {fileID: 1616519315}
   m_Layer: 0
-  m_Name: ArrowPoolManager
+  m_Name: LaunchedObjPoolManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3699,6 +3699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _arrowPrefab: {fileID: 1802766031527984346, guid: 849add9d3e7460b41b67df75867822d4, type: 3}
+  _bulletPrefab: {fileID: 9024160899438858428, guid: 5aa23eea8ca49b141be2773ce92ffaca, type: 3}
 --- !u!4 &1616519316
 Transform:
   m_ObjectHideFlags: 0
