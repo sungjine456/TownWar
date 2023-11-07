@@ -2,59 +2,52 @@ using System.Collections.Generic;
 
 public class Path
 {
-    public BattleVector2Int _start;
-    public BattleVector2Int _end;
-    public List<Cell> _points;
-    public float _length;
-    public List<Tile> _blocks;
+    public BattleVector2Int start;
+    public BattleVector2Int end;
+    public List<Cell> points;
+    public float length;
+    public List<Tile> blocks;
 
     public Path()
     {
-        _length = 0;
-        _points = null;
-        _blocks = new();
+        points = null;
+        blocks = new();
     }
 
-    public bool Create(ref Search search, BattleVector2Int start, BattleVector2Int end)
+    public bool Create(Search search, BattleVector2Int start, BattleVector2Int end)
     {
         var target = search.Find(new(start._x, start._y), new(end._x, end._y));
 
         if (target == null)
             return false;
 
-        _points = new();
+        points = new();
 
         for (int i = 0; i < target.Length; i++)
         {
-            _points.Add(target[i]);
+            points.Add(target[i]);
         }
         
-        if (!IsValid(ref _points, new(start._x, start._y), new(end._x, end._y)))
+        if (!IsValid(ref points, new(start._x, start._y), new(end._x, end._y)))
         {
-            _points = null;
+            points = null;
 
             return false;
         }
         else
         {
-            _start._x = start._x;
-            _start._y = start._y;
-            _end._x = end._x;
-            _end._y = end._y;
+            this.start._x = start._x;
+            this.start._y = start._y;
+            this.end._x = end._x;
+            this.end._y = end._y;
 
             return true;
         }
     }
 
-    public Cell LastCell()
-    {
-        return _points[^1];
-    }
+    public Cell LastCell() => points[^1];
 
-    public Tile LastTile()
-    {
-        return _blocks[^1];
-    }
+    public Tile LastTile() => blocks[^1];
 
     public static bool IsValid(ref List<Cell> points, Vector2Int start, Vector2Int end)
     {

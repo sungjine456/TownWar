@@ -5,6 +5,7 @@ using static Utils;
 public class LaunchedObj : MonoBehaviour
 {
     [SerializeField] float _moveSpeed;
+
     Vector3 _targetPos;
     LaunchedObjPoolManager.Type _type;
 

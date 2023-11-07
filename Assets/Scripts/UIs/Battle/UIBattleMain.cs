@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -55,9 +55,9 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
     void Update()
     {
-        if (_battle.isStart)
+        if (_battle.IsStart)
         {
-            TimeSpan span = _battle.startTime.AddSeconds(180) - DateTime.Now;
+            TimeSpan span = _battle.StartTime.AddSeconds(180) - DateTime.Now;
 
             if (span.TotalSeconds > 0.01)
                 _timeText.text = span.ToString(@"m\분\ ss\초");
@@ -128,16 +128,16 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
     {
         for (int i = 0; i < unitsOnGrid.Count; i++)
         {
-            if (_battle._units[unitsOnGrid[i].Index]._health > 0)
+            if (_battle.units[unitsOnGrid[i].Index].Health > 0)
             {
-                Vector3 position = new(_battle._units[unitsOnGrid[i].Index]._position._x, 0, _battle._units[unitsOnGrid[i].Index]._position._y);
+                Vector3 position = new(_battle.units[unitsOnGrid[i].Index].position._x, 0, _battle.units[unitsOnGrid[i].Index].position._y);
 
                 unitsOnGrid[i].transform.localPosition = position;
 
-                if (_battle._units[unitsOnGrid[i].Index]._health < _battle._units[unitsOnGrid[i].Index]._data.health)
+                if (_battle.units[unitsOnGrid[i].Index].Health < _battle.units[unitsOnGrid[i].Index].Data.health)
                 {
                     unitsOnGrid[i]._healthBar.gameObject.SetActive(true);
-                    unitsOnGrid[i]._healthBar.FillAmount(_battle._units[unitsOnGrid[i].Index]._health / _battle._units[unitsOnGrid[i].Index]._data.health);
+                    unitsOnGrid[i]._healthBar.FillAmount(_battle.units[unitsOnGrid[i].Index].Health / _battle.units[unitsOnGrid[i].Index].Data.health);
                     unitsOnGrid[i]._healthBar._rect.anchoredPosition = GetUnitBarPosition(unitsOnGrid[i].transform.position);
                 }
             }
@@ -189,16 +189,16 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
         for (int i = 0; i < battleBuildings.Count; i++)
         {
-            battleBuildings[i]._attackCallback = BuildingAttackCallBack;
-            battleBuildings[i]._destroyCallback = BuildingDestroyedCallBack;
-            battleBuildings[i]._damageCallback = BuildingDamageCallBack;
+            battleBuildings[i].attackCallback = BuildingAttackCallBack;
+            battleBuildings[i].destroyCallback = BuildingDestroyedCallBack;
+            battleBuildings[i].damageCallback = BuildingDamageCallBack;
 
-            Building prefab = GameManager.Instance.GetBuildingPrefab(battleBuildings[i]._building.buildingId);
+            Building prefab = GameManager.Instance.GetBuildingPrefab(battleBuildings[i].Building.buildingId);
 
             if (prefab)
             {
                 var building = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-                building.Initialize(battleBuildings[i]._building);
+                building.Initialize(battleBuildings[i].Building);
 
                 var healthBar = Instantiate(_healthBarPrefab, _healthBarGrid);
                 healthBar.gameObject.SetActive(false);
@@ -207,7 +207,7 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
                 {
                     building = building,
                     healthBar = healthBar,
-                    id = battleBuildings[i]._building.id,
+                    id = battleBuildings[i].Building.id,
                     index = i
                 };
 
@@ -215,7 +215,7 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
             }
         }
 
-        _battle = new(battleBuildings, gold, elixir);
+        _battle = new(battleBuildings);
     }
 
     public void PlaceUnit(int x, int y)
@@ -247,17 +247,17 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
     public void UnitSpawnCallBack(int index)
     {
-        for (int i = 0; i < _battle._units.Count; i++)
+        for (int i = 0; i < _battle.units.Count; i++)
         {
-            if (_battle._units[i]._index == index)
+            if (_battle.units[i].Index == index)
             {
                 FieldUnit prefab = BattleManager.Instance.GetUnitPrefab(UIBattleUnits.Instance._target._id);
 
                 if (prefab)
                 {
                     FieldUnit unit = Instantiate(prefab, BattleManager.Instance.Grid.transform);
-                    unit.transform.localPosition = new(_battle._units[i]._position._x, 0, _battle._units[i]._position._y);
-                    unit.Initialize(i, _battle._units[i]._data);
+                    unit.transform.localPosition = new(_battle.units[i].position._x, 0, _battle.units[i].position._y);
+                    unit.Initialize(i, _battle.units[i].Data);
                     unit._healthBar = Instantiate(_healthBarPrefab, _healthBarGrid);
                     unit._healthBar.gameObject.SetActive(false);
 
@@ -295,18 +295,15 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
         }
     }
 
-    public void UnitDamageCallBack(int id, float damage)
-    {
-        print("Unit took damage: " + damage);
-    }
+    public void UnitDamageCallBack(int id, float damage) { }
 
     public void BuildingAttackCallBack(int id, BattleUnit target)
     {
         for (int i = 0; i < buildingsOnGrid.Count; i++)
         {
             if (buildingsOnGrid[i].id == id && buildingsOnGrid[i].building is Cannon cannon)
-                if (GetPosOfUnit(target._index).HasValue)
-                    cannon.SetTarget(GetPosOfUnit(target._index).Value);
+                if (GetPosOfUnit(target.Index).HasValue)
+                    cannon.SetTarget(GetPosOfUnit(target.Index).Value);
         }
     }
 
@@ -314,10 +311,10 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
     {
         for (int i = 0; i < buildingsOnGrid.Count; i++)
         {
-            if (buildingsOnGrid[i].id == building._building.id && building._health < building._building.health)
+            if (buildingsOnGrid[i].id == building.Building.id && building.Health < building.Building.health)
             {
                 buildingsOnGrid[i].healthBar.gameObject.SetActive(true);
-                buildingsOnGrid[i].healthBar.FillAmount(_battle._buildings[buildingsOnGrid[i].index]._health / _battle._buildings[buildingsOnGrid[i].index]._building.health);
+                buildingsOnGrid[i].healthBar.FillAmount(_battle.buildings[buildingsOnGrid[i].index].Health / _battle.buildings[buildingsOnGrid[i].index].Building.health);
                 buildingsOnGrid[i].healthBar._rect.anchoredPosition = GetUnitBarPosition(BattleManager.Instance.Grid.GetEndPosition(buildingsOnGrid[i].building));
             }
         }
@@ -355,15 +352,13 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
             }
         }
 
-        if (GetBuildingCountForPercent() < _battle.allCount)
+        if (GetBuildingCountForPercent() < _battle.AllCount)
         {
             var percent = GetPercent();
 
             _damage.text = percent.ToString();
 
-            if (beforePercent < 50 && percent >= 50)
-                AddStar();
-            else if (beforePercent < 100 && percent >= 100)
+            if (beforePercent < 50 && percent >= 50 || beforePercent < 100 && percent >= 100)
                 AddStar();
         }
     }
@@ -418,17 +413,17 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
     public int GetPercent()
     {
-        return Mathf.RoundToInt((_battle.allCount - UIBattleMain.Instance.GetBuildingCountForPercent()) * 100f / _battle.allCount);
+        return Mathf.RoundToInt((_battle.AllCount - Instance.GetBuildingCountForPercent()) * 100f / _battle.AllCount);
     }
 
     public void End()
     {
-        if (_battle.isStart)
+        if (_battle.IsStart)
         {
             _elements.SetActive(false);
 
             UIBattleUnits.Instance.End();
-            UIBattleResult.Instance.SetResult(_plunderedGold, _plunderedElixir, GetPercent(), UIBattleMain.Instance.GetStarsCount());
+            UIBattleResult.Instance.SetResult(_plunderedGold, _plunderedElixir, GetPercent(), Instance.GetStarsCount());
         }
         else
             SceneManager.LoadScene("Game");

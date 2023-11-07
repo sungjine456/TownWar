@@ -4,38 +4,37 @@ public delegate void DamageCallback(BattleBuilding building);
 
 public class BattleBuilding
 {
-    public Data.Building _building;
-    public float _health;
-    public int _target = -1;
-    public double _attackTimer;
-    public BattleVector2 _worldCenterPosition;
-    public AttackUnitCallback _attackCallback;
-    public IndexCallback _destroyCallback;
-    public DamageCallback _damageCallback;
+    public int target = -1;
+    public double attackTimer;
+    public BattleVector2 worldCenterPosition;
+    public AttackUnitCallback attackCallback;
+    public IndexCallback destroyCallback;
+    public DamageCallback damageCallback;
+
+    public Data.Building Building { get; private set; }
+    public float Health { get; private set; }
 
     public BattleBuilding(Data.Building building)
     {
-        _building = building;
-        _health = building.health;
-        _worldCenterPosition = new((building.x + building.columns / 2f) * Data.CELL_SIZE, (building.y + building.rows / 2f) * Data.CELL_SIZE);
+        Building = building;
+        Health = building.health;
+        worldCenterPosition = new((building.x + building.columns / 2f) * Data.CELL_SIZE, (building.y + building.rows / 2f) * Data.CELL_SIZE);
     }
 
     public void TakeDamage(float damage, ref BattleGrid grid, ref List<Tile> blockedTiles)
     {
-        if (_health <= 0)
+        if (Health <= 0)
             return;
 
-        _health -= damage;
+        Health -= damage;
 
-        _damageCallback?.Invoke(this);
+        damageCallback?.Invoke(this);
 
-        if (_health <= 0)
+        if (Health <= 0)
         {
-            _health = 0;
-
-            for (int x = _building.x; x < _building.x + _building.columns; x++)
+            for (int x = Building.x; x < Building.x + Building.columns; x++)
             {
-                for (int y = _building.y; y < _building.y + _building.rows; y++)
+                for (int y = Building.y; y < Building.y + Building.rows; y++)
                 {
                     grid[x, y].Blocked = false;
 
@@ -50,7 +49,7 @@ public class BattleBuilding
                 }
             }
 
-            _destroyCallback?.Invoke(_building.id);
+            destroyCallback?.Invoke(Building.id);
         }
     }
 }

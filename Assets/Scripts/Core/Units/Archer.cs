@@ -10,7 +10,7 @@ public class Archer : FieldUnit
 
     public void DoAttackAnim()
     {
-        var b = UIBattleMain.Instance.GetPosOfBuilding(_target._building.id);
+        var b = UIBattleMain.Instance.GetPosOfBuilding(_target.Building.id);
 
         if (b.HasValue)
         {

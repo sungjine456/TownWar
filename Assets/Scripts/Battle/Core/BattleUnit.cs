@@ -1,57 +1,58 @@
 using System.Collections.Generic;
 
-public delegate void UnitIdCallback(Data.UnitId id);
-
 public class BattleUnit
 {
-    public int _index;
-    public Data.Unit _data;
-    public float _health;
-    public int _target = -1;
-    public int _mainTarget = -1;
-    public BattleVector2 _position;
-    public Path _path;
-    public double _pathTime;
-    public double _pathTraveledTime;
-    public double _attackTimer;
-    public Dictionary<int, float> _targets;
-    public AttackBuildingCallback _attackCallback;
-    public IndexCallback _dieCallback;
-    public FloatCallback _damageCallback;
+    public int target = -1;
+    public int mainTarget = -1;
+    public BattleVector2 position;
+    public Path path;
+    public double pathTime;
+    public double pathTraveledTime;
+    public double attackTimer;
+    public AttackBuildingCallback attackCallback;
+    public IndexCallback dieCallback;
+    public FloatCallback damageCallback;
 
-    public BattleUnit(Data.Unit data)
+    public int Index { get; private set; }
+    public float Health { get; private set; }
+    public Data.Unit Data { get; private set; }
+    public Dictionary<int, float> Targets { get; private set; }
+
+    public BattleUnit(int index, Data.Unit data)
     {
-        _data = data;
-        _targets = new();
+        Index = index;
+        Data = data;
+        Health = data.health;
+        Targets = new();
     }
 
     public void AssignTarget(int target, Path path)
     {
-        _attackTimer = 0;
-        _target = target;
-        _path = path;
+        attackTimer = 0;
+        this.target = target;
+        this.path = path;
 
         if (path != null)
         {
-            _pathTraveledTime = 0;
-            _pathTime = path._length / (_data.moveSpeed * Data.CELL_SIZE);
+            pathTraveledTime = 0;
+            pathTime = path.length / (Data.moveSpeed * global::Data.CELL_SIZE);
         }
     }
 
     public void TakeDamage(float damage)
     {
-        if (_health <= 0)
+        if (Health <= 0)
             return;
 
-        _health -= damage;
+        Health -= damage;
 
-        _damageCallback?.Invoke(_index, damage);
+        damageCallback?.Invoke(Index, damage);
 
-        if (_health <= 0)
+        if (Health <= 0)
         {
-            _health = 0;
+            Health = 0;
 
-            _dieCallback?.Invoke(_index);
+            dieCallback?.Invoke(Index);
         }
     }
 }

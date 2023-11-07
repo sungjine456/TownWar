@@ -11,42 +11,43 @@ public delegate void AttackBuildingCallback(int index, BattleBuilding target);
 
 public class Battle
 {
-    public List<BattleBuilding> _buildings;
-    public List<BattleUnit> _units = new();
     int _unitIndex;
     BattleGrid _grid;
     BattleGrid _unlimitedGrid;
     Search _search;
     Search _unlimitedSearch;
-    List<Tile> _blockedTiles = new();
-    readonly List<Projectile> _projectiles = new();
-    
-    public int allCount;
-    public bool isStart;
-    public DateTime startTime;
+    List<Tile> _blockedTiles;
+    readonly List<Projectile> _projectiles;
 
-    public Battle(List<BattleBuilding> buildings, int maxPlunderableGold, int maxPlunderableElixir)
+    public List<BattleBuilding> buildings;
+    public List<BattleUnit> units;
+
+    public int AllCount { get; private set; }
+    public bool IsStart { get; private set; }
+    public DateTime StartTime { get; private set; }
+
+    public Battle(List<BattleBuilding> buildings)
     {
-        _buildings = buildings;
         _grid = new(Data.GRID_SIZE, Data.GRID_SIZE);
         _unlimitedGrid = new(Data.GRID_SIZE, Data.GRID_SIZE);
         _search = new(_grid);
         _unlimitedSearch = new(_unlimitedGrid);
+        _blockedTiles = new();
+        _projectiles = new();
+        this.buildings = buildings;
+        units = new();
 
         for (int i = 0; i < buildings.Count; i++)
         {
-            if (buildings[i]._building.buildingId != Data.BuildingId.wall)
-                allCount++;
-        }
+            if (buildings[i].Building.buildingId != Data.BuildingId.wall)
+                AllCount++;
 
-        for (int i = 0; i < buildings.Count; i++)
-        {
-            int startX = buildings[i]._building.x;
-            int endX = buildings[i]._building.x + buildings[i]._building.columns;
-            int startY = buildings[i]._building.y;
-            int endY = buildings[i]._building.y + buildings[i]._building.rows;
+            int startX = buildings[i].Building.x;
+            int endX = buildings[i].Building.x + buildings[i].Building.columns;
+            int startY = buildings[i].Building.y;
+            int endY = buildings[i].Building.y + buildings[i].Building.rows;
 
-            if (buildings[i]._building.buildingId != Data.BuildingId.wall && buildings[i]._building.columns > 1 && buildings[i]._building.rows > 1)
+            if (buildings[i].Building.buildingId != Data.BuildingId.wall && buildings[i].Building.columns > 1 && buildings[i].Building.rows > 1)
             {
                 startX++;
                 startY++;
@@ -62,7 +63,7 @@ public class Battle
                 for (int y = startY; y < endY; y++)
                 {
                     _grid[x, y].Blocked = true;
-                    _blockedTiles.Add(new(buildings[i]._building.buildingId, new(x, y), i));
+                    _blockedTiles.Add(new(buildings[i].Building.buildingId, new(x, y), i));
                 }
             }
         }
@@ -70,38 +71,38 @@ public class Battle
 
     void HandleBuilding(int index)
     {
-        if (_buildings[index]._target >= 0)
+        if (buildings[index].target >= 0)
         {
-            if (_units[_buildings[index]._target]._health <= 0 || !IsUnitInRange(_buildings[index]._target, index))
-                _buildings[index]._target = -1;
+            if (units[buildings[index].target].Health <= 0 || !IsUnitInRange(buildings[index].target, index))
+                buildings[index].target = -1;
             else
             {
-                _buildings[index]._attackTimer += Time.deltaTime;
-                int attacksCount = (int)Math.Floor(_buildings[index]._attackTimer / _buildings[index]._building.speed);
+                buildings[index].attackTimer += Time.deltaTime;
+                int attacksCount = (int)Math.Floor(buildings[index].attackTimer / buildings[index].Building.speed);
 
                 if (attacksCount > 0)
                 {
-                    _buildings[index]._attackTimer -= (attacksCount * _buildings[index]._building.speed);
+                    buildings[index].attackTimer -= (attacksCount * buildings[index].Building.speed);
 
                     for (int i = 1; i <= attacksCount; i++)
                     {
-                        if (_buildings[index]._building.radius > 0 && _buildings[index]._building.rangedSpeed > 0)
+                        if (buildings[index].Building.radius > 0 && buildings[index].Building.rangedSpeed > 0)
                         {
-                            float distance = BattleVector2.Distance(_units[_buildings[index]._target]._position, _buildings[index]._worldCenterPosition);
+                            float distance = BattleVector2.Distance(units[buildings[index].target].position, buildings[index].worldCenterPosition);
                             
                             Projectile projectile = new()
                             {
                                 _type = TargetType.unit,
-                                _target = _buildings[index]._target,
-                                _timer = distance / _buildings[index]._building.rangedSpeed,
-                                _damage = _buildings[index]._building.damage
+                                _target = buildings[index].target,
+                                _timer = distance / buildings[index].Building.rangedSpeed,
+                                _damage = buildings[index].Building.damage
                             };
                             _projectiles.Add(projectile);
                         }
                         else
-                            _units[_buildings[index]._target].TakeDamage(_buildings[index]._building.damage);
+                            units[buildings[index].target].TakeDamage(buildings[index].Building.damage);
 
-                        _buildings[index]._attackCallback?.Invoke(_buildings[index]._building.id, _units[_buildings[index]._target]);
+                        buildings[index].attackCallback?.Invoke(buildings[index].Building.id, units[buildings[index].target]);
                     }
                 }
             }
@@ -112,15 +113,15 @@ public class Battle
 
     bool FindTargetForBuilding(int index)
     {
-        for (int i = 0; i < _units.Count; i++)
+        for (int i = 0; i < units.Count; i++)
         {
-            if (_units[i]._health <= 0)
+            if (units[i].Health <= 0)
                 continue;
 
             if (IsUnitInRange(i, index))
             {
-                _buildings[index]._attackTimer = 0;
-                _buildings[index]._target = i;
+                buildings[index].attackTimer = 0;
+                buildings[index].target = i;
 
                 return true;
             }
@@ -131,115 +132,115 @@ public class Battle
 
     bool IsUnitInRange(int unitIndex, int buildingIndex)
     {
-        float distance = BattleVector2.Distance(_buildings[buildingIndex]._worldCenterPosition, _units[unitIndex]._position);
+        float distance = BattleVector2.Distance(buildings[buildingIndex].worldCenterPosition, units[unitIndex].position);
 
-        return distance <= _buildings[buildingIndex]._building.radius && 
-            !(_buildings[buildingIndex]._building.blindRange > 0 && distance <= _buildings[buildingIndex]._building.blindRange);
+        return distance <= buildings[buildingIndex].Building.radius && 
+            !(buildings[buildingIndex].Building.blindRange > 0 && distance <= buildings[buildingIndex].Building.blindRange);
     }
 
     void HandleUnit(int index, double deltaTime)
     {
-        if (_units[index]._path != null)
+        if (units[index].path != null)
         {
-            if (_units[index]._target < 0 || (_units[index]._target >= 0 && _buildings[_units[index]._target]._health <= 0))
+            if (units[index].target < 0 || (units[index].target >= 0 && buildings[units[index].target].Health <= 0))
             {
-                _units[index]._path = null;
-                _units[index]._target = -1;
+                units[index].path = null;
+                units[index].target = -1;
             }
             else
             {
-                double remainedTime = _units[index]._pathTime - _units[index]._pathTraveledTime;
+                double remainedTime = units[index].pathTime - units[index].pathTraveledTime;
 
                 if (remainedTime >= deltaTime)
                 {
-                    _units[index]._pathTraveledTime += deltaTime;
+                    units[index].pathTraveledTime += deltaTime;
                     deltaTime = 0;
                 }
                 else
                 {
-                    _units[index]._pathTraveledTime = _units[index]._pathTime;
+                    units[index].pathTraveledTime = units[index].pathTime;
                     deltaTime -= remainedTime;
                 }
 
-                _units[index]._position = GetPathPosition(_units[index]._path._points, (float)(_units[index]._pathTraveledTime / _units[index]._pathTime));
+                units[index].position = GetPathPosition(units[index].path.points, (float)(units[index].pathTraveledTime / units[index].pathTime));
 
-                if (_units[index]._data.attackRange > 0 && IsBuildingInRange(index, _units[index]._target))
-                    _units[index]._path = null;
+                if (units[index].Data.attackRange > 0 && IsBuildingInRange(index, units[index].target))
+                    units[index].path = null;
                 else
                 {
-                    BattleVector2 targetPosition = GridToWorldPosition(new(_units[index]._path.LastCell().Location._x, _units[index]._path.LastCell().Location._y));
-                    float distance = BattleVector2.Distance(_units[index]._position, targetPosition);
+                    BattleVector2 targetPosition = GridToWorldPosition(new(units[index].path.LastCell().Location._x, units[index].path.LastCell().Location._y));
+                    float distance = BattleVector2.Distance(units[index].position, targetPosition);
 
                     if (distance <= Data.CELL_SIZE * 0.05f)
                     {
-                        _units[index]._position = targetPosition;
-                        _units[index]._path = null;
+                        units[index].position = targetPosition;
+                        units[index].path = null;
                     }
                 }
             }
         }
 
-        if (_units[index]._target >= 0)
+        if (units[index].target >= 0)
         {
-            if (_buildings[_units[index]._target]._health > 0)
+            if (buildings[units[index].target].Health > 0)
             {
-                if(_buildings[_units[index]._target]._building.buildingId == Data.BuildingId.wall && _units[index]._mainTarget >= 0 && _buildings[_units[index]._mainTarget]._health <= 0)
-                    _units[index]._target = -1;
+                if(buildings[units[index].target].Building.buildingId == Data.BuildingId.wall && units[index].mainTarget >= 0 && buildings[units[index].mainTarget].Health <= 0)
+                    units[index].target = -1;
                 else
                 {
-                    if (_units[index]._path == null)
+                    if (units[index].path == null)
                     {
-                        _units[index]._attackTimer += deltaTime;
+                        units[index].attackTimer += deltaTime;
 
-                        if (_units[index]._attackTimer >= _units[index]._data.attackSpeed)
+                        if (units[index].attackTimer >= units[index].Data.attackSpeed)
                         {
-                            float distance = BattleVector2.Distance(_units[index]._position, _buildings[_units[index]._target]._worldCenterPosition);
+                            float distance = BattleVector2.Distance(units[index].position, buildings[units[index].target].worldCenterPosition);
 
-                            if (_units[index]._data.attackRange > 0 && _units[index]._data.rangedSpeed > 0)
+                            if (units[index].Data.attackRange > 0 && units[index].Data.rangedSpeed > 0)
                             {
                                 Projectile projectile = new()
                                 {
                                     _type = TargetType.building,
-                                    _target = _units[index]._target,
-                                    _timer = distance / _units[index]._data.rangedSpeed,
-                                    _damage = _units[index]._data.damage
+                                    _target = units[index].target,
+                                    _timer = distance / units[index].Data.rangedSpeed,
+                                    _damage = units[index].Data.damage
                                 };
                                 _projectiles.Add(projectile);
                             }
                             else
-                                _buildings[_units[index]._target].TakeDamage(_units[index]._data.damage, ref _grid, ref _blockedTiles);
+                                buildings[units[index].target].TakeDamage(units[index].Data.damage, ref _grid, ref _blockedTiles);
 
-                            _units[index]._attackTimer -= _units[index]._data.attackSpeed;
-                            _units[index]._attackCallback?.Invoke(index, _buildings[_units[index]._target]);
+                            units[index].attackTimer -= units[index].Data.attackSpeed;
+                            units[index].attackCallback?.Invoke(index, buildings[units[index].target]);
                         }
                     }
                 }
             }
             else
-                _units[index]._target = -1;
+                units[index].target = -1;
         }
 
-        if (_units[index]._target < 0)
+        if (units[index].target < 0)
         {
             FindTargets(index);
 
-            if (deltaTime > 0 && _units[index]._target >= 0)
+            if (deltaTime > 0 && units[index].target >= 0)
                 HandleUnit(index, deltaTime);
         }
     }
 
     void ListUnitTargets(int index)
     {
-        _units[index]._targets.Clear();
+        units[index].Targets.Clear();
 
-        for (int i = 0; i < _buildings.Count; i++)
-        { 
-            if(_buildings[i]._health <= 0 || _buildings[i]._building.buildingId == Data.BuildingId.wall)
+        for (int i = 0; i < buildings.Count; i++)
+        {
+            if(buildings[i].Health <= 0 || buildings[i].Building.buildingId == Data.BuildingId.wall)
                 continue;
 
-            float distance = BattleVector2.Distance(_buildings[i]._worldCenterPosition, _units[index]._position);
+            float distance = BattleVector2.Distance(buildings[i].worldCenterPosition, units[index].position);
 
-            _units[index]._targets.Add(i, distance);
+            units[index].Targets.Add(i, distance);
         }
     }
 
@@ -247,7 +248,7 @@ public class Battle
     {
         ListUnitTargets(index);
 
-        Dictionary<int, float> temp = _units[index]._targets;
+        Dictionary<int, float> temp = units[index].Targets;
 
         if (temp.Count > 0)
             AssignTarget(index, ref temp);
@@ -270,25 +271,25 @@ public class Battle
         var path = GetPathToBuilding(r, index);
 
         if (path.Item1 >= 0)
-            _units[index].AssignTarget(path.Item1, path.Item2);
+            units[index].AssignTarget(path.Item1, path.Item2);
     }
 
     (int, Path) GetPathToBuilding(int buildingIndex, int unitIndex)
     {
-        if (_buildings[buildingIndex]._building.buildingId == Data.BuildingId.wall)
+        if (buildings[buildingIndex].Building.buildingId == Data.BuildingId.wall)
             return (-1, null);
 
-        BattleVector2Int unitGridPosition = WorldToGridPosition(_units[unitIndex]._position);
+        BattleVector2Int unitGridPosition = WorldToGridPosition(units[unitIndex].position);
 
         List<int> columns = new();
         List<int> rows = new();
 
-        int startX = _buildings[buildingIndex]._building.x;
-        int endX = _buildings[buildingIndex]._building.x + _buildings[buildingIndex]._building.columns - 1;
-        int startY = _buildings[buildingIndex]._building.y;
-        int endY = _buildings[buildingIndex]._building.y + _buildings[buildingIndex]._building.rows - 1;
+        int startX = buildings[buildingIndex].Building.x;
+        int endX = buildings[buildingIndex].Building.x + buildings[buildingIndex].Building.columns - 1;
+        int startY = buildings[buildingIndex].Building.y;
+        int endY = buildings[buildingIndex].Building.y + buildings[buildingIndex].Building.rows - 1;
 
-        if (_buildings[buildingIndex]._building.buildingId == Data.BuildingId.wall)
+        if (buildings[buildingIndex].Building.buildingId == Data.BuildingId.wall)
         {
             startX--;
             startY--;
@@ -311,51 +312,51 @@ public class Battle
         {
             for (int y = 0; y < rows.Count; y++)
             {
-                if (x >= 0 && y >= 0 && x < Data.GRID_SIZE && y < Data.GRID_SIZE)
+                if (x < Data.GRID_SIZE && y < Data.GRID_SIZE)
                 {
                     Path path1 = new();
                     Path path2 = new();
-                    path1.Create(ref _search, new(columns[x], rows[y]), unitGridPosition);
-                    path2.Create(ref _unlimitedSearch, new(columns[x], rows[y]), unitGridPosition);
+                    path1.Create(_search, new(columns[x], rows[y]), unitGridPosition);
+                    path2.Create(_unlimitedSearch, new(columns[x], rows[y]), unitGridPosition);
 
-                    if (path1?._points.Count > 0)
+                    if (path1.points?.Count > 0)
                     {
-                        path1._length = GetPathLength(path1._points);
-                        int lengthToBlocks = (int)Math.Floor(path1._length / (Data.battleTilesWorthOfOneWall * Data.CELL_SIZE));
+                        path1.length = GetPathLength(path1.points);
+                        int lengthToBlocks = (int)Math.Floor(path1.length / (Data.battleTilesWorthOfOneWall * Data.CELL_SIZE));
 
-                        if (path1._length < distance && lengthToBlocks <= blocks)
+                        if (path1.length < distance && lengthToBlocks <= blocks)
                         {
                             closest = tiles.Count;
-                            distance = path1._length;
+                            distance = path1.length;
                             blocks = lengthToBlocks;
                         }
 
                         tiles.Add(path1);
                     }
 
-                    if (path2?._points.Count > 0)
+                    if (path2.points?.Count > 0)
                     {
-                        path2._length = GetPathLength(path2._points);
+                        path2.length = GetPathLength(path2.points);
 
-                        for (int i = 0; i < path2._points.Count; i++)
+                        for (int i = 0; i < path2.points.Count; i++)
                         {
                             for (int j = 0; j < _blockedTiles.Count; j++)
                             {
-                                if (_blockedTiles[j]._position._x == path2._points[i].Location._x && _blockedTiles[j]._position._y == path2._points[i].Location._y)
+                                if (_blockedTiles[j]._position._x == path2.points[i].Location._x && _blockedTiles[j]._position._y == path2.points[i].Location._y)
                                 {
-                                    if (_blockedTiles[j]._id == Data.BuildingId.wall && _buildings[_blockedTiles[j]._index]._health > 0)
-                                        path2._blocks.Add(_blockedTiles[j]);
+                                    if (_blockedTiles[j]._id == Data.BuildingId.wall && buildings[_blockedTiles[j]._index].Health > 0)
+                                        path2.blocks.Add(_blockedTiles[j]);
 
                                     break;
                                 }
                             }
                         }
 
-                        if (path2._length < distance && path2._blocks.Count <= blocks)
+                        if (path2.length < distance && path2.blocks.Count <= blocks)
                         {
                             closest = tiles.Count;
-                            distance = path1._length;
-                            blocks = path2._blocks.Count;
+                            distance = path1.length;
+                            blocks = path2.blocks.Count;
                         }
 
                         tiles.Add(path2);
@@ -364,47 +365,48 @@ public class Battle
             }
         }
 
-        tiles[closest]._points.Reverse();
+        tiles[closest].points.Reverse();
 
-        if (tiles[closest]._blocks.Count > 0)
+        if (tiles[closest].blocks.Count > 0)
         {
-            for (int i = 0; i < _units.Count; i++)
+            for (int i = 0; i < units.Count; i++)
             {
-                if(_units[i]._health <= 0 || i != unitIndex || _units[i]._target < 0 || _units[i]._mainTarget != buildingIndex || _units[i]._mainTarget < 0 || _buildings[_units[i]._mainTarget]._building.buildingId != Data.BuildingId.wall || _buildings[_units[i]._mainTarget]._health <= 0)
+                if(units[i].Health <= 0 || i != unitIndex || units[i].target < 0 || units[i].mainTarget != buildingIndex || units[i].mainTarget < 0 || buildings[units[i].mainTarget].Building.buildingId != Data.BuildingId.wall || buildings[units[i].mainTarget].Health <= 0)
                     continue;
 
-                BattleVector2Int pos = WorldToGridPosition(_units[i]._position);
+                BattleVector2Int pos = WorldToGridPosition(units[i].position);
                 List<Cell> points = _search.FindToList(new(pos._x, pos._y), new(unitGridPosition._x, unitGridPosition._y));
 
                 if (!Path.IsValid(ref points, new(pos._x, pos._y), new(unitGridPosition._x, unitGridPosition._y)))
                     continue;
 
-                Vector2Int end = _units[i]._path.LastCell().Location;
+                Vector2Int end = units[i].path.LastCell().Location;
                 Path path = new();
 
-                if (path.Create(ref _search, pos, new(end)))
+                if (path.Create(_search, pos, new(end)))
                 {
-                    _units[unitIndex]._mainTarget = buildingIndex;
-                    path._blocks = _units[i]._path._blocks;
-                    path._length = GetPathLength(path._points);
+                    units[unitIndex].mainTarget = buildingIndex;
+                    path.blocks = units[i].path.blocks;
+                    path.length = GetPathLength(path.points);
 
-                    return (_units[i]._target, path);
+                    return (units[i].target, path);
                 }
             }
 
             Tile last = tiles[closest].LastTile();
 
-            for (int i = tiles[closest]._points.Count - 1; i >= 0; i--)
+            for (int i = tiles[closest].points.Count - 1; i >= 0; i--)
             {
-                int x = tiles[closest]._points[i].Location._x;
-                int y = tiles[closest]._points[i].Location._y;
-                tiles[closest]._points.RemoveAt(i);
+                int x = tiles[closest].points[i].Location._x;
+                int y = tiles[closest].points[i].Location._y;
+
+                tiles[closest].points.RemoveAt(i);
 
                 if (x == last._position._x && y == last._position._y)
                     break;
             }
 
-            _units[unitIndex]._mainTarget = buildingIndex;
+            units[unitIndex].mainTarget = buildingIndex;
 
             return (last._index, tiles[closest]);
         }
@@ -414,13 +416,15 @@ public class Battle
 
     bool IsBuildingInRange(int unitIndex, int buildingIndex)
     {
-        for (int x = _buildings[buildingIndex]._building.x; x < _buildings[buildingIndex]._building.x + _buildings[buildingIndex]._building.columns; x++)
-        {
-            for (int y = _buildings[buildingIndex]._building.y; y < _buildings[buildingIndex]._building.y + _buildings[buildingIndex]._building.columns; y++)
-            {
-                float distance = BattleVector2.Distance(GridToWorldPosition(new(x, y)), _units[unitIndex]._position);
+        var b = buildings[buildingIndex].Building;
 
-                if(distance <= _units[unitIndex]._data.attackRange)
+        for (int x = b.x; x < b.x + b.columns; x++)
+        {
+            for (int y = b.y; y < b.y + b.columns; y++)
+            {
+                float distance = BattleVector2.Distance(GridToWorldPosition(new(x, y)), units[unitIndex].position);
+
+                if(distance <= units[unitIndex].Data.attackRange)
                     return true;
             }
         }
@@ -485,16 +489,16 @@ public class Battle
 
     public bool CanAddUnit(int x, int y)
     {
-        for (int i = 0; i < _buildings.Count; i++)
+        for (int i = 0; i < buildings.Count; i++)
         {
-            if (_buildings[i]._health <= 0)
+            if (buildings[i].Health <= 0)
                 continue;
 
-            int startX = _buildings[i]._building.x;
-            int endX = _buildings[i]._building.x + _buildings[i]._building.columns;
+            int startX = buildings[i].Building.x;
+            int endX = buildings[i].Building.x + buildings[i].Building.columns;
 
-            int startY = _buildings[i]._building.y;
-            int endY = _buildings[i]._building.y + _buildings[i]._building.rows;
+            int startY = buildings[i].Building.y;
+            int endY = buildings[i].Building.y + buildings[i].Building.rows;
 
             for (int x2 = startX; x2 < endX; x2++)
             {
@@ -503,6 +507,7 @@ public class Battle
                     if (x == x2 && y == y2)
                     {
                         AlertManager.Instance.Error("건물 위에는 유닛을 배치할 수 없습니다.");
+
                         return false;
                     }
                 }
@@ -514,60 +519,55 @@ public class Battle
 
     public void AddUnit(Data.Unit unit, int x, int y, SpawnCallBack spawnCallback, AttackBuildingCallback attackCallback, IndexCallback dieCallback, FloatCallback damageCallback)
     {
-        BattleUnit battleUnit = new(unit)
+        BattleUnit battleUnit = new(_unitIndex++, unit)
         {
-            _index = _unitIndex++,
-            _attackCallback = attackCallback,
-            _dieCallback = dieCallback,
-            _damageCallback = damageCallback,
-            _health = unit.health,
-            _position = GridToWorldPosition(new(x, y))
+            attackCallback = attackCallback,
+            dieCallback = dieCallback,
+            damageCallback = damageCallback,
+            position = GridToWorldPosition(new(x, y))
         };
 
-        if (!isStart)
+        if (!IsStart)
         {
-            isStart = true;
-            startTime = DateTime.Now;
+            IsStart = true;
+            StartTime = DateTime.Now;
 
             SoundManager.Instance.PlayBGM(SoundManager.BgmClip.battle);
         }
 
-        _units.Insert(_units.Count, battleUnit);
+        units.Insert(units.Count, battleUnit);
 
-        spawnCallback.Invoke(battleUnit._index);
+        spawnCallback.Invoke(battleUnit.Index);
     }
 
     public void ExecuteFrame()
     {
-        if (isStart)
+        if (IsStart)
         {
-            for (int i = 0; i < _buildings.Count; i++)
+            for (int i = 0; i < buildings.Count; i++)
             {
-                if (_buildings[i]._building.damage > 0 && _buildings[i]._health > 0)
+                if (buildings[i].Building.damage > 0 && buildings[i].Health > 0)
                     HandleBuilding(i);
             }
 
-            for (int i = 0; i < _units.Count; i++)
+            for (int i = 0; i < units.Count; i++)
             {
-                if (_units[i]._health > 0)
+                if (units[i].Health > 0)
                     HandleUnit(i, Time.deltaTime);
             }
 
-            if (_projectiles.Count > 0)
+            for (int i = _projectiles.Count - 1; i >= 0; i--)
             {
-                for (int i = _projectiles.Count - 1; i >= 0; i--)
+                _projectiles[i]._timer -= Time.deltaTime;
+
+                if (_projectiles[i]._timer <= 0)
                 {
-                    _projectiles[i]._timer -= Time.deltaTime;
+                    if (_projectiles[i]._type == TargetType.unit)
+                        units[_projectiles[i]._target].TakeDamage(_projectiles[i]._damage);
+                    else
+                        buildings[_projectiles[i]._target].TakeDamage(_projectiles[i]._damage, ref _grid, ref _blockedTiles);
 
-                    if (_projectiles[i]._timer <= 0)
-                    {
-                        if (_projectiles[i]._type == TargetType.unit)
-                            _units[_projectiles[i]._target].TakeDamage(_projectiles[i]._damage);
-                        else
-                            _buildings[_projectiles[i]._target].TakeDamage(_projectiles[i]._damage, ref _grid, ref _blockedTiles);
-
-                        _projectiles.RemoveAt(i);
-                    }
+                    _projectiles.RemoveAt(i);
                 }
             }
         }
