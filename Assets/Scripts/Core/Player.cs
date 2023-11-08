@@ -325,7 +325,7 @@ public class Player : MonoBehaviour
     {
         var b = FindBuilding(id);
         
-        if (b != null)
+        if (b is not null)
         {
             b.SetData(building, false, false, 0);
 
@@ -337,7 +337,7 @@ public class Player : MonoBehaviour
     {
         var b = FindBuilding(id);
 
-        if (b != null)
+        if (b is not null)
         {
             b.x = x;
             b.y = y;
@@ -350,7 +350,7 @@ public class Player : MonoBehaviour
     {
         var b = FindBuilding(id);
 
-        if (b != null)
+        if (b is not null)
         {
             b.isBuilding = isBuilding;
 
@@ -362,7 +362,7 @@ public class Player : MonoBehaviour
     {
         var b = FindBuilding(id);
 
-        if (b != null)
+        if (b is not null)
         {
             b.isConstructing = isConstructing;
 
@@ -374,9 +374,10 @@ public class Player : MonoBehaviour
     {
         var b = FindBuilding(id);
 
-        if (b != null)
+        if (b is not null)
         {
             b.constructedTime = time;
+
             Save();
         }
     }
@@ -385,7 +386,7 @@ public class Player : MonoBehaviour
     {
         var b = FindBuilding(id);
 
-        if (b != null)
+        if (b is not null)
         {
             b.storage = storage;
 

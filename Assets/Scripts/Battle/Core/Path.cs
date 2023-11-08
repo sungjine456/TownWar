@@ -18,7 +18,7 @@ public class Path
     {
         var target = search.Find(new(start._x, start._y), new(end._x, end._y));
 
-        if (target == null)
+        if (target is null)
             return false;
 
         points = new();

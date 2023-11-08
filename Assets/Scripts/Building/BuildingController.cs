@@ -107,7 +107,7 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
     {
         var nextInfo = GetNextLevelBuildingInfo();
 
-        if (nextInfo != null && CanBuild())
+        if (nextInfo is not null && CanBuild())
         {
             if (SelectedBuilding.CurrentLevel < _buildingLimit.GetBuildingLimitLevel(_hallLevel, SelectedBuilding.BuildingId))
             {
@@ -117,7 +117,7 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
             else
                 print("회관에 따른 최대 레벨은 넘길 수 없습니다.");
         }
-        else if (nextInfo == null)
+        else if (nextInfo is null)
             print("다음 레벨이 없습니다.");
     }
 

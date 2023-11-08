@@ -25,7 +25,7 @@ public class BattleGrid
             {
                 var cell = _cells[x, y];
 
-                if (cell == null)
+                if (cell is null)
                     _cells[x, y] = new(new(x, y));
                 else
                 {

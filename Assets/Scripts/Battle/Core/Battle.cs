@@ -140,7 +140,7 @@ public class Battle
 
     void HandleUnit(int index, double deltaTime)
     {
-        if (units[index].path != null)
+        if (units[index].path is not null)
         {
             if (units[index].target < 0 || (units[index].target >= 0 && buildings[units[index].target].Health <= 0))
             {
@@ -188,7 +188,7 @@ public class Battle
                     units[index].target = -1;
                 else
                 {
-                    if (units[index].path == null)
+                    if (units[index].path is null)
                     {
                         units[index].attackTimer += deltaTime;
 

@@ -32,7 +32,7 @@ public class BattleUnit
         this.target = target;
         this.path = path;
 
-        if (path != null)
+        if (path is not null)
         {
             pathTraveledTime = 0;
             pathTime = path.length / (Data.moveSpeed * global::Data.CELL_SIZE);

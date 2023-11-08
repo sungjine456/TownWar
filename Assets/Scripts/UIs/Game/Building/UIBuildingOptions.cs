@@ -36,7 +36,7 @@ public class UIBuildingOptions : SingletonMonoBehaviour<UIBuildingOptions>
     {
         var buildingData = BuildingController.Instance.GetNextLevelBuildingInfo();
 
-        if (buildingData != null)
+        if (buildingData is not null)
             UIBuildingUpgrade.Instance.Open(buildingData);
         else
             print("다음 레벨이 없습니다.");

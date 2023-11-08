@@ -107,7 +107,7 @@ public class Search
 
         Stack<Cell> path = new();
 
-        while (node != null) 
+        while (node is not null) 
         {
             path.Push(node);
             node = node.Parent;

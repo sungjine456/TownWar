@@ -8,11 +8,21 @@ public class UIBattleUnits : SingletonMonoBehaviour<UIBattleUnits>
     [SerializeField] UIBattleUnit _unitPrefab;
     [SerializeField] UnitInfo _unitInfo;
 
-    [HideInInspector] public List<UIBattleUnit> _units;
     [HideInInspector] public UIBattleUnit _target;
+    
+    List<UIBattleUnit> _units;
+
+    protected override void OnAwake()
+    {
+        base.OnAwake();
+
+        _units = new();
+    }
 
     protected override void OnStart()
     {
+        base.OnStart();
+
         Dictionary<(Data.UnitId, int), Queue<Data.Unit>> group = new();
 
         foreach (var u in GameManager.Instance.MyPlayer.GetUnits(Data.UnitStatus.army))
@@ -24,7 +34,7 @@ public class UIBattleUnits : SingletonMonoBehaviour<UIBattleUnits>
                 Queue<Data.Unit> list = new();
                 list.Enqueue(u);
                 group.Add((u.id, u.level), list);
-            }   
+            }
         }
 
         foreach (var g in group)
@@ -42,7 +52,7 @@ public class UIBattleUnits : SingletonMonoBehaviour<UIBattleUnits>
 
     public void SelectUnit(Data.UnitId id)
     {
-        if (_target == null || (_target != null && _target._id != id))
+        if (_target is null || _target?._id != id)
         {
             for (int i = 0; i < _units.Count; i++)
             {
@@ -64,13 +74,16 @@ public class UIBattleUnits : SingletonMonoBehaviour<UIBattleUnits>
 
     public bool IsEmpty()
     {
-        int count = 0;
-
         for (int i = 0; i < _units.Count; i++)
         {
-            count += _units[i].Count;
+            if (_units[i].Count > 0)
+                return false;
         }
 
-        return count == 0;
+        return true;
     }
+
+    public int CountOfUnits() => _units.Count;
+
+    public UIBattleUnit GetUnit(int index) => _units[index];
 }

@@ -220,22 +220,22 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
     public void PlaceUnit(int x, int y)
     {
-        for (int i = 0; i < UIBattleUnits.Instance._units.Count; i++)
+        for (int i = 0; i < UIBattleUnits.Instance.CountOfUnits(); i++)
         {
-            if (UIBattleUnits.Instance._units[i]._id == UIBattleUnits.Instance._target._id)
+            if (UIBattleUnits.Instance.GetUnit(i)._id == UIBattleUnits.Instance._target._id)
             {
                 _selectedUnitIndex = i;
                 break;
             }
         }
 
-        if (_selectedUnitIndex >= 0 && UIBattleUnits.Instance._units[_selectedUnitIndex].Count > 0 && _battle.CanAddUnit(x, y))
+        if (_selectedUnitIndex >= 0 && UIBattleUnits.Instance.GetUnit(_selectedUnitIndex).Count > 0 && _battle.CanAddUnit(x, y))
         {
             var u = UIBattleUnits.Instance._target.Pop();
 
-            if (u != null)
+            if (u is not null)
             {
-                if (UIBattleUnits.Instance._units[_selectedUnitIndex].Count <= 0)
+                if (UIBattleUnits.Instance.GetUnit(_selectedUnitIndex).Count <= 0)
                     _selectedUnitIndex = -1;
 
                 GameManager.Instance.MyPlayer.RemoveUnit(u.id, Data.UnitStatus.army);
@@ -358,7 +358,7 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
             _damage.text = percent.ToString();
 
-            if (beforePercent < 50 && percent >= 50 || beforePercent < 100 && percent >= 100)
+            if ((beforePercent < 50 && percent >= 50) || (beforePercent < 100 && percent >= 100))
                 AddStar();
         }
     }
