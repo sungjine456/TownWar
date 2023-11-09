@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Text;
 
 public class AnimationController : MonoBehaviour
 {

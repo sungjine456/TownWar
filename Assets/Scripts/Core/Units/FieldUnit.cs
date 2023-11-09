@@ -105,4 +105,9 @@ public class FieldUnit : MonoBehaviour
             _state = state;
         }
     }
+
+    public void EndDethAnim()
+    {
+        Destroy(gameObject);
+    }
 }
