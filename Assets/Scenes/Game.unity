@@ -1318,7 +1318,7 @@ GameObject:
   - component: {fileID: 137392918}
   - component: {fileID: 137392919}
   m_Layer: 5
-  m_Name: Cannon
+  m_Name: Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3969,7 +3969,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uB300\uD3EC"
+  m_text: "\uD0C0\uC6CC"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ad7afe6fd81ce0140b4136e44c4ed4ce, type: 2}
   m_sharedMaterial: {fileID: 429656542930989257, guid: ad7afe6fd81ce0140b4136e44c4ed4ce, type: 2}

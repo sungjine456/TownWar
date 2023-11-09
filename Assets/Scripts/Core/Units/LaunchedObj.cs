@@ -22,8 +22,8 @@ public class LaunchedObj : MonoBehaviour
         _moveSpeed = speed;
         _type = type;
         transform.position = startPos;
-        _targetPos = new(targetPos.x, startPos.y, targetPos.z);
-        transform.rotation = Quaternion.LookRotation(targetPos - transform.position);
-        transform.eulerAngles = new Vector3(-90, transform.eulerAngles.y, transform.eulerAngles.z);
+        _targetPos = new(targetPos.x, targetPos.y + 0.5f, targetPos.z);
+        transform.rotation = Quaternion.LookRotation(_targetPos - transform.position);
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x - 90, transform.eulerAngles.y, transform.eulerAngles.z);
     }
 }

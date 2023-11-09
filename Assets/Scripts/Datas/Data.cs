@@ -13,7 +13,7 @@ public class Data
 
     public enum BuildingId
     {
-        townHall, goldMine, goldStorage, elixirMine, elixirStorage, buildersHut, armyCamp, barracks, wall, cannon
+        townHall, goldMine, goldStorage, elixirMine, elixirStorage, buildersHut, armyCamp, barracks, wall, tower
     }
 
     public enum UnitId

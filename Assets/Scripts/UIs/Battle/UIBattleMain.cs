@@ -301,9 +301,9 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
     {
         for (int i = 0; i < buildingsOnGrid.Count; i++)
         {
-            if (buildingsOnGrid[i].id == id && buildingsOnGrid[i].building is Cannon cannon)
+            if (buildingsOnGrid[i].id == id && buildingsOnGrid[i].building is Tower t)
                 if (GetPosOfUnit(target.Index).HasValue)
-                    cannon.SetTarget(GetPosOfUnit(target.Index).Value);
+                    t.SetTarget(GetPosOfUnit(target.Index).Value);
         }
     }
 

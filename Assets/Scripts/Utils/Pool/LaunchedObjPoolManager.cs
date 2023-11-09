@@ -7,11 +7,11 @@ public class LaunchedObjPoolManager : SingletonMonoBehaviour<LaunchedObjPoolMana
     public enum Type
     {
         arrow,
-        bullet
+        tower
     }
 
     [SerializeField] LaunchedObj _arrowPrefab;
-    [SerializeField] LaunchedObj _bulletPrefab;
+    [SerializeField] LaunchedObj _towerPrefab;
 
     Dictionary<Type, GameObjectPool<LaunchedObj>> _pools;
 
@@ -26,9 +26,9 @@ public class LaunchedObjPoolManager : SingletonMonoBehaviour<LaunchedObjPoolMana
             return o;
         }));
 
-        _pools.Add(Type.bullet, new(10, () =>
+        _pools.Add(Type.tower, new(10, () =>
         {
-            var o = Instantiate(_bulletPrefab);
+            var o = Instantiate(_towerPrefab);
             o.gameObject.SetActive(false);
             return o;
         }));
@@ -49,8 +49,8 @@ public class LaunchedObjPoolManager : SingletonMonoBehaviour<LaunchedObjPoolMana
     }
 
     public LaunchedObj GetArrow() => Get(Type.arrow);
-    public LaunchedObj GetBullet() => Get(Type.bullet);
+    public LaunchedObj GetTower() => Get(Type.tower);
 
     public void RemoveArrow(LaunchedObj o) => Remove(Type.arrow, o);
-    public void RemoveBullet(LaunchedObj o) => Remove(Type.bullet, o);
+    public void RemoveTower(LaunchedObj o) => Remove(Type.tower, o);
 }

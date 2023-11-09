@@ -3699,7 +3699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _arrowPrefab: {fileID: 1802766031527984346, guid: 849add9d3e7460b41b67df75867822d4, type: 3}
-  _bulletPrefab: {fileID: 9024160899438858428, guid: 5aa23eea8ca49b141be2773ce92ffaca, type: 3}
+  _towerPrefab: {fileID: 4105985428914490184, guid: 05a93bbb7856d17479b5d848fc78007d, type: 3}
 --- !u!4 &1616519316
 Transform:
   m_ObjectHideFlags: 0
@@ -3769,7 +3769,6 @@ MonoBehaviour:
   _parent: {fileID: 857488640}
   _unitPrefab: {fileID: 8022186847206859418, guid: 2c48059e47f8d6f498db1b64b6cb1538, type: 3}
   _unitInfo: {fileID: 11400000, guid: 6ba0d4aa37e65ac4ea3a53d5b434918d, type: 2}
-  _units: []
   _target: {fileID: 0}
 --- !u!1 &1634826872
 GameObject:
