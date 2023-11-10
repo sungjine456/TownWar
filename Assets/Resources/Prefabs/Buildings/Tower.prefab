@@ -50,7 +50,9 @@ MonoBehaviour:
   buildingId: 9
   rows: 3
   columns: 3
-  levels: []
+  levels:
+  - level: 0
+    mesh: {fileID: 5536558208258288471}
   baseArea: {fileID: 709580531354938}
   data:
     id: 0
@@ -259,6 +261,11 @@ PrefabInstance:
       addedObject: {fileID: 1539190246480932260}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5921e45280d702e44ad0fb582ac16d26, type: 3}
+--- !u!1 &5536558208258288471 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 5921e45280d702e44ad0fb582ac16d26, type: 3}
+  m_PrefabInstance: {fileID: 5536558208258387447}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5536558208258520951 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 5921e45280d702e44ad0fb582ac16d26, type: 3}
