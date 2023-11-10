@@ -1,13 +1,6 @@
 using System;
-using UnityEngine;
 
-public enum FieldUnitState
-{
-    Idle,
-    Attack,
-    Run,
-    Death
-}
+using UnityEngine;
 
 public class FieldUnit : MonoBehaviour
 {
@@ -24,13 +17,12 @@ public class FieldUnit : MonoBehaviour
     [HideInInspector] public Data.Unit _unit;
     [HideInInspector] public AnimationController _aniCtrl;
     [HideInInspector] public Vector3 _lastPosition;
-    FieldUnitState _state;
     bool _isChangeState;
     
     protected BattleBuilding _target;
 
     public virtual Data.UnitId Id { get { return Data.UnitId.warrior; } }
-    public FieldUnitState CurrentState { get { return _state; } }
+    public AniMotion CurrentState { get { return _aniCtrl.Motion; } }
     public int Index { get; private set; } = -1;
 
     void Start()
@@ -42,7 +34,7 @@ public class FieldUnit : MonoBehaviour
     {
         if (Vector3.SqrMagnitude(_lastPosition - transform.position) > 0.00000001)
         {
-            SetState(FieldUnitState.Run);
+            SetState(AniMotion.Run);
 
             if (GameManager.Instance.IsBattling)
             {
@@ -55,8 +47,8 @@ public class FieldUnit : MonoBehaviour
                     Vector3.MoveTowards(transform.position, _lastPosition, 2 * Time.deltaTime),
                     Quaternion.LookRotation(_lastPosition - transform.position));
         }
-        else if (_state == FieldUnitState.Run)
-            SetState(FieldUnitState.Idle);
+        else if (_aniCtrl.Motion == AniMotion.Run)
+            SetState(AniMotion.Idle);
 
         BehaviourProcess();
     }
@@ -67,21 +59,7 @@ public class FieldUnit : MonoBehaviour
         {
             _isChangeState = false;
 
-            switch (_state)
-            {
-                case FieldUnitState.Idle:
-                    _aniCtrl.Play(AnimationController.AniMotion.Idle);
-                    break;
-                case FieldUnitState.Run:
-                    _aniCtrl.Play(AnimationController.AniMotion.Run);
-                    break;
-                case FieldUnitState.Attack:
-                    _aniCtrl.Play(AnimationController.AniMotion.Attack);
-                    break;
-                case FieldUnitState.Death:
-                    _aniCtrl.Play(AnimationController.AniMotion.Death);
-                    break;
-            }
+            _aniCtrl.Play();
         }
     }
 
@@ -97,12 +75,12 @@ public class FieldUnit : MonoBehaviour
         _lastPosition = transform.position;
     }
 
-    public void SetState(FieldUnitState state)
+    public void SetState(AniMotion state)
     {
-        if (_state != state)
+        if (_aniCtrl.Motion != state)
         {
             _isChangeState = true;
-            _state = state;
+            _aniCtrl.SetMotion(state);
         }
     }
 

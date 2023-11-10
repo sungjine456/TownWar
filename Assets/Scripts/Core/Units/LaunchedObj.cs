@@ -7,7 +7,7 @@ public class LaunchedObj : MonoBehaviour
     [SerializeField] float _moveSpeed;
 
     Vector3 _targetPos;
-    LaunchedObjPoolManager.Type _type;
+    LaunchedObjType _type;
 
     void Update()
     {
@@ -17,7 +17,7 @@ public class LaunchedObj : MonoBehaviour
             LaunchedObjPoolManager.Instance.Remove(_type, this);
     }
 
-    public void Initialized(LaunchedObjPoolManager.Type type, Vector3 startPos, Vector3 targetPos, float speed)
+    public void Initialized(LaunchedObjType type, Vector3 startPos, Vector3 targetPos, float speed)
     {
         _moveSpeed = speed;
         _type = type;

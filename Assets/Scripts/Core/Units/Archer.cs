@@ -17,7 +17,7 @@ public class Archer : FieldUnit
             SoundManager.Instance.PlaySFX(SoundManager.SfxClip.bow);
 
             LaunchedObj arrow = LaunchedObjPoolManager.Instance.GetArrow();
-            arrow.Initialized(LaunchedObjPoolManager.Type.arrow, _weaponPosition.transform.position, b.Value, 4.2f);
+            arrow.Initialized(LaunchedObjType.arrow, _weaponPosition.transform.position, b.Value, 4.2f);
         }
     }
 }

@@ -1,15 +1,15 @@
 using UnityEngine;
 
+public enum AniMotion
+{
+    Idle,
+    Attack,
+    Run,
+    Death
+}
+
 public class AnimationController : MonoBehaviour
 {
-    public enum AniMotion
-    {
-        Idle,
-        Attack,
-        Run,
-        Death
-    }
-
     Animator _animator;
 
     public AniMotion Motion { get; private set; }
@@ -35,7 +35,7 @@ public class AnimationController : MonoBehaviour
     public void AnimationCompleteHandler()
     {
         if (Motion == AniMotion.Attack)
-            Play(AniMotion.Attack);
+            Play();
     }
 
     public void SetMotion(AniMotion motion)
@@ -43,17 +43,11 @@ public class AnimationController : MonoBehaviour
         Motion = motion;
     }
 
-    public void Play(AniMotion motion, bool isBlend = true)
-    {
-        Motion = motion;
-        Play(motion.ToString(), isBlend);
-    }
-
-    public void Play(string aniName, bool isBlend = true)
+    public void Play(bool isBlend = true)
     {
         if (isBlend)
-            _animator.SetTrigger(aniName);
+            _animator.SetTrigger(Motion.ToString());
         else
-            _animator.Play(aniName, 0, 0f);
+            _animator.Play(Motion.ToString(), 0, 0f);
     }
 }

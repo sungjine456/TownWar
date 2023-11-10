@@ -24,7 +24,7 @@ public class ArmyCamp : GameBuilding
         
         for (int i = 0; i < _armyUnits.Count; i++)
         {
-            if (_armyUnits[i].CurrentState == FieldUnitState.Idle)
+            if (_armyUnits[i].CurrentState == AniMotion.Idle)
             {
                 _armyUnits[i]._lastPosition = _waypoints[Random.Range(0, _waypoints.Length)].transform.position + new Vector3(0, 0.1f, 0);
             }

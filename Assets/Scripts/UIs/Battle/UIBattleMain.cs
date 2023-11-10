@@ -275,7 +275,7 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
         {
             if (unitsOnGrid[i].Index == index)
             {
-                unitsOnGrid[i].SetState(FieldUnitState.Death);
+                unitsOnGrid[i].SetState(AniMotion.Death);
                 Destroy(unitsOnGrid[i]._healthBar.gameObject);
                 unitsOnGrid.RemoveAt(i);
                 break;
@@ -289,7 +289,7 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
         {
             if (unitsOnGrid[i].Index == index)
             {
-                unitsOnGrid[i].SetState(FieldUnitState.Attack);
+                unitsOnGrid[i].SetState(AniMotion.Attack);
                 unitsOnGrid[i].SetTarget(target);
             }
         }
