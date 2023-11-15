@@ -25,7 +25,7 @@ public class FieldUnit : MonoBehaviour
     public AniMotion CurrentState { get { return _aniCtrl.Motion; } }
     public int Index { get; private set; } = -1;
 
-    void Start()
+    void Awake()
     {
         _aniCtrl = GetComponent<AnimationController>();
     }
@@ -73,6 +73,7 @@ public class FieldUnit : MonoBehaviour
         _unit = unit;
         Index = index;
         _lastPosition = transform.position;
+        SetState(AniMotion.Idle);
     }
 
     public void SetState(AniMotion state)
