@@ -3,12 +3,10 @@ using UnityEngine;
 public class GameManager : SingletonDontDestroy<GameManager>
 {
     [SerializeField] GameBuilding[] _buildingPrefabs;
-    [SerializeField] Player _myPlayer;
 
     int _maxGold;
     int _maxElixir;
 
-    public Player MyPlayer => _myPlayer;
     public BuildGrid Grid => IsBattling ? BattleManager.Instance.Grid : UIMain.Instance.Grid;
     public bool IsBattling => BattleManager.Instance != null;
     public int MaxGold => _maxGold;

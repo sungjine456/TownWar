@@ -38,7 +38,7 @@ public class TrainingController : SingletonMonoBehaviour<TrainingController>
             {
                 var target = _trainingUnits.First.Value;
 
-                if (GameManager.Instance.MyPlayer.CanAddUnit(target._unit.numberOfPopulation))
+                if (Player.Instance.CanAddUnit(target._unit.numberOfPopulation))
                     AddUnit(target._unit);
                 else
                 {
@@ -46,7 +46,7 @@ public class TrainingController : SingletonMonoBehaviour<TrainingController>
                     t.Initialize(target._unit);
                     _trainedUnits.AddLast(t);
 
-                    GameManager.Instance.MyPlayer.AddUnit(target._unit, Data.UnitStatus.trained);
+                    Player.Instance.AddUnit(target._unit, Data.UnitStatus.trained);
 
                     Rearrange(_trainedUnits, _trainedGrid);
                 }
@@ -62,7 +62,7 @@ public class TrainingController : SingletonMonoBehaviour<TrainingController>
     {
         Dictionary<Data.UnitId, (Data.Unit, int)> dic = new();
 
-        foreach (var u in GameManager.Instance.MyPlayer.GetUnits(status))
+        foreach (var u in Player.Instance.GetUnits(status))
         {
             if (dic.ContainsKey(u.id))
                 dic[u.id] = (u, dic[u.id].Item2 + 1);
@@ -168,7 +168,7 @@ public class TrainingController : SingletonMonoBehaviour<TrainingController>
             _armyUnits.Add(t);
         }
 
-        GameManager.Instance.MyPlayer.AddUnit(unit, Data.UnitStatus.army);
+        Player.Instance.AddUnit(unit, Data.UnitStatus.army);
     }
 
     void ReduceFirstUnit<T>(LinkedList<T> list) where T : TrainUnit
@@ -190,12 +190,12 @@ public class TrainingController : SingletonMonoBehaviour<TrainingController>
             target._unit.trainedTime = 0f;
         }
 
-        GameManager.Instance.MyPlayer.RemoveUnit(target._unit.id, status);
+        Player.Instance.RemoveUnit(target._unit.id, status);
     }
 
     public void TrainUnit(Data.UnitToTrain data)
     {
-        if (AllPopulation() + data.numberOfPopulation <= GameManager.Instance.MyPlayer.MaxTrainingUnit())
+        if (AllPopulation() + data.numberOfPopulation <= Player.Instance.MaxTrainingUnit())
         {
             var last = _trainingUnits.Last;
             Data.Unit unit = new(data);
@@ -211,7 +211,7 @@ public class TrainingController : SingletonMonoBehaviour<TrainingController>
                 ResizeGrid(_trainingGrid, _trainingUnits.Count);
             }
 
-            GameManager.Instance.MyPlayer.AddUnit(unit, Data.UnitStatus.training);
+            Player.Instance.AddUnit(unit, Data.UnitStatus.training);
         }
         else
             print("집합소의 공간이 부족합니다.");
@@ -251,7 +251,7 @@ public class TrainingController : SingletonMonoBehaviour<TrainingController>
         {
             var target = _trainedUnits.First.Value;
 
-            if (GameManager.Instance.MyPlayer.CanAddUnit(target._unit.numberOfPopulation))
+            if (Player.Instance.CanAddUnit(target._unit.numberOfPopulation))
             {
                 AddUnit(target._unit);
                 ReduceFirstUnit(_trainedUnits);

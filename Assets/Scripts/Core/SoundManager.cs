@@ -92,13 +92,13 @@ public class SoundManager : SingletonDontDestroy<SoundManager>
     public void SetVolumeBGM(float volume)
     {
         _audios[(int)AudioType.BGM].volume = volume / 3;
-        GameManager.Instance.MyPlayer.SetBGMVolume(volume);
+        Player.Instance.SetBGMVolume(volume);
     }
 
     public void SetVolumeSFX(float volume)
     {
         _audios[(int)AudioType.SFX].volume = volume / 3;
-        GameManager.Instance.MyPlayer.SetSFXVolume(volume);
+        Player.Instance.SetSFXVolume(volume);
     }
 
     public void SetMute(bool isOn)
@@ -106,6 +106,6 @@ public class SoundManager : SingletonDontDestroy<SoundManager>
         for (int i = 0; i < _audios.Length; i++)
             _audios[i].mute = isOn;
 
-        GameManager.Instance.MyPlayer.SetMute(isOn);
+        Player.Instance.SetMute(isOn);
     }
 }

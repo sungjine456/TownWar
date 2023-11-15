@@ -44,7 +44,7 @@ public class ResourceBuilding : GameBuilding
                 else
                     data.storage += (data.speed / 3600f);
 
-                GameManager.Instance.MyPlayer.UpdateResourceBuildingStorage(Id, data.storage);
+                Player.Instance.UpdateResourceBuildingStorage(Id, data.storage);
             }
 
             switch (BuildingId)

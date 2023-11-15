@@ -74,12 +74,12 @@ public class UIMain : SingletonMonoBehaviour<UIMain>
         if (type == ResourceType.gold)
         {
             SoundManager.Instance.PlaySFX(SoundManager.SfxClip.getGold);
-            GameManager.Instance.MyPlayer.CollectGold(resource);
+            Player.Instance.CollectGold(resource);
         }
         else if (type == ResourceType.elixir)
         {
             SoundManager.Instance.PlaySFX(SoundManager.SfxClip.getElixir);
-            GameManager.Instance.MyPlayer.CollectElixir(resource);
+            Player.Instance.CollectElixir(resource);
         }
 
         SyncResourcesData();
@@ -92,11 +92,11 @@ public class UIMain : SingletonMonoBehaviour<UIMain>
     */
     public int CollectGold(int resource)
     {
-        if (GameManager.Instance.MyPlayer.Gold < GameManager.Instance.MaxGold)
+        if (Player.Instance.Gold < GameManager.Instance.MaxGold)
         {
-            if (resource + GameManager.Instance.MyPlayer.Gold > GameManager.Instance.MaxGold)
+            if (resource + Player.Instance.Gold > GameManager.Instance.MaxGold)
             {
-                int remainedResource = resource + GameManager.Instance.MyPlayer.Gold - GameManager.Instance.MaxGold;
+                int remainedResource = resource + Player.Instance.Gold - GameManager.Instance.MaxGold;
                 CollectResource(ResourceType.gold, resource - remainedResource);
 
                 return remainedResource;
@@ -119,11 +119,11 @@ public class UIMain : SingletonMonoBehaviour<UIMain>
     /// <returns>저장하고 남은 엘릭서이며 0 이상의 값을 보장한다.</returns>
     public int CollectElixir(int resource)
     {
-        if (GameManager.Instance.MyPlayer.Elixir < GameManager.Instance.MaxElixir)
+        if (Player.Instance.Elixir < GameManager.Instance.MaxElixir)
         {
-            if (resource + GameManager.Instance.MyPlayer.Elixir > GameManager.Instance.MaxElixir)
+            if (resource + Player.Instance.Elixir > GameManager.Instance.MaxElixir)
             {
-                int remainedResource = resource + GameManager.Instance.MyPlayer.Elixir - GameManager.Instance.MaxElixir;
+                int remainedResource = resource + Player.Instance.Elixir - GameManager.Instance.MaxElixir;
                 CollectResource(ResourceType.elixir, resource - remainedResource);
 
                 return remainedResource;
@@ -161,19 +161,19 @@ public class UIMain : SingletonMonoBehaviour<UIMain>
 
     public void SyncResourcesData()
     {
-        SetText(_goldText, GameManager.Instance.MyPlayer.Gold, GameManager.Instance.MaxGold);
-        SetText(_elixirText, GameManager.Instance.MyPlayer.Elixir, GameManager.Instance.MaxElixir);
-        _gemsText.text = GameManager.Instance.MyPlayer.Gems.ToString();
+        SetText(_goldText, Player.Instance.Gold, GameManager.Instance.MaxGold);
+        SetText(_elixirText, Player.Instance.Elixir, GameManager.Instance.MaxElixir);
+        _gemsText.text = Player.Instance.Gems.ToString();
     }
 
     public bool IsFullGold()
     {
-        return GameManager.Instance.MaxGold <= GameManager.Instance.MyPlayer.Gold;
+        return GameManager.Instance.MaxGold <= Player.Instance.Gold;
     }
 
     public bool IsFullElixir()
     {
-        return GameManager.Instance.MaxElixir <= GameManager.Instance.MyPlayer.Elixir;
+        return GameManager.Instance.MaxElixir <= Player.Instance.Elixir;
     }
 
     public void AddArmyUnit(Unit unit)

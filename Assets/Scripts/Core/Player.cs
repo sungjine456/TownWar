@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 using static Data;
 
-public class Player : MonoBehaviour
+public class Player : SingletonDontDestroy<Player>
 {
     [SerializeField] bool deleteData;
 
@@ -24,16 +26,25 @@ public class Player : MonoBehaviour
     public int Elixir { get { return _data.elixir; } }
     public int Gems { get { return _data.gems; } }
 
+    protected override void OnAwake()
+    {
+        SceneManager.activeSceneChanged += ChangedActiveScene;
+    }
+
     void Start()
     {
         if (deleteData)
             PlayerPrefs.DeleteAll();
-        
-        Load();
 
         StartCoroutine(nameof(Coroutine_UpdateTime));
 
         DontDestroyOnLoad(gameObject);
+    }
+
+    void ChangedActiveScene(Scene current, Scene next)
+    {
+        if ("Game".Equals(next.name))
+            Load();
     }
 
     IEnumerator Coroutine_UpdateTime()

@@ -44,7 +44,7 @@ public class UIBuildingOptions : SingletonMonoBehaviour<UIBuildingOptions>
 
     void ClickedInstantBtn()
     {
-        if (GameManager.Instance.MyPlayer.ConsumeResources(0, 0, requiredGems))
+        if (Player.Instance.ConsumeResources(0, 0, requiredGems))
         {
             BuildingController.Instance.InstantUpgradeBuilding();
         }
@@ -72,7 +72,7 @@ public class UIBuildingOptions : SingletonMonoBehaviour<UIBuildingOptions>
             requiredGems = GameManager.Instance.GetInstantTimeRequiredGems(BuildingController.Instance.SelectedBuilding.BuildTime);
             _instantResourceText.text = requiredGems.ToString();
 
-            if (requiredGems > GameManager.Instance.MyPlayer.Gems)
+            if (requiredGems > Player.Instance.Gems)
             {
                 Utils.ChangeButtonColor(_instantBtn, Color.gray);
                 _instantResourceText.color = Color.red;

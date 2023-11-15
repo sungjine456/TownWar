@@ -14,7 +14,7 @@ public class UITrainingUnit : TrainUnit
             Destroy(gameObject);
         }
 
-        GameManager.Instance.MyPlayer.RemoveUnit(_unit.id, Data.UnitStatus.training);
+        Player.Instance.RemoveUnit(_unit.id, Data.UnitStatus.training);
     }
 
     public void UpdateTrainTime(float time)

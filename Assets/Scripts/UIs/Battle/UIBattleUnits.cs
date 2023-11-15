@@ -25,7 +25,7 @@ public class UIBattleUnits : SingletonMonoBehaviour<UIBattleUnits>
 
         Dictionary<(Data.UnitId, int), Queue<Data.Unit>> group = new();
 
-        foreach (var u in GameManager.Instance.MyPlayer.GetUnits(Data.UnitStatus.army))
+        foreach (var u in Player.Instance.GetUnits(Data.UnitStatus.army))
         {
             if (group.ContainsKey((u.id, u.level)))
                 group[(u.id, u.level)].Enqueue(u);

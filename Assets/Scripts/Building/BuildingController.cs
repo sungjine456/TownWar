@@ -111,7 +111,7 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
         {
             if (SelectedBuilding.CurrentLevel < _buildingLimit.GetBuildingLimitLevel(_hallLevel, SelectedBuilding.BuildingId))
             {
-                if (GameManager.Instance.MyPlayer.ConsumeResources(nextInfo.requiredGold, nextInfo.requiredElixir, nextInfo.requiredGems))
+                if (Player.Instance.ConsumeResources(nextInfo.requiredGold, nextInfo.requiredElixir, nextInfo.requiredGems))
                     SelectedBuilding.Upgrade(nextInfo);
             }
             else
@@ -136,11 +136,11 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
                 if (buildingData.buildingId == Data.BuildingId.buildersHut)
                     gems = _needfulGemsForBuilderHut[CountBuildBuildingHut()];
 
-                if (GameManager.Instance.MyPlayer.ConsumeResources(buildingData.requiredGold, buildingData.requiredElixir, gems))
+                if (Player.Instance.ConsumeResources(buildingData.requiredGold, buildingData.requiredElixir, gems))
                 {
                     building.SetData(buildingData);
 
-                    GameManager.Instance.MyPlayer.AddBuilding(building);
+                    Player.Instance.AddBuilding(building);
                     UIMain.Instance.Grid.BuildBuilding(building);
                     UIMain.Instance.UpdateBuilder();
                 }
@@ -154,7 +154,7 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
     {
         var requiredGems = GameManager.Instance.GetInstantTimeRequiredGems(SelectedBuilding.BuildTime);
 
-        if (GameManager.Instance.MyPlayer.ConsumeResources(0, 0, requiredGems))
+        if (Player.Instance.ConsumeResources(0, 0, requiredGems))
             SelectedBuilding.InstantUpgrade();
         else
             print("Gem이 부족합니다.");

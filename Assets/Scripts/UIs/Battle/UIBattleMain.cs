@@ -47,8 +47,8 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
     protected override void OnStart()
     {
-        _goldText.text = GameManager.Instance.MyPlayer.Gold.ToString();
-        _elixirText.text = GameManager.Instance.MyPlayer.Elixir.ToString();
+        _goldText.text = Player.Instance.Gold.ToString();
+        _elixirText.text = Player.Instance.Elixir.ToString();
         
         SoundManager.Instance.PlayBGM(SoundManager.BgmClip.waitBattle);
     }
@@ -86,41 +86,41 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
     void PlunderGold(int gold)
     {
-        var p = GameManager.Instance.MyPlayer;
+        var p = Player.Instance;
         var g = GameManager.Instance.MaxGold;
 
         if (g >= p.Gold + gold)
         {
-            GameManager.Instance.MyPlayer.CollectGold(gold);
+            Player.Instance.CollectGold(gold);
             _plunderedGold += gold;
         }
         else if (g > p.Gold && g < p.Gold + gold)
         {
-            GameManager.Instance.MyPlayer.CollectGold(g - p.Gold);
+            Player.Instance.CollectGold(g - p.Gold);
             _plunderedGold += g - p.Gold;
         }
 
-        _goldText.text = GameManager.Instance.MyPlayer.Gold.ToString();
+        _goldText.text = Player.Instance.Gold.ToString();
         _plunderGoldText.text = (int.Parse(_plunderGoldText.text) - gold).ToString();
     }
 
     void PlunderElixir(int elixir)
     {
-        var p = GameManager.Instance.MyPlayer;
+        var p = Player.Instance;
         var e = GameManager.Instance.MaxElixir;
 
         if (e >= p.Elixir + elixir)
         {
-            GameManager.Instance.MyPlayer.CollectElixir(elixir);
+            Player.Instance.CollectElixir(elixir);
             _plunderedElixir += elixir;
         }
         else if (e > p.Elixir && e < p.Elixir + elixir)
         {
-            GameManager.Instance.MyPlayer.CollectGold(e - p.Elixir);
+            Player.Instance.CollectGold(e - p.Elixir);
             _plunderedElixir += e - p.Elixir;
         }
 
-        _elixirText.text = GameManager.Instance.MyPlayer.Elixir.ToString();
+        _elixirText.text = Player.Instance.Elixir.ToString();
         _plunderElixirText.text = (int.Parse(_plunderElixirText.text) - elixir).ToString();
     }
 
@@ -238,7 +238,7 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
                 if (UIBattleUnits.Instance.GetUnit(_selectedUnitIndex).Count <= 0)
                     _selectedUnitIndex = -1;
 
-                GameManager.Instance.MyPlayer.RemoveUnit(u.id, Data.UnitStatus.army);
+                Player.Instance.RemoveUnit(u.id, Data.UnitStatus.army);
 
                 _battle.AddUnit(u, x, y, UnitSpawnCallBack, UnitAttackCallBack, UnitDiedCallBack, UnitDamageCallBack);
             }

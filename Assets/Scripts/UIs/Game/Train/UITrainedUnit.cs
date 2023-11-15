@@ -33,11 +33,11 @@ public class UITrainedUnit : TrainUnit
 
         if (_isReady)
         {
-            GameManager.Instance.MyPlayer.RemoveUnit(_unit.id, Data.UnitStatus.army);
+            Player.Instance.RemoveUnit(_unit.id, Data.UnitStatus.army);
 
             TrainingController.Instance.SwitchUnitState();
         }
         else
-            GameManager.Instance.MyPlayer.RemoveUnit(_unit.id, Data.UnitStatus.trained);
+            Player.Instance.RemoveUnit(_unit.id, Data.UnitStatus.trained);
     }
 }
