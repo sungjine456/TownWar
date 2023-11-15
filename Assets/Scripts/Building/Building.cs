@@ -8,6 +8,7 @@ public class Building : MonoBehaviour
     {
         public int level;
         public GameObject mesh;
+        public Renderer renderer;
     }
 
     [SerializeField] protected int id;
@@ -29,6 +30,24 @@ public class Building : MonoBehaviour
     public int BuildTime => data.BuildTime;
     public int Capacity => data.capacity;
 
+    protected void SynchronizeData()
+    {
+        var t = BuildingController.Instance.GetTexture();
+
+        for (int i = 0; i < levels.Length; i++)
+        {
+            if (levels[i].level != data.level)
+                levels[i].mesh.SetActive(false);
+            else
+            {
+                levels[i].mesh.SetActive(true);
+
+                if (levels[i].renderer)
+                    levels[i].renderer.material.SetTexture("_MainTex", t);
+            }
+        }
+    }
+
     public void Initialize(bool isStatusBaseArea = false)
     {
         StatusBaseArea(isStatusBaseArea);
@@ -45,13 +64,7 @@ public class Building : MonoBehaviour
         this.data = data;
         SetPosition(data.x, data.y);
 
-        for (int i = 0; i < levels.Length; i++)
-        {
-            if (levels[i].level != data.level)
-                levels[i].mesh.SetActive(false);
-            else
-                levels[i].mesh.SetActive(true);
-        }
+        SynchronizeData();
     }
 
     public virtual void SetPosition(int x, int y)

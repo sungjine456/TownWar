@@ -138,10 +138,13 @@ MonoBehaviour:
   levels:
   - level: 1
     mesh: {fileID: 3811887620477855327}
+    renderer: {fileID: 3811887620479793311}
   - level: 2
     mesh: {fileID: 8260250959362814350}
+    renderer: {fileID: 8260250959360618318}
   - level: 3
     mesh: {fileID: 7616011559104715221}
+    renderer: {fileID: 7616011559102711573}
   baseArea: {fileID: 8572231475024912941}
   data:
     id: 0
@@ -246,6 +249,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: a219455911288e84da9a9c5f55fd95c6, type: 3}
   m_PrefabInstance: {fileID: 3811887620477886719}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &3811887620479793311 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2300000, guid: a219455911288e84da9a9c5f55fd95c6, type: 3}
+  m_PrefabInstance: {fileID: 3811887620477886719}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7616011559104749429
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -323,6 +331,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 003306f67c7bed24b8be307fb52fb0ab, type: 3}
+--- !u!23 &7616011559102711573 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2300000, guid: 003306f67c7bed24b8be307fb52fb0ab, type: 3}
+  m_PrefabInstance: {fileID: 7616011559104749429}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7616011559104611829 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 003306f67c7bed24b8be307fb52fb0ab, type: 3}
@@ -410,6 +423,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c5f43a47e4b64c14da6e0081f639fdd3, type: 3}
+--- !u!23 &8260250959360618318 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2300000, guid: c5f43a47e4b64c14da6e0081f639fdd3, type: 3}
+  m_PrefabInstance: {fileID: 8260250959362914094}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8260250959362518446 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: c5f43a47e4b64c14da6e0081f639fdd3, type: 3}

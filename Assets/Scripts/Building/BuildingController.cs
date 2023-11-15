@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class BuildingController : SingletonMonoBehaviour<BuildingController>
@@ -7,6 +6,8 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
 
     [SerializeField] BuildingInfo _buildingInfo;
     [SerializeField] BuildingLimit _buildingLimit;
+    [SerializeField] Texture myTexture;
+    [SerializeField] Texture enemyTexture;
 
     int _hallLevel;
     int _index;
@@ -61,6 +62,11 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
         }
 
         return count;
+    }
+
+    public Texture GetTexture()
+    {
+        return GameManager.Instance.IsBattling ? enemyTexture : myTexture;
     }
 
     public bool HasNextLevelBuildingInfo(GameBuilding target = null)

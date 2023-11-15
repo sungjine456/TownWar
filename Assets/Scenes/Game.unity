@@ -12599,6 +12599,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buildingInfo: {fileID: 11400000, guid: ba1ef15b866762d429823f16cd454cff, type: 2}
   _buildingLimit: {fileID: 11400000, guid: 921c73303a5226244af3b3818740465e, type: 2}
+  myTexture: {fileID: 2800000, guid: 5a1b9a7baf40b0b4e86735f897d56a85, type: 3}
+  enemyTexture: {fileID: 2800000, guid: 3095d9ea53f5b6c4e9ed75b6aba933f9, type: 3}
 --- !u!4 &1504459873
 Transform:
   m_ObjectHideFlags: 0
@@ -17972,7 +17974,6 @@ MonoBehaviour:
   - {fileID: 3209788066380247090, guid: 09a907c3d0cbaf74bb3caa963881e2d8, type: 3}
   - {fileID: 8572231475283196169, guid: 23110133019ec5a4797e9bf1a84a07ca, type: 3}
   - {fileID: 1684502161140627939, guid: 0885f325320c4b440a2787ffdab0ce32, type: 3}
-  _myPlayer: {fileID: 739626336}
 --- !u!1 &2102243392
 GameObject:
   m_ObjectHideFlags: 0

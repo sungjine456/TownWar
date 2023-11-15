@@ -389,14 +389,19 @@ MonoBehaviour:
   levels:
   - level: 1
     mesh: {fileID: 3686153583937788479}
+    renderer: {fileID: 3686153583935849727}
   - level: 2
     mesh: {fileID: 2547040987713210766}
+    renderer: {fileID: 2547040987715409742}
   - level: 3
     mesh: {fileID: 1506866845557502705}
+    renderer: {fileID: 1506866845559696433}
   - level: 4
     mesh: {fileID: 4682159203573871001}
+    renderer: {fileID: 0}
   - level: 5
     mesh: {fileID: 6565954295697465486}
+    renderer: {fileID: 0}
   baseArea: {fileID: 3209788066114104086}
   data:
     id: 0
@@ -931,6 +936,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mesh_Level_3
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: aec20226064bbcc4d850e8da90e49a4b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: aec20226064bbcc4d850e8da90e49a4b, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1000,6 +1009,11 @@ Transform:
 --- !u!1 &1506866845557502705 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: aec20226064bbcc4d850e8da90e49a4b, type: 3}
+  m_PrefabInstance: {fileID: 1506866845557535825}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &1506866845559696433 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2300000, guid: aec20226064bbcc4d850e8da90e49a4b, type: 3}
   m_PrefabInstance: {fileID: 1506866845557535825}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2547040987713113902
@@ -1089,6 +1103,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: aec20226064bbcc4d850e8da90e49a4b, type: 3}
   m_PrefabInstance: {fileID: 2547040987713113902}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &2547040987715409742 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2300000, guid: aec20226064bbcc4d850e8da90e49a4b, type: 3}
+  m_PrefabInstance: {fileID: 2547040987713113902}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3686153583937756319
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1103,7 +1122,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: aec20226064bbcc4d850e8da90e49a4b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: aec20226064bbcc4d850e8da90e49a4b, type: 3}
       propertyPath: m_RootOrder
@@ -1166,6 +1185,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aec20226064bbcc4d850e8da90e49a4b, type: 3}
+--- !u!23 &3686153583935849727 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2300000, guid: aec20226064bbcc4d850e8da90e49a4b, type: 3}
+  m_PrefabInstance: {fileID: 3686153583937756319}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3686153583937619487 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: aec20226064bbcc4d850e8da90e49a4b, type: 3}

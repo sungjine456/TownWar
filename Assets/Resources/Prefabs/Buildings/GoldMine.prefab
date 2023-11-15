@@ -350,14 +350,19 @@ MonoBehaviour:
   levels:
   - level: 1
     mesh: {fileID: 4624376624257883223}
+    renderer: {fileID: 4624376624259809943}
   - level: 2
     mesh: {fileID: 8012911114255088539}
+    renderer: {fileID: 8012911114253149531}
   - level: 3
     mesh: {fileID: 8731262192530247669}
+    renderer: {fileID: 0}
   - level: 4
     mesh: {fileID: 7054183297500015369}
+    renderer: {fileID: 0}
   - level: 5
     mesh: {fileID: 6860121698342165925}
+    renderer: {fileID: 0}
   baseArea: {fileID: 2188052765104447230}
   data:
     id: 0
@@ -1455,6 +1460,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: e80371d003bd70d439af07f3facb22ea, type: 3}
   m_PrefabInstance: {fileID: 4624376624257915639}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &4624376624259809943 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2300000, guid: e80371d003bd70d439af07f3facb22ea, type: 3}
+  m_PrefabInstance: {fileID: 4624376624257915639}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8012911114255187259
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1532,6 +1542,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e80371d003bd70d439af07f3facb22ea, type: 3}
+--- !u!23 &8012911114253149531 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2300000, guid: e80371d003bd70d439af07f3facb22ea, type: 3}
+  m_PrefabInstance: {fileID: 8012911114255187259}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8012911114255050683 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: e80371d003bd70d439af07f3facb22ea, type: 3}

@@ -165,7 +165,34 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
         for (int i = 0; i < buildings.Count; i++)
         {
-            battleBuildings.Add(new(buildings[i]));
+            BattleBuilding b = new(buildings[i]);
+
+            b.attackCallback = BuildingAttackCallBack;
+            b.destroyCallback = BuildingDestroyedCallBack;
+            b.damageCallback = BuildingDamageCallBack;
+
+            Building prefab = GameManager.Instance.GetBuildingPrefab(b.Building.buildingId);
+
+            if (prefab)
+            {
+                var building = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+                building.Initialize(b.Building);
+
+                var healthBar = Instantiate(_healthBarPrefab, _healthBarGrid);
+                healthBar.gameObject.SetActive(false);
+
+                BuildingOnGrid buildingGrid = new()
+                {
+                    building = building,
+                    healthBar = healthBar,
+                    id = b.Building.id,
+                    index = i
+                };
+
+                buildingsOnGrid.Add(buildingGrid);
+            }
+
+            battleBuildings.Add(b);
 
             switch (buildings[i].buildingId)
             {
@@ -186,34 +213,6 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
         _plunderGoldText.text = gold.ToString();
         _plunderElixirText.text = elixir.ToString();
-
-        for (int i = 0; i < battleBuildings.Count; i++)
-        {
-            battleBuildings[i].attackCallback = BuildingAttackCallBack;
-            battleBuildings[i].destroyCallback = BuildingDestroyedCallBack;
-            battleBuildings[i].damageCallback = BuildingDamageCallBack;
-
-            Building prefab = GameManager.Instance.GetBuildingPrefab(battleBuildings[i].Building.buildingId);
-
-            if (prefab)
-            {
-                var building = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-                building.Initialize(battleBuildings[i].Building);
-
-                var healthBar = Instantiate(_healthBarPrefab, _healthBarGrid);
-                healthBar.gameObject.SetActive(false);
-
-                BuildingOnGrid buildingGrid = new()
-                {
-                    building = building,
-                    healthBar = healthBar,
-                    id = battleBuildings[i].Building.id,
-                    index = i
-                };
-
-                buildingsOnGrid.Add(buildingGrid);
-            }
-        }
 
         _battle = new(battleBuildings);
     }

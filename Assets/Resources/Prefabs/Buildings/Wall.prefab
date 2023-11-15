@@ -53,6 +53,7 @@ MonoBehaviour:
   levels:
   - level: 1
     mesh: {fileID: 5336766095787963742}
+    renderer: {fileID: 5336766095789960094}
   baseArea: {fileID: 3442230974400292672}
   data:
     id: 0
@@ -234,5 +235,10 @@ GameObject:
 --- !u!4 &5336766095788190078 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: cba5dcbe606db5c489d9a7269c56598a, type: 3}
+  m_PrefabInstance: {fileID: 5336766095788061694}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &5336766095789960094 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2300000, guid: cba5dcbe606db5c489d9a7269c56598a, type: 3}
   m_PrefabInstance: {fileID: 5336766095788061694}
   m_PrefabAsset: {fileID: 0}

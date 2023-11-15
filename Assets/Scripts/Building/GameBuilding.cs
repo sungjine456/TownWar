@@ -173,13 +173,7 @@ public class GameBuilding : Building
 
             data.SetData(_nextBuilding);
 
-            for (int i = 0; i < levels.Length; i++)
-            {
-                if (levels[i].level != data.level)
-                    levels[i].mesh.SetActive(false);
-                else
-                    levels[i].mesh.SetActive(true);
-            }
+            SynchronizeData();
 
             Player.Instance.UpdateBuilding(Id, _nextBuilding);
 
