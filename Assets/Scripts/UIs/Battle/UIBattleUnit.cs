@@ -1,7 +1,11 @@
+using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
+
 using TMPro;
-using System.Collections.Generic;
+
+using RotaryHeart.Lib.SerializableDictionary;
 
 public class UIBattleUnit : MonoBehaviour
 {
@@ -9,6 +13,8 @@ public class UIBattleUnit : MonoBehaviour
     [SerializeField] TextMeshProUGUI _countText;
     [SerializeField] TextMeshProUGUI _levelText;
     [SerializeField] TextMeshProUGUI _nameText;
+    [SerializeField] RawImage unitTexture;
+    [SerializeField] SerializableDictionaryBase<Data.UnitId, Texture> unitTextures;
 
     [HideInInspector] public Queue<Data.Unit> _units;
     [HideInInspector] public Data.UnitId _id;
@@ -30,8 +36,9 @@ public class UIBattleUnit : MonoBehaviour
             _units = units;
             _levelText.text = level.ToString();
             _countText.text = units.Count.ToString();
+            unitTexture.texture = unitTextures[_id];
 
-            switch (units.Peek().id)
+            switch (_id)
             {
                 case Data.UnitId.warrior:
                     _nameText.text = "전사";

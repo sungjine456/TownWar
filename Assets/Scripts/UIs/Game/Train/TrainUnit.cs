@@ -1,14 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
+
 using TMPro;
+
+using RotaryHeart.Lib.SerializableDictionary;
+
+using static Data;
 
 public class TrainUnit : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _nameText;
     [SerializeField] TextMeshProUGUI _countText;
     [SerializeField] Button _removeBtn;
+    [SerializeField] RawImage unitTexture;
+    [SerializeField] SerializableDictionaryBase<UnitId, Texture> unitTextures;
 
-    [HideInInspector] public Data.Unit _unit;
+    [HideInInspector] public Unit _unit;
 
     int _count;
 
@@ -29,17 +36,18 @@ public class TrainUnit : MonoBehaviour
 
     protected virtual void Cancel() { }
 
-    public virtual void Initialize(Data.Unit unitData, int count = 1)
+    public virtual void Initialize(Unit unitData, int count = 1)
     {
         _unit = unitData;
         Count = count;
+        unitTexture.texture = unitTextures[unitData.id];
 
         switch (unitData.id)
         {
-            case Data.UnitId.warrior:
+            case UnitId.warrior:
                 _nameText.text = "전사";
                 break;
-            case Data.UnitId.archer:
+            case UnitId.archer:
                 _nameText.text = "궁수";
                 break;
         }
