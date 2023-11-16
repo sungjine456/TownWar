@@ -31,6 +31,7 @@ public class UIBattleResult : SingletonMonoBehaviour<UIBattleResult>
         _plunderElixirText.text = elixir.ToString();
         _percentText.text = percent.ToString();
         _resultText.text = starCounts != 0 ? "승 리" : "패 배";
+        _resultText.color = starCounts != 0 ? Color.yellow : Color.red;
 
         if (starCounts > 3)
             starCounts = 3;
