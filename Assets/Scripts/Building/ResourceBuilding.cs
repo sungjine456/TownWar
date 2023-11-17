@@ -88,20 +88,7 @@ public class ResourceBuilding : GameBuilding
             }
 
             if (_collectButton && _collectButton.gameObject.activeSelf)
-            {
-                Vector3 end = UIMain.Instance.Grid.GetEndPosition(this);
-                Vector3 planDownLeft = GameCameraCtrl.Instance._planDownLeft;
-                Vector3 planTopRight = GameCameraCtrl.Instance._planTopRight;
-
-                float w = planTopRight.x - planDownLeft.x;
-                float h = planTopRight.z - planDownLeft.z;
-
-                float endW = end.x - planDownLeft.x;
-                float endH = end.z - planDownLeft.z;
-
-                Vector2 screenPoint = new(endW / w * Screen.width, endH / h * Screen.height);
-                _collectButton._rect.anchoredPosition = screenPoint;
-            }
+                _collectButton._rect.anchoredPosition = CalculateChildPosition();
         }
     }
 
@@ -109,6 +96,7 @@ public class ResourceBuilding : GameBuilding
     {
         int remainedResource = 0;
         int resource = (int)data.storage;
+        ParticleSystem ps;
 
         switch (BuildingId)
         {
@@ -126,16 +114,38 @@ public class ResourceBuilding : GameBuilding
             {
                 case Data.BuildingId.goldMine:
                     UICollectPoolManager.Instance.RemoveGold(_collectButton);
+                    ps = ParticlePoolManager.Instance.Get(Color.yellow);
+                    ps.transform.position = new(transform.position.x, 1.8f, transform.position.z);
+                    ps.Play();
                     break;
                 case Data.BuildingId.elixirMine:
                     UICollectPoolManager.Instance.RemoveElixir(_collectButton);
+                    ps = ParticlePoolManager.Instance.Get(new(1, 0.427f, 0.867f));
+                    ps.transform.position = new(transform.position.x, 1.8f, transform.position.z);
+                    ps.Play();
                     break;
             }
 
             data.storage = remainedResource;
         }
         else if (remainedResource != resource)
+        {
+            switch (BuildingId)
+            {
+                case Data.BuildingId.goldMine:
+                    ps = ParticlePoolManager.Instance.Get(Color.yellow);
+                    ps.transform.position = new(transform.position.x, 1.8f, transform.position.z);
+                    ps.Play();
+                    break;
+                case Data.BuildingId.elixirMine:
+                    ps = ParticlePoolManager.Instance.Get(new(1, 0.427f, 0.867f));
+                    ps.transform.position = new(transform.position.x, 1.8f, transform.position.z);
+                    ps.Play();
+                    break;
+            }
+
             data.storage = remainedResource;
+        }
         else
             AlertManager.Instance.Error("자원이 가득 찼습니다.");
     }

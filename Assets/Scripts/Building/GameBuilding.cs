@@ -52,25 +52,28 @@ public class GameBuilding : Building
             if (span.TotalSeconds > 0.01)
             {
                 _bar.AdjustUI(BuildTime, span);
-
-                Vector3 end = UIMain.Instance.Grid.GetEndPosition(this);
-                Vector3 planDownLeft = GameCameraCtrl.Instance._planDownLeft;
-                Vector3 planTopRight = GameCameraCtrl.Instance._planTopRight;
-
-                float w = planTopRight.x - planDownLeft.x;
-                float h = planTopRight.z - planDownLeft.z;
-
-                float endW = end.x - planDownLeft.x;
-                float endH = end.z - planDownLeft.z;
-
-                Vector2 screenPoint = new(endW / w * Screen.width, endH / h * Screen.height);
-                _bar._rect.anchoredPosition = screenPoint;
+                _bar._rect.anchoredPosition = CalculateChildPosition();
 
                 Player.Instance.UpdateBuildingConstructTime(data.id, BuildTime - (float)span.TotalSeconds);
             }
             else
                 InstantUpgrade();
         }
+    }
+
+    protected Vector2 CalculateChildPosition()
+    {
+        Vector3 end = UIMain.Instance.Grid.GetEndPosition(this);
+        Vector3 planDownLeft = GameCameraCtrl.Instance._planDownLeft;
+        Vector3 planTopRight = GameCameraCtrl.Instance._planTopRight;
+
+        float w = planTopRight.x - planDownLeft.x;
+        float h = planTopRight.z - planDownLeft.z;
+
+        float endW = end.x - planDownLeft.x;
+        float endH = end.z - planDownLeft.z;
+
+        return new(endW / w * Screen.width, endH / h * Screen.height);
     }
 
     public void AdjustBaseColor()

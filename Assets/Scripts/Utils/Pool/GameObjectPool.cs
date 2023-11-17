@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class GameObjectPool<T> where T : MonoBehaviour
+public class GameObjectPool<T>
 {
     readonly Queue<T> _queue;
     readonly int _count;
