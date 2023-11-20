@@ -56,6 +56,7 @@ public class ArmyCamp : GameBuilding
         {
             if (_armyUnits[i].Id == id)
             {
+                Destroy(_armyUnits[i].gameObject);
                 _armyUnits.RemoveAt(i);
                 return;
             }

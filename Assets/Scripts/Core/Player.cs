@@ -60,7 +60,7 @@ public class Player : SingletonDontDestroy<Player>
 
     void FirstStartSettins()
     {
-        _data = new(){ gold = 100000, elixir = 10000, gems = 5000, lastPlayTime = DateTime.Now };
+        _data = new(){ gold = 1000, elixir = 1000, gems = 500, lastPlayTime = DateTime.Now };
 
         var buildData = _buildingInfo.GetBuildingData(BuildingId.townHall, 1);
         Data.Building building = new(0, BuildingId.townHall, 1, 25, 25, 4, 4);
