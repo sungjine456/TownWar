@@ -1,6 +1,8 @@
-using UnityEngine;
-using TMPro;
 using System.Collections;
+
+using UnityEngine;
+
+using TMPro;
 
 public class Alert : MonoBehaviour
 {
@@ -12,7 +14,7 @@ public class Alert : MonoBehaviour
         AlertManager.Instance.Remove(this);
     }
 
-    public void Initialize(string msg, Color color)
+    public void Initialize(string msg, Color32 color)
     {
         gameObject.SetActive(true);
 

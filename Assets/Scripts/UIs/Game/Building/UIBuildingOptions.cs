@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+
 using TMPro;
 
 public class UIBuildingOptions : SingletonMonoBehaviour<UIBuildingOptions>
@@ -39,7 +40,7 @@ public class UIBuildingOptions : SingletonMonoBehaviour<UIBuildingOptions>
         if (buildingData is not null)
             UIBuildingUpgrade.Instance.Open(buildingData);
         else
-            print("다음 레벨이 없습니다.");
+            AlertManager.Instance.Error("다음 레벨이 없습니다.");
     }
 
     void ClickedInstantBtn()
@@ -49,7 +50,7 @@ public class UIBuildingOptions : SingletonMonoBehaviour<UIBuildingOptions>
             BuildingController.Instance.InstantUpgradeBuilding();
         }
         else
-            print("Gem이 부족합니다.");
+            AlertManager.Instance.Error("Gem이 부족합니다.");
     }
 
     void ClickedTrainBtn()

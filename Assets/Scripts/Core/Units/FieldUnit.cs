@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FieldUnit : MonoBehaviour
 {
+    const float STAYING_TIME = 0.5f;
+
     [Serializable]
     class Level
     {
@@ -18,6 +20,8 @@ public class FieldUnit : MonoBehaviour
     [HideInInspector] public AnimationController _aniCtrl;
     [HideInInspector] public Vector3 _lastPosition;
     bool _isChangeState;
+    bool _isStaying;
+    float _stayingTime;
     
     protected BattleBuilding _target;
 
@@ -32,8 +36,19 @@ public class FieldUnit : MonoBehaviour
 
     void Update()
     {
-        if (Vector3.SqrMagnitude(_lastPosition - transform.position) > 0.00000001)
+        if (_isStaying)
         {
+            _stayingTime += Time.deltaTime;
+
+            if (_stayingTime > STAYING_TIME)
+            {
+                _stayingTime = 0f;
+                _isStaying = false;
+            }
+        }
+
+        if (!_isStaying && Vector3.SqrMagnitude(_lastPosition - transform.position) > 0.00000001)
+        {   
             SetState(AniMotion.Run);
 
             if (GameManager.Instance.IsBattling)
@@ -48,7 +63,10 @@ public class FieldUnit : MonoBehaviour
                     Quaternion.LookRotation(_lastPosition - transform.position));
         }
         else if (_aniCtrl.Motion == AniMotion.Run)
+        {
+            _isStaying = true;
             SetState(AniMotion.Idle);
+        }
 
         BehaviourProcess();
     }

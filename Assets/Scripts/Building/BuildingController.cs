@@ -34,7 +34,7 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
         if (count < MAX_BUILDERS_HUT)
             return false;
 
-        print("장인기지는 5개 이상 지을 수 없습니다.");
+        AlertManager.Instance.Error("장인기지는 5개 이상 지을 수 없습니다.");
         return true;
     }
 
@@ -105,7 +105,7 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
         if (CountBuildBuildingHut() > CountBuildingsConstruction())
             return true;
 
-        print("장인기지가 꽉 찼습니다.");
+        AlertManager.Instance.Error("장인기지가 꽉 찼습니다.");
         return false;
     }
 
@@ -121,10 +121,10 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
                     SelectedBuilding.Upgrade(nextInfo);
             }
             else
-                print("회관에 따른 최대 레벨은 넘길 수 없습니다.");
+                AlertManager.Instance.Error("회관에 따른 최대 레벨은 넘길 수 없습니다.");
         }
         else if (nextInfo is null)
-            print("다음 레벨이 없습니다.");
+            AlertManager.Instance.Error("다음 레벨이 없습니다.");
     }
 
     public void BuildBuilding(Data.BuildingToBuild buildingData, int x, int y)
@@ -152,7 +152,7 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
                 }
             }
             else
-                print("회관에 따른 최대 건설 수를 넘을 수 없습니다.");
+                AlertManager.Instance.Error("회관에 따른 최대 건설 수를 넘을 수 없습니다.");
         }
     }
 
@@ -163,7 +163,7 @@ public class BuildingController : SingletonMonoBehaviour<BuildingController>
         if (Player.Instance.ConsumeResources(0, 0, requiredGems))
             SelectedBuilding.InstantUpgrade();
         else
-            print("Gem이 부족합니다.");
+            AlertManager.Instance.Error("Gem이 부족합니다.");
     }
 
     public void SelectBuilding(GameBuilding building)

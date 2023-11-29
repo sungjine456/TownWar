@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RotaionUI : MonoBehaviour
+public class RotationUI : MonoBehaviour
 {
     [SerializeField] bool reverse;
 

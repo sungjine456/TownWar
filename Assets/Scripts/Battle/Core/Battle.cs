@@ -23,7 +23,7 @@ public class Battle
     public List<BattleUnit> units;
 
     public int AllCount { get; private set; }
-    public bool IsStart { get; private set; }
+    public bool IsStart { get; set; }
     public DateTime StartTime { get; private set; }
 
     public Battle(List<BattleBuilding> buildings)

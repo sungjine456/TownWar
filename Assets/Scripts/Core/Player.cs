@@ -44,7 +44,10 @@ public class Player : SingletonDontDestroy<Player>
     void ChangedActiveScene(Scene current, Scene next)
     {
         if ("Game".Equals(next.name))
+        {
+            GameManager.Instance.Clear();
             Load();
+        }
     }
 
     IEnumerator Coroutine_UpdateTime()
@@ -63,7 +66,7 @@ public class Player : SingletonDontDestroy<Player>
         _data = new(){ gold = 1000, elixir = 1000, gems = 500, lastPlayTime = DateTime.Now };
 
         var buildData = _buildingInfo.GetBuildingData(BuildingId.townHall, 1);
-        Data.Building building = new(0, BuildingId.townHall, 1, 25, 25, 4, 4);
+        Data.Building building = new(0, BuildingId.townHall, 1, 20, 20, 4, 4);
         building.SetData(buildData);
         _data.buildings.Add(building.GetPlayerBuilding(false, false));
 

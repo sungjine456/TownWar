@@ -57,19 +57,21 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
     {
         if (_battle.IsStart)
         {
+            if (GetBuildingCountForPercent() == 0 || (unitsOnGrid.Count == 0 && UIBattleUnits.Instance.IsEmpty()))
+            {
+                End();
+            }
+
             TimeSpan span = _battle.StartTime.AddSeconds(180) - DateTime.Now;
 
             if (span.TotalSeconds > 0.01)
                 _timeText.text = span.ToString(@"m\분\ ss\초");
             else
                 End();
+
+            _battle.ExecuteFrame();
+            UpdateUnits();
         }
-
-        if (buildingsOnGrid.Count == 0 || (unitsOnGrid.Count == 0 && UIBattleUnits.Instance.IsEmpty()))
-            End();
-
-        _battle.ExecuteFrame();
-        UpdateUnits();
     }
 
     void AddStar()
@@ -91,13 +93,13 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
         if (g >= p.Gold + gold)
         {
-            Player.Instance.CollectGold(gold);
             _plunderedGold += gold;
+            Player.Instance.CollectGold(gold);
         }
         else if (g > p.Gold && g < p.Gold + gold)
         {
-            Player.Instance.CollectGold(g - p.Gold);
             _plunderedGold += g - p.Gold;
+            Player.Instance.CollectGold(g - p.Gold);
         }
 
         _goldText.text = Player.Instance.Gold.ToString();
@@ -111,13 +113,13 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
 
         if (e >= p.Elixir + elixir)
         {
-            Player.Instance.CollectElixir(elixir);
             _plunderedElixir += elixir;
+            Player.Instance.CollectElixir(elixir);
         }
         else if (e > p.Elixir && e < p.Elixir + elixir)
         {
-            Player.Instance.CollectGold(e - p.Elixir);
             _plunderedElixir += e - p.Elixir;
+            Player.Instance.CollectElixir(e - p.Elixir);
         }
 
         _elixirText.text = Player.Instance.Elixir.ToString();
@@ -326,7 +328,7 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
         for (int i = 0; i < buildingsOnGrid.Count; i++)
         {
             if (buildingsOnGrid[i].id == id)
-            {
+            {                
                 switch (buildingsOnGrid[i].building.BuildingId)
                 {
                     case Data.BuildingId.townHall:
@@ -420,6 +422,11 @@ public class UIBattleMain : SingletonMonoBehaviour<UIBattleMain>
         if (_battle.IsStart)
         {
             _elements.SetActive(false);
+
+            for (int i = 0; i < unitsOnGrid.Count; i++)
+                unitsOnGrid[i].SetState(AniMotion.Idle);
+
+            _battle.IsStart = false;
 
             UIBattleUnits.Instance.End();
             UIBattleResult.Instance.SetResult(_plunderedGold, _plunderedElixir, GetPercent(), Instance.GetStarsCount());

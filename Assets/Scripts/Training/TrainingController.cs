@@ -214,7 +214,7 @@ public class TrainingController : SingletonMonoBehaviour<TrainingController>
             Player.Instance.AddUnit(unit, Data.UnitStatus.training);
         }
         else
-            print("집합소의 공간이 부족합니다.");
+            AlertManager.Instance.Error("집합소의 공간이 부족합니다.");
     }
 
     public void RemoveTrainingUnit(UITrainingUnit unit)

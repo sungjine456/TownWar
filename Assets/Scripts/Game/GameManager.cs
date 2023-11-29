@@ -53,4 +53,10 @@ public class GameManager : SingletonDontDestroy<GameManager>
 
         UIMain.Instance.SyncResourcesData();
     }
+
+    public void Clear()
+    {
+        _maxElixir = 0;
+        _maxGold = 0;
+    }
 }

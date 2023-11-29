@@ -1,6 +1,8 @@
 using System;
-using RotaryHeart.Lib.SerializableDictionary;
+
 using UnityEngine;
+
+using RotaryHeart.Lib.SerializableDictionary;
 
 [CreateAssetMenu(fileName = "BattleMapData", menuName = "ScriptableObjects/BattleMap", order = 1)]
 public class BattleMap : ScriptableObject

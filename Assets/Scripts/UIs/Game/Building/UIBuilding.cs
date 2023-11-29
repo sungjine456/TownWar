@@ -19,14 +19,14 @@ public class UIBuilding : MonoBehaviour
             case Data.BuildingId.goldStorage:
             case Data.BuildingId.armyCamp:
             case Data.BuildingId.barracks:
-                _type.color = Color.yellow;
+                _type.color = new(1, 0.427f, 0.867f);
                 _requiredResourceText.text = BuildingController.Instance.GetRequiredElixir(_buildingId, 1).ToString();
                 break;
             case Data.BuildingId.elixirMine:
             case Data.BuildingId.elixirStorage:
             case Data.BuildingId.wall:
             case Data.BuildingId.tower:
-                _type.color = new(1, 0.427f, 0.867f);
+                _type.color = Color.yellow;
                 _requiredResourceText.text = BuildingController.Instance.GetRequiredGold(_buildingId, 1).ToString();
                 break;
             case Data.BuildingId.buildersHut:
@@ -52,6 +52,7 @@ public class UIBuilding : MonoBehaviour
                 GameBuilding building = Instantiate(prefab, Vector3.zero, Quaternion.identity);
                 building.Initialize(true);
                 building.SetPosition(20, 20);
+                building.Id = -1;
                 building.AdjustBaseColor();
                 building.CurrentLevel = 1;
 

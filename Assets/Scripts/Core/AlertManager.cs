@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -34,7 +35,7 @@ public class AlertManager : SingletonDontDestroy<AlertManager>
     public void Error(string message)
     {
         var alert = _alertPool.Get();
-        alert.Initialize(message, new(255, 105, 105, 255));
+        alert.Initialize(message, Color.red);
         _list.Add(alert);
     }
 

@@ -63,7 +63,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.1257485
+      - time: 0.4567009
         functionName: DoAttackAnim
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 1e378b2387aca3843be5c9afa808533d, type: 3}
