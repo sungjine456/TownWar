@@ -12,8 +12,8 @@ public class TrainUnit : MonoBehaviour
     [SerializeField] TextMeshProUGUI _nameText;
     [SerializeField] TextMeshProUGUI _countText;
     [SerializeField] Button _removeBtn;
-    [SerializeField] RawImage unitTexture;
-    [SerializeField] SerializableDictionaryBase<UnitId, Texture> unitTextures;
+    [SerializeField] Image _unitImage;
+    [SerializeField] SerializableDictionaryBase<UnitId, Sprite> _unitSprites;
 
     [HideInInspector] public Unit _unit;
 
@@ -40,7 +40,7 @@ public class TrainUnit : MonoBehaviour
     {
         _unit = unitData;
         Count = count;
-        unitTexture.texture = unitTextures[unitData.id];
+        _unitImage.sprite = _unitSprites[unitData.id];
 
         switch (unitData.id)
         {

@@ -13,8 +13,8 @@ public class UIBattleUnit : MonoBehaviour
     [SerializeField] TextMeshProUGUI _countText;
     [SerializeField] TextMeshProUGUI _levelText;
     [SerializeField] TextMeshProUGUI _nameText;
-    [SerializeField] RawImage unitTexture;
-    [SerializeField] SerializableDictionaryBase<Data.UnitId, Texture> unitTextures;
+    [SerializeField] Image _unitImage;
+    [SerializeField] SerializableDictionaryBase<Data.UnitId, Sprite> _unitSprites;
 
     [HideInInspector] public Queue<Data.Unit> _units;
     [HideInInspector] public Data.UnitId _id;
@@ -36,7 +36,7 @@ public class UIBattleUnit : MonoBehaviour
             _units = units;
             _levelText.text = level.ToString();
             _countText.text = units.Count.ToString();
-            unitTexture.texture = unitTextures[_id];
+            _unitImage.sprite = _unitSprites[_id];
 
             switch (_id)
             {

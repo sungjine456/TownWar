@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: New Sprite Atlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 8d47075486ab9824da4f7c6e0703f66d, type: 3}
+    - {fileID: 102900000, guid: dbaf4900e61a89a459017bcfdb3265b4, type: 3}
+    - {fileID: 102900000, guid: 1b34911a21e9dbf4c89a5130cb5ba4c8, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - 67c61770f1a63494aba2e601e88a6e69: 21300000
+    - 476a6cc14f477374db6ac28c25f7f568: 21300000
+    - abdb8813676ed344e8361cf39e20185b: 21300000
+    - 173185843e057ef4c861880736d9fda9: 21300000
+    - 1dbfd4f438fef054297a9278fa7c6ce0: 21300000
+    - 3dbf3ea5c60387747a6ab03b9b921bdc: 21300000
+    - cf2415e569c5b794581acc4487a5775b: 21300000
+    - 5c122026671c4844d9b3d85b66adf07e: 21300000
+    - 1e5a1408a6dc72e4da8b4d253d19efe7: 21300000
+    - e7195f586f2adec4da7905b02a1adc66: 21300000
+    - 2650e999b27a77e45b1afc845e530f9e: 21300000
+    - 7aba51d9c44c59f48878f90aba192b8e: 21300000
+    - 87b48c3adda81884fbf668e76bc096c3: 21300000
+    - 7b0e7fac4028ca8409214aef2f983f24: 21300000
+    - ce0fc5bcbdb54904797e9507d542d59a: 21300000
+    - 512e77eef322b8f4186c1113bbd24523: 21300000
+    - 0763d4bfddf4bf14f8411692b3c37e76: 21300000
+    - dee2ecef56aa73b4ca85daeaf2a5b098: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 67c61770f1a63494aba2e601e88a6e69, type: 3}
+  - {fileID: 21300000, guid: 476a6cc14f477374db6ac28c25f7f568, type: 3}
+  - {fileID: 21300000, guid: abdb8813676ed344e8361cf39e20185b, type: 3}
+  - {fileID: 21300000, guid: 173185843e057ef4c861880736d9fda9, type: 3}
+  - {fileID: 21300000, guid: 1dbfd4f438fef054297a9278fa7c6ce0, type: 3}
+  - {fileID: 21300000, guid: 3dbf3ea5c60387747a6ab03b9b921bdc, type: 3}
+  - {fileID: 21300000, guid: cf2415e569c5b794581acc4487a5775b, type: 3}
+  - {fileID: 21300000, guid: 5c122026671c4844d9b3d85b66adf07e, type: 3}
+  - {fileID: 21300000, guid: 1e5a1408a6dc72e4da8b4d253d19efe7, type: 3}
+  - {fileID: 21300000, guid: e7195f586f2adec4da7905b02a1adc66, type: 3}
+  - {fileID: 21300000, guid: 2650e999b27a77e45b1afc845e530f9e, type: 3}
+  - {fileID: 21300000, guid: 7aba51d9c44c59f48878f90aba192b8e, type: 3}
+  - {fileID: 21300000, guid: 87b48c3adda81884fbf668e76bc096c3, type: 3}
+  - {fileID: 21300000, guid: 7b0e7fac4028ca8409214aef2f983f24, type: 3}
+  - {fileID: 21300000, guid: ce0fc5bcbdb54904797e9507d542d59a, type: 3}
+  - {fileID: 21300000, guid: 512e77eef322b8f4186c1113bbd24523, type: 3}
+  - {fileID: 21300000, guid: 0763d4bfddf4bf14f8411692b3c37e76, type: 3}
+  - {fileID: 21300000, guid: dee2ecef56aa73b4ca85daeaf2a5b098, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - gear
+  - hammer
+  - Wall
+  - bar
+  - GoldMine
+  - Barracks
+  - star
+  - ElixirMine
+  - GoldStorage
+  - gold
+  - Tower
+  - BuildersHut
+  - map
+  - ArmyCamp
+  - ElixirStorage
+  - TownHall
+  - Archer
+  - Warrior
+  m_RenderDataMap: {}
+  m_Tag: New Sprite Atlas
+  m_IsVariant: 0
